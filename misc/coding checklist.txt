@@ -1,0 +1,46 @@
+----------------------------------------------
+movement:
+
+pawn:
+- if at home square, cannot move more than 2 
+- if not at home square, cannot move more than 1
+- cannot move backwards
+- cannot move forward if it puts king in check
+- cannot move forward if something in the way
+- can have 2 pawns on same column 
+- account for promotion
+
+rook:
+knight:
+bishop:
+queen:
+king:
+----------------------------------------------
+capture:
+
+pawn:
+- capture diagonally
+- cannot capture own piece
+- cannot capture empty square
+- cannot capture backwards diagonally
+- account for promotion (longest name, e.g. bxc8=Q#)
+- en passant
+
+rook:
+knight:
+bishop:
+queen:
+king:
+----------------------------------------------
+check:
+
+-
+----------------------------------------------
+mate:
+
+-
+----------------------------------------------
+castles:
+
+-
+----------------------------------------------
