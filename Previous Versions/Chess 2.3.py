@@ -1,7 +1,10 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton
-from PyQt5.QtGui import QPixmap, QIcon
-from PyQt5.QtCore import QSize, QTimer
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel
+from PyQt5.QtGui import QPixmap, QIcon, QPainter
+from PyQt5.QtCore import QSize, QTimer, Qt
 from time import time
+import os
+
+os.chdir("C:/Users/Admin/Documents/lee/Study/Projects/Chess/Pictures")
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -31,30 +34,42 @@ class MainWindow(QWidget):
                         'qa8', 'qb8', 'qc8', 'qd8', 'qe8', 'qf8', 'qg8', 'qh8', 'qa7', 'qb7', 'qc7', 'qd7', 'qe7', 'qf7', 'qg7', 'qh7', 'qa6', 'qb6', 'qc6', 'qd6', 'qe6', 'qf6', 'qg6', 'qh6', 'qa5', 'qb5', 'qc5', 'qd5', 'qe5', 'qf5', 'qg5', 'qh5', 'qa4', 'qb4', 'qc4', 'qd4', 'qe4', 'qf4', 'qg4', 'qh4', 'qa3', 'qb3', 'qc3', 'qd3', 'qe3', 'qf3', 'qg3', 'qh3', 'qa2', 'qb2', 'qc2', 'qd2', 'qe2', 'qf2', 'qg2', 'qh2', 'qa1', 'qb1', 'qc1', 'qd1', 'qe1', 'qf1', 'qg1', 'qh1',
                         'ka8', 'kb8', 'kc8', 'kd8', 'ke8', 'kf8', 'kg8', 'kh8', 'ka7', 'kb7', 'kc7', 'kd7', 'ke7', 'kf7', 'kg7', 'kh7', 'ka6', 'kb6', 'kc6', 'kd6', 'ke6', 'kf6', 'kg6', 'kh6', 'ka5', 'kb5', 'kc5', 'kd5', 'ke5', 'kf5', 'kg5', 'kh5', 'ka4', 'kb4', 'kc4', 'kd4', 'ke4', 'kf4', 'kg4', 'kh4', 'ka3', 'kb3', 'kc3', 'kd3', 'ke3', 'kf3', 'kg3', 'kh3', 'ka2', 'kb2', 'kc2', 'kd2', 'ke2', 'kf2', 'kg2', 'kh2', 'ka1', 'kb1', 'kc1', 'kd1', 'ke1', 'kf1', 'kg1', 'kh1']
         self.possible_events = {'none':'', '+':'Check! ', '#':'Checkmate! ', '1/2-1/2':'Draw.', '1/2+1/2':'Stalemate.'}
-        self.movesplayed_events = ['', '+', '#', '1/2-1/2', '1/2+1/2']
         self.turn = 0
-        self.board = self.CreateBoard()
-        self.movesplayed = [] 
+        # self.board = self.CreateBoard()
+        self.board = [['r','n','b','q','n','B','-','-'],
+                      ['p','k','p','p','p','p','-','-'],
+                      ['-','-','b','q','-','r','Q','-'],
+                      ['-','-','-','-','N','-','-','-'],
+                      ['-','-','K','-','-','-','-','-'],
+                      ['-','-','-','B','-','R','q','-'],
+                      ['P','P','P','P','P','P','-','-'],
+                      ['R','N','N','Q','N','b','B','-']]
+        self.moves_played = [] 
         self.selection = [-1, -1]
         self.legal_moves = []
         self.grid = QGridLayout(self)
         self.grid.setSpacing(0)
         self.buttons = [[QPushButton(self) for _ in range(8)] for _ in range(8)]
-        self.pawnp = QPixmap("PawnBlack.png")
-        self.pawnP = QPixmap("PawnWhite.png")
-        self.bishopb = QPixmap("BishopBlack.png")
-        self.bishopB = QPixmap("BishopWhite.png")
-        self.knightn = QPixmap("KnightBlack.png")
-        self.knightN = QPixmap("KnightWhite.png")
-        self.rookr = QPixmap("RookBlack.png")
-        self.rookR = QPixmap("RookWhite.png")
-        self.queenq = QPixmap("QueenBlack.png")
-        self.queenQ = QPixmap("QueenWhite.png")
-        self.kingk = QPixmap("KingBlack.png")
-        self.kingK = QPixmap("KingWhite.png")
-        self.legalmove = QPixmap("LegalMove.png")
-        self.piece_pos_black = [self.rookr, self.knightn, self.bishopb, self.queenq, self.kingk, self.bishopb, self.knightn, self.rookr]
-        self.piece_pos_white = [self.rookR, self.knightN, self.bishopB, self.queenQ, self.kingK, self.bishopB, self.knightN, self.rookR]
+        self.pawn_p, self.pawn_p_capture = QPixmap("PawnBlack.png"), QPixmap("PawnBlackCapture.png")
+        self.pawn_P, self.pawn_P_capture = QPixmap("PawnWhite.png"), QPixmap("PawnWhiteCapture.png")
+        self.bishop_b, self.bishop_b_capture = QPixmap("BishopBlack.png"), QPixmap("BishopBlackCapture.png")
+        self.bishop_B, self.bishop_B_capture = QPixmap("BishopWhite.png"), QPixmap("BishopWhiteCapture.png")
+        self.knight_n, self.knight_n_capture = QPixmap("KnightBlack.png"), QPixmap("KnightBlackCapture.png")
+        self.knight_N, self.knight_N_capture = QPixmap("KnightWhite.png"), QPixmap("KnightWhiteCapture.png")
+        self.rook_r, self.rook_r_capture = QPixmap("RookBlack.png"), QPixmap("RookBlackCapture.png")
+        self.rook_R, self.rook_R_capture = QPixmap("RookWhite.png"), QPixmap("RookWhiteCapture.png")
+        self.queen_q, self.queen_q_capture = QPixmap("QueenBlack.png"), QPixmap("QueenBlackCapture.png")
+        self.queen_Q, self.queen_Q_capture = QPixmap("QueenWhite.png"), QPixmap("QueenWhiteCapture.png")
+        self.king_k, self.king_k_capture = QPixmap("KingBlack.png"), QPixmap("KingBlackCapture.png")
+        self.king_K, self.king_K_capture = QPixmap("KingWhite.png"), QPixmap("KingWhiteCapture.png")
+        self.legal_move = QPixmap("LegalMove.png")
+        self.piece_capture = QPixmap("PieceCapture.png")
+        self.piece_pixmap = {"r":self.rook_r, "n":self.knight_n, "b":self.bishop_b, "q":self.queen_q, "k":self.king_k, "p":self.pawn_p,
+                             "R":self.rook_R, "N":self.knight_N, "B":self.bishop_B, "Q":self.queen_Q, "K":self.king_K, "P":self.pawn_P,
+                             "-":""}
+        self.piece_pixmap_capture = {"r":self.rook_r_capture, "n":self.knight_n_capture, "b":self.bishop_b_capture, "q":self.queen_q_capture, "k":self.king_k_capture, "p":self.pawn_p_capture,
+                                     "R":self.rook_R_capture, "N":self.knight_N_capture, "B":self.bishop_B_capture, "Q":self.queen_Q_capture, "K":self.king_K_capture, "P":self.pawn_P_capture,
+                                     "-":""}
         for i in range(8):
             for j in range(8):
                 self.grid.addWidget(self.buttons[i][j], i, j)
@@ -63,15 +78,7 @@ class MainWindow(QWidget):
                     self.buttons[i][j].setStyleSheet('background-image: url(BoardWhite.png); border: 0')
                 else:
                     self.buttons[i][j].setStyleSheet('background-image: url(BoardBlack.png); border: 0')
-                icon = QIcon()
-                if i == 0:
-                    icon = QIcon(self.piece_pos_black[j])
-                elif i == 1:
-                    icon = QIcon(self.pawnp)
-                elif i == 6:
-                    icon = QIcon(self.pawnP)
-                elif i == 7:
-                    icon = QIcon(self.piece_pos_white[j])
+                icon = QIcon(self.piece_pixmap[self.board[i][j]])
                 self.buttons[i][j].setIcon(icon)
                 self.buttons[i][j].setIconSize(QSize(100, 100))
                 self.buttons[i][j].clicked.connect(lambda checked, row=i, col=j: 
@@ -96,7 +103,7 @@ class MainWindow(QWidget):
         print('a b c d e f g h')
 
     def MakeMove(self, row, col):
-        print(f'\nMoves Played: {self.movesplayed}\n')
+        print(f'\nMoves Played: {self.moves_played}\n')
         self.BoardPrint()
         begin = time()
         board_pic = ["BoardWhite.png", "BoardBlack.png"]
@@ -143,58 +150,34 @@ class MainWindow(QWidget):
                 self.LegalPawnMovement(row, col)
         # Make move
         if make_move == 1:
+            self.moves_played.append(1)
             self.turn = 1 - self.turn
 
         print(f'\nTime taken: {time()-begin}s')
 
     def LegalPawnMovement(self, row, col):
         # To implement:
-        # Cannot move forward if piece is in front
-        # Can capture diagonally
         # En-passant
-        icon = QIcon(self.legalmove)
-        if self.turn == 0:
-            if row == 6:
-                self.buttons[row-1][col].setIcon(icon)
-                self.buttons[row-1][col].setIconSize(QSize(100, 100))
-                self.legal_moves.append((row-1, col))
-                self.buttons[row-2][col].setIcon(icon)
-                self.buttons[row-2][col].setIconSize(QSize(100, 100))
-                self.legal_moves.append((row-2, col))
-            else:
-                self.buttons[row-1][col].setIcon(icon)
-                self.buttons[row-1][col].setIconSize(QSize(100, 100))
-                self.legal_moves.append((row-1, col))
-        elif self.turn == 1:
-            if row == 1:
-                self.buttons[row+1][col].setIcon(icon)
-                self.buttons[row+1][col].setIconSize(QSize(100, 100))
-                self.legal_moves.append((row+1, col))
-                self.buttons[row+2][col].setIcon(icon)
-                self.buttons[row+2][col].setIconSize(QSize(100, 100))
-                self.legal_moves.append((row+2, col))
-            else:
-                self.buttons[row+1][col].setIcon(icon)
-                self.buttons[row+1][col].setIconSize(QSize(100, 100))
-                self.legal_moves.append((row+1, col))
+        # Pinned piece
+        turn_factor = [-1, 1]
+        home_row = [6, 1]
+        icon = QIcon(self.legal_move)
+        # Cannot move forward if piece is in front
+        if self.board[row+1*(turn_factor[self.turn])][col] == "-":
+            # Special case where pawn on home square
+            if row == home_row[self.turn] and self.board[row+2*(turn_factor[self.turn])][col] == "-":
+                self.buttons[row+2*(turn_factor[self.turn])][col].setIcon(icon)
+                self.buttons[row+2*(turn_factor[self.turn])][col].setIconSize(QSize(100, 100))
+                self.legal_moves.append((row+2*(turn_factor[self.turn]), col))
+            self.buttons[row+1*(turn_factor[self.turn])][col].setIcon(icon)
+            self.buttons[row+1*(turn_factor[self.turn])][col].setIconSize(QSize(100, 100))
+            self.legal_moves.append((row+1*(turn_factor[self.turn]), col))
+        # Can capture diagonally
+        if col-1 in range(8) and self.board[row+1*(turn_factor[self.turn])][col-1] in self.turn_pieces[1-self.turn]:
 
-    # def PawnMovement(self, row, col):
-    #     pass
-    
-    # def KnightMovement(self, row, col):
-    #     pass
-    
-    # def BishopMovement(self, row, col):
-    #     pass
-
-    # def RookMovement(self, row, col):
-    #     pass
-
-    # def QueenMovement(self, row, col):
-    #     pass
-
-    # def KingMovement(self, row, col):
-    #     pass
+            pass
+        if col+1 in range(8) and self.board[row+1*(turn_factor[self.turn])][col+1] in self.turn_pieces[1-self.turn]:
+            pass
 
 if __name__ == '__main__':
     app = QApplication([])
