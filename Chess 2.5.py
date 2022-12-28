@@ -65,14 +65,22 @@ class MainWindow(QWidget):
         #               ['-','-','-','-','-','p','-','-'], 
         #               ['P','P','P','P','P','P','P','P'], 
         #               ['R','N','B','Q','K','B','N','R']]
-        self.board = [['r','n','b','q','k','-','n','r'], 
-                      ['p','p','p','p','p','-','p','p'], 
-                      ['-','-','-','b','-','Q','-','-'], 
+        # self.board = [['r','n','b','q','k','-','n','r'], 
+        #               ['p','p','p','p','p','-','p','p'], 
+        #               ['-','-','-','b','-','Q','-','-'], 
+        #               ['-','-','-','-','-','-','-','-'], 
+        #               ['-','-','-','-','-','-','-','-'], 
+        #               ['-','-','-','-','-','-','-','-'], 
+        #               ['P','P','P','P','P','P','P','P'], 
+        #               ['R','N','B','Q','K','B','N','R']]
+        self.board = [['-','-','-','-','-','k','-','-'], 
+                      ['-','-','-','Q','-','-','-','-'], 
+                      ['-','r','-','-','-','-','-','-'], 
                       ['-','-','-','-','-','-','-','-'], 
+                      ['-','-','-','-','Q','-','-','-'], 
+                      ['r','-','-','-','-','-','-','-'], 
                       ['-','-','-','-','-','-','-','-'], 
-                      ['-','-','-','-','-','-','-','-'], 
-                      ['P','P','P','P','P','P','P','P'], 
-                      ['R','N','B','Q','K','B','N','R']]
+                      ['-','-','K','n','-','r','b','-']]
         self.moves_played = []
         self.selection = [-1, -1]
         self.legal_moves = []
@@ -206,17 +214,17 @@ class MainWindow(QWidget):
         # Show legal moves
         if show_move == 1:
             if selected_piece.lower() == "p":
-                self.LegalPawnMovement(row, col)
+                self.LegalPawnMovement(row, col, True)
             elif selected_piece.lower() == "n":
-                self.LegalKnightMovement(row, col)
+                self.LegalKnightMovement(row, col, True)
             elif selected_piece.lower() == "b":
-                self.LegalBishopMovement(row, col)
+                self.LegalBishopMovement(row, col, True)
             elif selected_piece.lower() == "r":
-                self.LegalRookMovement(row, col)
+                self.LegalRookMovement(row, col, True)
             elif selected_piece.lower() == "q":
-                self.LegalQueenMovement(row, col)
+                self.LegalQueenMovement(row, col, True)
             elif selected_piece.lower() == "k":
-                self.LegalKingMovement(row, col)
+                self.LegalKingMovement(row, col, True)
         # Make move
         if make_move == 1:
             if self.board[prev_row][prev_col].lower() == "p":
@@ -231,7 +239,7 @@ class MainWindow(QWidget):
             self.BoardPrint()
             print(f'\nTime taken: {time()-begin}s')
 
-    def LegalPawnMovement(self, row, col):
+    def LegalPawnMovement(self, row, col, show_move):
         turn_factor = [-1, 1]
         home_row = [6, 1]
         pawn_turn = ["P", "p"]
@@ -242,42 +250,48 @@ class MainWindow(QWidget):
         # Cannot move forward if piece is in front
         if (self.board[row+1*(turn_factor[self.turn])][col] == "-" and
             self.CheckIfPinned(row, col, row+1*(turn_factor[self.turn]), col, king_row, king_col) == False):
-            self.buttons[row+1*(turn_factor[self.turn])][col].setIcon(icon_move)
             self.legal_moves.append((row+1*(turn_factor[self.turn]), col))
+            if show_move == True:
+                self.buttons[row+1*(turn_factor[self.turn])][col].setIcon(icon_move)
         # Home square can move one extra
         if (row == home_row[self.turn] and self.board[row+2*(turn_factor[self.turn])][col] == "-" and
             self.board[row+1*(turn_factor[self.turn])][col] == "-" and
             self.CheckIfPinned(row, col, row+2*(turn_factor[self.turn]), col, king_row, king_col) == False):
-            self.buttons[row+2*(turn_factor[self.turn])][col].setIcon(icon_move)
             self.legal_moves.append((row+2*(turn_factor[self.turn]), col))
+            if show_move == True:
+                self.buttons[row+2*(turn_factor[self.turn])][col].setIcon(icon_move)
         # Capture diagonally left
         if (col-1 in range(8) and self.board[row+1*(turn_factor[self.turn])][col-1] in self.turn_pieces[1-self.turn] and
             self.CheckIfPinned(row, col, row+1*(turn_factor[self.turn]), col-1, king_row, king_col) == False):
-            icon_capture = QIcon(self.piece_capture_pixmap[self.board[row+1*(turn_factor[self.turn])][col-1]])
-            self.buttons[row+1*(turn_factor[self.turn])][col-1].setIcon(icon_capture)
             self.legal_moves.append((row+1*(turn_factor[self.turn]), col-1))
-            self.possible_captures.append((row+1*(turn_factor[self.turn]), col-1))
+            if show_move == True:
+                icon_capture = QIcon(self.piece_capture_pixmap[self.board[row+1*(turn_factor[self.turn])][col-1]])
+                self.buttons[row+1*(turn_factor[self.turn])][col-1].setIcon(icon_capture)
+                self.possible_captures.append((row+1*(turn_factor[self.turn]), col-1))
         # Capture diagonally right
         if (col+1 in range(8) and self.board[row+1*(turn_factor[self.turn])][col+1] in self.turn_pieces[1-self.turn] and
             self.CheckIfPinned(row, col, row+1*(turn_factor[self.turn]), col+1, king_row, king_col) == False):
-            icon_capture = QIcon(self.piece_capture_pixmap[self.board[row+1*(turn_factor[self.turn])][col+1]])
-            self.buttons[row+1*(turn_factor[self.turn])][col+1].setIcon(icon_capture)
             self.legal_moves.append((row+1*(turn_factor[self.turn]), col+1))
-            self.possible_captures.append((row+1*(turn_factor[self.turn]), col+1))
+            if show_move == True:
+                icon_capture = QIcon(self.piece_capture_pixmap[self.board[row+1*(turn_factor[self.turn])][col+1]])
+                self.buttons[row+1*(turn_factor[self.turn])][col+1].setIcon(icon_capture)
+                self.possible_captures.append((row+1*(turn_factor[self.turn]), col+1))
         # En passant left
         if (self.en_passant[1-self.turn] == 1 and (ep_square[1-self.turn][0], ep_square[1-self.turn][1]) == (row, col-1) and
             self.CheckIfPinned(row, col, row+1*(turn_factor[self.turn]), col-1, king_row, king_col) == False):
-            self.buttons[row+1*(turn_factor[self.turn])][col-1].setIcon(icon_move)
             self.legal_moves.append((row+1*(turn_factor[self.turn]), col-1))
-            self.possible_captures.append((row+1*(turn_factor[self.turn]), col-1))
+            if show_move == True:
+                self.buttons[row+1*(turn_factor[self.turn])][col-1].setIcon(icon_move)
+                self.possible_captures.append((row+1*(turn_factor[self.turn]), col-1))
         # En passant right
         if (self.en_passant[1-self.turn] == 1 and (ep_square[1-self.turn][0], ep_square[1-self.turn][1]) == (row, col+1) and
             self.CheckIfPinned(row, col, row+1*(turn_factor[self.turn]), col+1, king_row, king_col) == False):
-            self.buttons[row+1*(turn_factor[self.turn])][col+1].setIcon(icon_move)
             self.legal_moves.append((row+1*(turn_factor[self.turn]), col+1))
-            self.possible_captures.append((row+1*(turn_factor[self.turn]), col+1))
+            if show_move == True:
+                self.buttons[row+1*(turn_factor[self.turn])][col+1].setIcon(icon_move)
+                self.possible_captures.append((row+1*(turn_factor[self.turn]), col+1))
             
-    def LegalKnightMovement(self, row, col):
+    def LegalKnightMovement(self, row, col, show_move):
         king_row = self.king_piece_pos[self.turn][0]
         king_col = self.king_piece_pos[self.turn][1]
         pool = [(row-1, col-2), (row-2, col-1), (row-1, col+2), (row-2, col+1),
@@ -287,16 +301,18 @@ class MainWindow(QWidget):
             if pos[0] in range(8) and pos[1] in range(8):
                 if self.CheckIfPinned(row, col, pos[0], pos[1], king_row, king_col) == False:
                     if self.board[pos[0]][pos[1]] == "-":
-                        icon = QIcon(self.legal_move)
-                        self.buttons[pos[0]][pos[1]].setIcon(icon)
                         self.legal_moves.append((pos[0], pos[1]))
+                        if show_move == True:
+                            icon = QIcon(self.legal_move)
+                            self.buttons[pos[0]][pos[1]].setIcon(icon)
                     elif self.board[pos[0]][pos[1]] in self.turn_pieces[1-self.turn]:
-                        icon = QIcon(self.piece_capture_pixmap[self.board[pos[0]][pos[1]]])
-                        self.buttons[pos[0]][pos[1]].setIcon(icon)
                         self.legal_moves.append((pos[0], pos[1]))
-                        self.possible_captures.append((pos[0], pos[1]))
+                        if show_move == True:
+                            icon = QIcon(self.piece_capture_pixmap[self.board[pos[0]][pos[1]]])
+                            self.buttons[pos[0]][pos[1]].setIcon(icon)
+                            self.possible_captures.append((pos[0], pos[1]))
 
-    def LegalBishopMovement(self, row, col):
+    def LegalBishopMovement(self, row, col, show_move):
         king_row = self.king_piece_pos[self.turn][0]
         king_col = self.king_piece_pos[self.turn][1]
         # Top Left
@@ -305,15 +321,17 @@ class MainWindow(QWidget):
         while check_row in range(8) and check_col in range(8):
             if (self.board[check_row][check_col] == "-" and
                 self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.legal_move)
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.legal_move)
+                    self.buttons[check_row][check_col].setIcon(icon)
             elif (self.board[check_row][check_col] in self.turn_pieces[1-self.turn] and
                   self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
-                self.possible_captures.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
+                    self.buttons[check_row][check_col].setIcon(icon)
+                    self.possible_captures.append((check_row, check_col))
                 break
             elif self.board[check_row][check_col] in self.turn_pieces[self.turn]:
                 break
@@ -325,15 +343,17 @@ class MainWindow(QWidget):
         while check_row in range(8) and check_col in range(8):
             if (self.board[check_row][check_col] == "-" and
                 self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.legal_move)
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.legal_move)
+                    self.buttons[check_row][check_col].setIcon(icon)
             elif (self.board[check_row][check_col] in self.turn_pieces[1-self.turn] and
                   self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
-                self.possible_captures.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
+                    self.buttons[check_row][check_col].setIcon(icon)
+                    self.possible_captures.append((check_row, check_col))
                 break
             elif self.board[check_row][check_col] in self.turn_pieces[self.turn]:
                 break
@@ -345,15 +365,17 @@ class MainWindow(QWidget):
         while check_row in range(8) and check_col in range(8):
             if (self.board[check_row][check_col] == "-" and
                 self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.legal_move)
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.legal_move)
+                    self.buttons[check_row][check_col].setIcon(icon)
             elif (self.board[check_row][check_col] in self.turn_pieces[1-self.turn] and
                   self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
-                self.possible_captures.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
+                    self.buttons[check_row][check_col].setIcon(icon)
+                    self.possible_captures.append((check_row, check_col))
                 break
             elif self.board[check_row][check_col] in self.turn_pieces[self.turn]:
                 break
@@ -365,22 +387,24 @@ class MainWindow(QWidget):
         while check_row in range(8) and check_col in range(8):
             if (self.board[check_row][check_col] == "-" and
                 self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.legal_move)
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.legal_move)
+                    self.buttons[check_row][check_col].setIcon(icon)
             elif (self.board[check_row][check_col] in self.turn_pieces[1-self.turn] and
                   self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
-                self.possible_captures.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
+                    self.buttons[check_row][check_col].setIcon(icon)
+                    self.possible_captures.append((check_row, check_col))
                 break
             elif self.board[check_row][check_col] in self.turn_pieces[self.turn]:
                 break
             check_row += 1
             check_col += 1
 
-    def LegalRookMovement(self, row, col):
+    def LegalRookMovement(self, row, col, show_move):
         king_row = self.king_piece_pos[self.turn][0]
         king_col = self.king_piece_pos[self.turn][1]
         check_row = row - 1
@@ -389,15 +413,17 @@ class MainWindow(QWidget):
         while check_row in range(8) and check_col in range(8):
             if (self.board[check_row][check_col] == "-" and
                 self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.legal_move)
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.legal_move)
+                    self.buttons[check_row][check_col].setIcon(icon)
             elif (self.board[check_row][check_col] in self.turn_pieces[1-self.turn] and 
                   self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
-                self.possible_captures.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
+                    self.buttons[check_row][check_col].setIcon(icon)
+                    self.possible_captures.append((check_row, check_col))
                 break
             elif self.board[check_row][check_col] in self.turn_pieces[self.turn]:
                 break
@@ -408,15 +434,17 @@ class MainWindow(QWidget):
         while check_row in range(8) and check_col in range(8):
             if (self.board[check_row][check_col] == "-" and
                 self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.legal_move)
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.legal_move)
+                    self.buttons[check_row][check_col].setIcon(icon)
             elif (self.board[check_row][check_col] in self.turn_pieces[1-self.turn] and 
                   self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
-                self.possible_captures.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
+                    self.buttons[check_row][check_col].setIcon(icon)
+                    self.possible_captures.append((check_row, check_col))
                 break
             elif self.board[check_row][check_col] in self.turn_pieces[self.turn]:
                 break
@@ -427,15 +455,17 @@ class MainWindow(QWidget):
         while check_row in range(8) and check_col in range(8):
             if (self.board[check_row][check_col] == "-" and
                 self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.legal_move)
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.legal_move)
+                    self.buttons[check_row][check_col].setIcon(icon)
             elif (self.board[check_row][check_col] in self.turn_pieces[1-self.turn] and 
                   self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
-                self.possible_captures.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
+                    self.buttons[check_row][check_col].setIcon(icon)
+                    self.possible_captures.append((check_row, check_col))
                 break
             elif self.board[check_row][check_col] in self.turn_pieces[self.turn]:
                 break
@@ -444,27 +474,29 @@ class MainWindow(QWidget):
         check_row = row
         check_col = col + 1
         while check_row in range(8) and check_col in range(8):
-            if (self.board[check_row][check_col] == "-" and 
+            if (self.board[check_row][check_col] == "-" and
                 self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.legal_move)
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.legal_move)
+                    self.buttons[check_row][check_col].setIcon(icon)
             elif (self.board[check_row][check_col] in self.turn_pieces[1-self.turn] and 
                   self.CheckIfPinned(row, col, check_row, check_col, king_row, king_col) == False):
-                icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
-                self.buttons[check_row][check_col].setIcon(icon)
                 self.legal_moves.append((check_row, check_col))
-                self.possible_captures.append((check_row, check_col))
+                if show_move == True:
+                    icon = QIcon(self.piece_capture_pixmap[self.board[check_row][check_col]])
+                    self.buttons[check_row][check_col].setIcon(icon)
+                    self.possible_captures.append((check_row, check_col))
                 break
             elif self.board[check_row][check_col] in self.turn_pieces[self.turn]:
                 break
             check_col += 1
 
-    def LegalQueenMovement(self, row, col):
-        self.LegalBishopMovement(row, col)
-        self.LegalRookMovement(row, col)
+    def LegalQueenMovement(self, row, col, show_move):
+        self.LegalBishopMovement(row, col, show_move)
+        self.LegalRookMovement(row, col, show_move)
 
-    def LegalKingMovement(self, row, col):
+    def LegalKingMovement(self, row, col, show_move):
         king_row = self.king_piece_pos[self.turn][0]
         king_col = self.king_piece_pos[self.turn][1]
         enemy_king_row = self.king_piece_pos[1-self.turn][0]
@@ -480,14 +512,16 @@ class MainWindow(QWidget):
             if pos[0] in range(8) and pos[1] in range(8) and (pos[0], pos[1]) not in enemy_pool:
                 if self.CheckIfPinned(row, col, pos[0], pos[1], pos[0], pos[1]) == False:
                     if self.board[pos[0]][pos[1]] == "-":
-                        icon = QIcon(self.legal_move)
-                        self.buttons[pos[0]][pos[1]].setIcon(icon)
                         self.legal_moves.append((pos[0], pos[1]))
+                        if show_move == True:
+                            icon = QIcon(self.legal_move)
+                            self.buttons[pos[0]][pos[1]].setIcon(icon)
                     elif self.board[pos[0]][pos[1]] in self.turn_pieces[1-self.turn]:
-                        icon = QIcon(self.piece_capture_pixmap[self.board[pos[0]][pos[1]]])
-                        self.buttons[pos[0]][pos[1]].setIcon(icon)
                         self.legal_moves.append((pos[0], pos[1]))
-                        self.possible_captures.append((pos[0], pos[1]))
+                        if show_move == True:
+                            icon = QIcon(self.piece_capture_pixmap[self.board[pos[0]][pos[1]]])
+                            self.buttons[pos[0]][pos[1]].setIcon(icon)
+                            self.possible_captures.append((pos[0], pos[1]))
         # Short Castles
         icon = QIcon(self.legal_move)
         turn_row = [7, 0]
@@ -496,16 +530,18 @@ class MainWindow(QWidget):
                 if (self.CheckIfPinned(row, col, turn_row[self.turn], 5, turn_row[self.turn], 5) == False and
                     self.CheckIfPinned(row, col, turn_row[self.turn], 6, turn_row[self.turn], 6) == False):
                     if "".join(self.board[turn_row[self.turn]][5:7]) == "--":
-                        self.buttons[turn_row[self.turn]][6].setIcon(icon)
                         self.legal_moves.append((turn_row[self.turn], 6))
+                        if show_move == True:
+                            self.buttons[turn_row[self.turn]][6].setIcon(icon)
         # Long Castles
         if self.king_piece_moved[self.turn] == 0 and self.rook_piece_long_moved[self.turn] == 0:
             if (turn_row[self.turn], 2) not in enemy_pool and (turn_row[self.turn], 3) not in enemy_pool:
                 if (self.CheckIfPinned(row, col, turn_row[self.turn], 2, turn_row[self.turn], 2) == False and
                     self.CheckIfPinned(row, col, turn_row[self.turn], 3, turn_row[self.turn], 3) == False):
                     if "".join(self.board[turn_row[self.turn]][1:4]) == "---":
-                        self.buttons[turn_row[self.turn]][2].setIcon(icon)
                         self.legal_moves.append((turn_row[self.turn], 2))
+                        if show_move == True:
+                            self.buttons[turn_row[self.turn]][2].setIcon(icon)
 
     def FindPawn(self, prev_row, prev_col, row, col, piece_name):
         pool_pawn = []
@@ -630,8 +666,28 @@ class MainWindow(QWidget):
         self.board[row][col] = temp_piece
         return is_pinned
 
-    def CheckIfMate(self, prev_row, prev_col, row, col, king_row, king_col):
-        pass
+    def CheckIfMate(self):
+        self.turn = 1-self.turn
+        for piece_row in range(8):
+            for piece_col in range(8):
+                selected_piece = self.board[piece_row][piece_col]
+                if selected_piece in self.turn_pieces[self.turn]:
+                    if selected_piece.lower() == "p":
+                        self.LegalPawnMovement(piece_row, piece_col, False)
+                    elif selected_piece.lower() == "n":
+                        self.LegalKnightMovement(piece_row, piece_col, False)
+                    elif selected_piece.lower() == "b":
+                        self.LegalBishopMovement(piece_row, piece_col, False)
+                    elif selected_piece.lower() == "r":
+                        self.LegalRookMovement(piece_row, piece_col, False)
+                    elif selected_piece.lower() == "q":
+                        self.LegalQueenMovement(piece_row, piece_col, False)
+                    elif selected_piece.lower() == "k":
+                        self.LegalKingMovement(piece_row, piece_col, False)
+        number_of_moves = len(self.legal_moves)
+        self.turn = 1-self.turn
+        self.legal_moves = []
+        return number_of_moves == 0
 
     def MovePawn(self, prev_row, prev_col, row, col):
         move_played = ""
@@ -807,7 +863,9 @@ class MainWindow(QWidget):
         self.buttons[prev_row][prev_col].setIcon(icon_blank)
         self.board[row][col] = self.board[prev_row][prev_col]
         self.board[prev_row][prev_col] = "-"
-        if self.CheckIfCheck(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn) == 1:
+        if self.CheckIfMate() == True:
+            move_played += "#"
+        elif self.CheckIfCheck(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn) == True:
             move_played += "+"
         self.moves_played.append(move_played)
 
