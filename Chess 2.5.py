@@ -10,77 +10,30 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         begin = time()
-        self.players = ['White', 'Black']
-        self.turn_pieces = [['P', 'N', 'B', 'R', 'Q', 'K'], ['p', 'n', 'b', 'r', 'q', 'k']]
-        self.all_pieces = {'P':'Pawn', 'N':'Knight', 'B':'Bishop', 'R':'Rook', 'Q':'Queen', 'K':'King',
-                           'p':'Pawn', 'n':'Knight', 'b':'Bishop', 'r':'Rook', 'q':'Queen', 'k':'King'}
-        self.square_pos = {'a8':(0, 0), 'b8':(0, 1), 'c8':(0, 2), 'd8':(0, 3), 'e8':(0, 4), 'f8':(0, 5), 'g8':(0, 6), 'h8':(0, 7),
-                           'a7':(1, 0), 'b7':(1, 1), 'c7':(1, 2), 'd7':(1, 3), 'e7':(1, 4), 'f7':(1, 5), 'g7':(1, 6), 'h7':(1, 7),
-                           'a6':(2, 0), 'b6':(2, 1), 'c6':(2, 2), 'd6':(2, 3), 'e6':(2, 4), 'f6':(2, 5), 'g6':(2, 6), 'h6':(2, 7),
-                           'a5':(3, 0), 'b5':(3, 1), 'c5':(3, 2), 'd5':(3, 3), 'e5':(3, 4), 'f5':(3, 5), 'g5':(3, 6), 'h5':(3, 7),
-                           'a4':(4, 0), 'b4':(4, 1), 'c4':(4, 2), 'd4':(4, 3), 'e4':(4, 4), 'f4':(4, 5), 'g4':(4, 6), 'h4':(4, 7),
-                           'a3':(5, 0), 'b3':(5, 1), 'c3':(5, 2), 'd3':(5, 3), 'e3':(5, 4), 'f3':(5, 5), 'g3':(5, 6), 'h3':(5, 7),
-                           'a2':(6, 0), 'b2':(6, 1), 'c2':(6, 2), 'd2':(6, 3), 'e2':(6, 4), 'f2':(6, 5), 'g2':(6, 6), 'h2':(6, 7),
-                           'a1':(7, 0), 'b1':(7, 1), 'c1':(7, 2), 'd1':(7, 3), 'e1':(7, 4), 'f1':(7, 5), 'g1':(7, 6), 'h1':(7, 7)}
+        self.players = ["White", "Black"]
+        self.turn_pieces = [["P", "N", "B", "R", "Q", "K"], ["p", "n", "b", "r", "q", "k"]]
+        self.all_pieces = {"P":"Pawn", "N":"Knight", "B":"Bishop", "R":"Rook", "Q":"Queen", "K":"King",
+                           "p":"Pawn", "n":"Knight", "b":"Bishop", "r":"Rook", "q":"Queen", "k":"King"}
+        self.square_pos = {"a8":(0, 0), "b8":(0, 1), "c8":(0, 2), "d8":(0, 3), "e8":(0, 4), "f8":(0, 5), "g8":(0, 6), "h8":(0, 7),
+                           "a7":(1, 0), "b7":(1, 1), "c7":(1, 2), "d7":(1, 3), "e7":(1, 4), "f7":(1, 5), "g7":(1, 6), "h7":(1, 7),
+                           "a6":(2, 0), "b6":(2, 1), "c6":(2, 2), "d6":(2, 3), "e6":(2, 4), "f6":(2, 5), "g6":(2, 6), "h6":(2, 7),
+                           "a5":(3, 0), "b5":(3, 1), "c5":(3, 2), "d5":(3, 3), "e5":(3, 4), "f5":(3, 5), "g5":(3, 6), "h5":(3, 7),
+                           "a4":(4, 0), "b4":(4, 1), "c4":(4, 2), "d4":(4, 3), "e4":(4, 4), "f4":(4, 5), "g4":(4, 6), "h4":(4, 7),
+                           "a3":(5, 0), "b3":(5, 1), "c3":(5, 2), "d3":(5, 3), "e3":(5, 4), "f3":(5, 5), "g3":(5, 6), "h3":(5, 7),
+                           "a2":(6, 0), "b2":(6, 1), "c2":(6, 2), "d2":(6, 3), "e2":(6, 4), "f2":(6, 5), "g2":(6, 6), "h2":(6, 7),
+                           "a1":(7, 0), "b1":(7, 1), "c1":(7, 2), "d1":(7, 3), "e1":(7, 4), "f1":(7, 5), "g1":(7, 6), "h1":(7, 7)}
         self.pos_square = dict((v, k) for k, v in self.square_pos.items())
         self.turn = 0
         self.board = self.CreateBoard()
-        # self.board = [['r','n','b','q','n','B','-','-'],
-        #               ['p','k','p','p','p','p','-','-'],
-        #               ['-','-','b','q','-','r','Q','-'],
-        #               ['-','-','-','-','N','-','-','-'],
-        #               ['-','-','K','-','-','-','-','-'],
-        #               ['-','-','-','B','-','-','q','-'],
-        #               ['P','P','P','P','P','P','-','-'],
-        #               ['R','N','N','Q','N','b','B','-']]
-        # self.board = [['r','n','b','q','n','B','-','-'],
-        #               ['p','k','p','p','p','B','-','-'],
-        #               ['B','-','b','q','-','r','Q','-'],
-        #               ['-','-','-','-','N','-','-','-'],
-        #               ['-','-','-','-','-','-','-','-'],
-        #               ['-','-','K','B','-','-','q','-'],
-        #               ['B','P','P','P','P','P','-','-'],
-        #               ['R','N','N','Q','N','b','B','-']]
-        # self.board = [['r','n','b','q','n','B','-','-'],
-        #               ['p','k','p','p','p','B','-','-'],
-        #               ['-','-','-','-','-','-','-','-'],
-        #               ['-','-','-','R','-','-','-','-'],
-        #               ['R','-','-','-','-','-','-','R'],
-        #               ['-','-','-','-','R','-','-','-'],
-        #               ['B','P','P','P','P','P','-','-'],
-        #               ['R','N','N','Q','N','b','B','-']]
-        # self.board = [['r','n','b','q','n','B','-','-'],
-        #               ['p','k','p','p','p','B','-','-'],
-        #               ['-','-','-','-','-','-','-','-'],
-        #               ['-','-','-','Q','-','-','-','-'],
-        #               ['Q','-','-','-','-','-','-','Q'],
-        #               ['-','-','-','-','Q','-','-','-'],
-        #               ['B','P','P','P','P','P','-','-'],
-        #               ['R','N','N','Q','N','b','B','-']]
-        # self.board = [['r','n','b','q','k','b','n','r'], 
-        #               ['p','p','p','p','p','p','p','p'], 
-        #               ['-','-','-','-','r','-','-','-'], 
-        #               ['-','-','-','-','-','-','-','-'], 
-        #               ['-','-','-','-','-','-','-','-'], 
-        #               ['-','-','-','-','-','p','-','-'], 
-        #               ['P','P','P','P','P','P','P','P'], 
-        #               ['R','N','B','Q','K','B','N','R']]
-        # self.board = [['r','n','b','q','k','-','n','r'], 
-        #               ['p','p','p','p','p','-','p','p'], 
-        #               ['-','-','-','b','-','Q','-','-'], 
-        #               ['-','-','-','-','-','-','-','-'], 
-        #               ['-','-','-','-','-','-','-','-'], 
-        #               ['-','-','-','-','-','-','-','-'], 
-        #               ['P','P','P','P','P','P','P','P'], 
-        #               ['R','N','B','Q','K','B','N','R']]
-        self.board = [['-','-','-','-','-','k','-','-'], 
-                      ['-','-','-','Q','-','-','-','-'], 
-                      ['-','r','-','-','-','-','-','-'], 
-                      ['-','-','-','-','-','-','-','-'], 
-                      ['-','-','-','-','Q','-','-','-'], 
-                      ['r','-','-','-','-','-','-','-'], 
-                      ['-','-','-','-','-','-','-','-'], 
-                      ['-','-','K','n','-','r','b','-']]
+        self.board = [["-", "-", "-", "-", "-", "-", "-", "-"],
+                      ["-", "-", "-", "-", "-", "b", "-", "-"],
+                      ["-", "-", "-", "k", "-", "-", "-", "-"],
+                      ["-", "-", "-", "-", "-", "-", "-", "-"],
+                      ["-", "-", "-", "-", "-", "p", "-", "-"],
+                      ["-", "-", "-", "-", "B", "-", "-", "-"],
+                      ["-", "-", "-", "-", "-", "-", "-", "-"],
+                      ["K", "-", "-", "-", "-", "-", "-", "-"],]
+        self.move_counter = 0
         self.moves_played = []
         self.selection = [-1, -1]
         self.legal_moves = []
@@ -100,6 +53,10 @@ class MainWindow(QWidget):
         self.rook_piece_long_moved = [self.rook_white_long_moved, self.rook_black_long_moved]
         self.en_passant = [0, 0]
         self.en_passant_square = [[-1, -1], [-1, -1]]
+        self.counter_hashmap = {"P":0, "N":0, "B":[0, 0], "R":0, "Q":0, "K":0,
+                                "p":0, "n":0, "b":[0, 0], "r":0, "q":0, "k":0}
+        self.position_hashmap = {"".join(map(lambda x: "".join(x), self.board)):1}
+        self.game_end = 0
         self.grid = QGridLayout(self)
         self.grid.setSpacing(0)
         self.buttons = [[QPushButton(self) for _ in range(8)] for _ in range(8)]
@@ -134,37 +91,39 @@ class MainWindow(QWidget):
                     self.king_white_pos[0] = i
                     self.king_white_pos[1] = j
                 if (i + j) % 2 == 0:
-                    self.buttons[i][j].setStyleSheet('background-image: url(BoardWhite.png); border: 0')
+                    self.buttons[i][j].setStyleSheet("background-image: url(BoardWhite.png); border: 0")
                 else:
-                    self.buttons[i][j].setStyleSheet('background-image: url(BoardBlack.png); border: 0')
+                    self.buttons[i][j].setStyleSheet("background-image: url(BoardBlack.png); border: 0")
                 icon = QIcon(self.piece_pixmap[self.board[i][j]])
                 self.buttons[i][j].setIcon(icon)
                 self.buttons[i][j].setIconSize(QSize(100, 100))
                 self.buttons[i][j].clicked.connect(lambda checked, row=i, col=j: 
                                                    self.MakeMove(row, col))
         self.setLayout(self.grid)
-        self.setWindowTitle('Chess')
+        self.setWindowTitle("Chess")
         self.move(300, 100)
-        print(f'\nMoves Played: {self.moves_played}\n')
+        print(f"\nMoves Played: {self.moves_played}\n")
         self.BoardPrint()
-        print(f'\nTime taken: {time()-begin}s')
+        print(f"\nTime taken: {time()-begin}s")
 
     def CreateBoard(self):
-        board = [['-' for i in range(8)] for j in range(8)]
+        board = [["-" for i in range(8)] for j in range(8)]
         for i in range(8):
-            board[1][i] = 'p'
-            board[6][i] = 'P'
-        board[7] = ['R','N','B','Q','K','B','N','R']
+            board[1][i] = "p"
+            board[6][i] = "P"
+        board[7] = ["R","N","B","Q","K","B","N","R"]
         board[0] = list(map(lambda x: x.lower(), board[7]))
         return board
 
     def BoardPrint(self):
         board = self.board
         for i in range(8):
-            print(f'{board[i][0]}|{board[i][1]}|{board[i][2]}|{board[i][3]}|{board[i][4]}|{board[i][5]}|{board[i][6]}|{board[i][7]} {8-i}')
-        print('a b c d e f g h')
+            print(f"{board[i][0]}|{board[i][1]}|{board[i][2]}|{board[i][3]}|{board[i][4]}|{board[i][5]}|{board[i][6]}|{board[i][7]} {8-i}")
+        print("a b c d e f g h")
 
     def MakeMove(self, row, col):
+        if self.game_end == 1:
+            return
         begin = time()
         board_pic = ["BoardWhite.png", "BoardBlack.png"]
         selected_piece = self.board[row][col]
@@ -182,7 +141,7 @@ class MainWindow(QWidget):
             make_move = 1
         # Have not selected and selected piece is valid
         elif self.selection[0] == -1 and self.selection[1] == -1 and selected_piece in self.turn_pieces[self.turn]:
-            self.buttons[row][col].setStyleSheet('background-image: url(SelectedPiece.png); border: 0')
+            self.buttons[row][col].setStyleSheet("background-image: url(SelectedPiece.png); border: 0")
             self.selection[0] = row
             self.selection[1] = col
             show_move = 1
@@ -195,7 +154,7 @@ class MainWindow(QWidget):
         # Selected different piece and selected piece is valid
         else:
             self.buttons[self.selection[0]][self.selection[1]].setStyleSheet(f"background-image: url({board_pic[(self.selection[0] + self.selection[1]) % 2]}); border: 0")
-            self.buttons[row][col].setStyleSheet('background-image: url(SelectedPiece.png); border: 0')
+            self.buttons[row][col].setStyleSheet("background-image: url(SelectedPiece.png); border: 0")
             self.selection[0] = row
             self.selection[1] = col
             hide_move = 1
@@ -229,15 +188,16 @@ class MainWindow(QWidget):
         if make_move == 1:
             if self.board[prev_row][prev_col].lower() == "p":
                 self.MovePawn(prev_row, prev_col, row, col)
+                self.move_counter = 1
             else:
                 self.MovePiece(prev_row, prev_col, row, col)
             self.en_passant[1-self.turn] = 0
             self.en_passant_square[1-self.turn][0] = -1
             self.en_passant_square[1-self.turn][1] = -1
             self.turn = 1 - self.turn
-            print(f'\nMoves Played: {self.moves_played}\n')
+            print(f"\nMoves Played: {self.moves_played}\n")
             self.BoardPrint()
-            print(f'\nTime taken: {time()-begin}s')
+            print(f"\nTime taken: {time()-begin}s")
 
     def LegalPawnMovement(self, row, col, show_move):
         turn_factor = [-1, 1]
@@ -501,6 +461,7 @@ class MainWindow(QWidget):
         king_col = self.king_piece_pos[self.turn][1]
         enemy_king_row = self.king_piece_pos[1-self.turn][0]
         enemy_king_col = self.king_piece_pos[1-self.turn][1]
+        home_square = [(7, 4), (0, 4)]
         pool = [(row-1, col-1), (row-1, col), (row-1, col+1),
                 (row, col-1),                 (row, col+1),
                 (row+1, col-1), (row+1, col), (row+1, col+1)]
@@ -522,26 +483,37 @@ class MainWindow(QWidget):
                             icon = QIcon(self.piece_capture_pixmap[self.board[pos[0]][pos[1]]])
                             self.buttons[pos[0]][pos[1]].setIcon(icon)
                             self.possible_captures.append((pos[0], pos[1]))
-        # Short Castles
-        icon = QIcon(self.legal_move)
-        turn_row = [7, 0]
-        if self.king_piece_moved[self.turn] == 0 and self.rook_piece_short_moved[self.turn] == 0:
-            if (turn_row[self.turn], 5) not in enemy_pool and (turn_row[self.turn], 6) not in enemy_pool:
-                if (self.CheckIfPinned(row, col, turn_row[self.turn], 5, turn_row[self.turn], 5) == False and
-                    self.CheckIfPinned(row, col, turn_row[self.turn], 6, turn_row[self.turn], 6) == False):
-                    if "".join(self.board[turn_row[self.turn]][5:7]) == "--":
-                        self.legal_moves.append((turn_row[self.turn], 6))
-                        if show_move == True:
-                            self.buttons[turn_row[self.turn]][6].setIcon(icon)
-        # Long Castles
-        if self.king_piece_moved[self.turn] == 0 and self.rook_piece_long_moved[self.turn] == 0:
-            if (turn_row[self.turn], 2) not in enemy_pool and (turn_row[self.turn], 3) not in enemy_pool:
-                if (self.CheckIfPinned(row, col, turn_row[self.turn], 2, turn_row[self.turn], 2) == False and
-                    self.CheckIfPinned(row, col, turn_row[self.turn], 3, turn_row[self.turn], 3) == False):
-                    if "".join(self.board[turn_row[self.turn]][1:4]) == "---":
-                        self.legal_moves.append((turn_row[self.turn], 2))
-                        if show_move == True:
-                            self.buttons[turn_row[self.turn]][2].setIcon(icon)
+        # Castling
+        if (row, col) == home_square[self.turn]:
+            icon = QIcon(self.legal_move)
+            turn_row = [7, 0]
+            turn_rook = ["R", "r"]
+            rook_short_home_square = [(7, 7), (0, 7)]
+            rook_short_row = rook_short_home_square[self.turn][0]
+            rook_short_col = rook_short_home_square[self.turn][1]
+            rook_long_home_square = [(7, 0), (0, 0)]
+            rook_long_row = rook_long_home_square[self.turn][0]
+            rook_long_col = rook_long_home_square[self.turn][1]
+            # Short Castles
+            if self.board[rook_short_row][rook_short_col] == turn_rook[self.turn]:
+                if self.king_piece_moved[self.turn] == 0 and self.rook_piece_short_moved[self.turn] == 0:
+                    if (turn_row[self.turn], 5) not in enemy_pool and (turn_row[self.turn], 6) not in enemy_pool:
+                        if (self.CheckIfPinned(row, col, turn_row[self.turn], 5, turn_row[self.turn], 5) == False and
+                            self.CheckIfPinned(row, col, turn_row[self.turn], 6, turn_row[self.turn], 6) == False):
+                            if "".join(self.board[turn_row[self.turn]][5:7]) == "--":
+                                self.legal_moves.append((turn_row[self.turn], 6))
+                                if show_move == True:
+                                    self.buttons[turn_row[self.turn]][6].setIcon(icon)
+            # Long Castles
+            if self.board[rook_long_row][rook_long_col] == turn_rook[self.turn]:
+                if self.king_piece_moved[self.turn] == 0 and self.rook_piece_long_moved[self.turn] == 0:
+                    if (turn_row[self.turn], 2) not in enemy_pool and (turn_row[self.turn], 3) not in enemy_pool:
+                        if (self.CheckIfPinned(row, col, turn_row[self.turn], 2, turn_row[self.turn], 2) == False and
+                            self.CheckIfPinned(row, col, turn_row[self.turn], 3, turn_row[self.turn], 3) == False):
+                            if "".join(self.board[turn_row[self.turn]][1:4]) == "---":
+                                self.legal_moves.append((turn_row[self.turn], 2))
+                                if show_move == True:
+                                    self.buttons[turn_row[self.turn]][2].setIcon(icon)
 
     def FindPawn(self, prev_row, prev_col, row, col, piece_name):
         pool_pawn = []
@@ -684,10 +656,51 @@ class MainWindow(QWidget):
                         self.LegalQueenMovement(piece_row, piece_col, False)
                     elif selected_piece.lower() == "k":
                         self.LegalKingMovement(piece_row, piece_col, False)
+                if selected_piece != "-":
+                    if selected_piece.lower() == "b":
+                        self.counter_hashmap[selected_piece][(piece_row+piece_col)%2] += 1
+                    else:
+                        self.counter_hashmap[selected_piece] += 1
         number_of_moves = len(self.legal_moves)
         self.turn = 1-self.turn
         self.legal_moves = []
         return number_of_moves == 0
+
+    def CheckIfDeadPosition(self):
+        # Having pawn, rook or queen means no draw
+        if (self.counter_hashmap["P"] == self.counter_hashmap["p"] == 0 and
+            self.counter_hashmap["R"] == self.counter_hashmap["r"] == 0 and
+            self.counter_hashmap["Q"] == self.counter_hashmap["q"] == 0):
+            knight_config = (self.counter_hashmap["N"], self.counter_hashmap["n"])
+            bishop_config = (self.counter_hashmap["B"][0], self.counter_hashmap["b"][0], self.counter_hashmap["B"][1], self.counter_hashmap["b"][1])
+            # King vs king
+            if (knight_config == (0, 0) and 
+                bishop_config == (0, 0, 0, 0)):
+                return True
+            # King and bishop vs king
+            elif (knight_config == (0, 0) and
+                 (bishop_config == (1, 0, 0, 0) or bishop_config == (0, 1, 0, 0) or
+                  bishop_config == (0, 0, 1, 0) or bishop_config == (0, 0, 0, 1))):
+                return True
+            # King and knight vs king
+            elif ((knight_config == (1, 0) or knight_config == (0, 1)) and
+                   bishop_config == (0, 0, 0, 0)):
+                return True
+            # King and bishop vs king and bishop (both bishop same square colour)
+            elif (knight_config == (0, 0) and
+                 (bishop_config == (1, 1, 0, 0) or bishop_config == (0, 0, 1, 1))):
+                return True
+        # Three fold repetition
+        new_position = "".join(map(lambda x: "".join(x), self.board))
+        if new_position not in self.position_hashmap:
+            self.position_hashmap[new_position] = 1
+        else:
+            self.position_hashmap[new_position] += 1
+        if self.position_hashmap[new_position] == 3:
+            return True
+        self.counter_hashmap = {"P":0, "N":0, "B":[0, 0], "R":0, "Q":0, "K":0,
+                                "p":0, "n":0, "b":[0, 0], "r":0, "q":0, "k":0}
+        return False
 
     def MovePawn(self, prev_row, prev_col, row, col):
         move_played = ""
@@ -734,7 +747,9 @@ class MainWindow(QWidget):
         self.buttons[row][col].setIcon(icon)
         self.buttons[prev_row][prev_col].setIcon(icon_blank)
         self.board[prev_row][prev_col] = "-"
-        if self.CheckIfCheck(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn) == 1:
+        if self.CheckIfMate() == True:
+            move_played += "#"
+        elif self.CheckIfCheck(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn) == True:
             move_played += "+"
         self.moves_played.append(move_played)
     
@@ -841,12 +856,14 @@ class MainWindow(QWidget):
             icon_rook = QIcon(icon_rook_pixmap[self.turn])
             if prev_col - col == 2 and col == 2:
                 self.board[row][col+1] = turn_rook[self.turn]
+                self.board[row][0] = "-"
                 self.buttons[row][col+1].setIcon(icon_rook)
                 self.buttons[row][0].setIcon(icon_blank)
                 move_played = "O-O-O"
                 castles = 1
             elif col - prev_col == 2 and col == 6:
                 self.board[row][col-1] = turn_rook[self.turn]
+                self.board[row][7] = "-"
                 self.buttons[row][col-1].setIcon(icon_rook)
                 self.buttons[row][7].setIcon(icon_blank)
                 move_played = "O-O"
@@ -857,19 +874,49 @@ class MainWindow(QWidget):
         # Moving
         if self.board[row][col] != "-":
             move_played += "x"
+            self.move_counter = 1
+        elif self.board[row][col] == "-":
+            self.move_counter += 1
         if castles == 0:
             move_played += self.pos_square[(row, col)]
         self.buttons[row][col].setIcon(icon_piece)
         self.buttons[prev_row][prev_col].setIcon(icon_blank)
         self.board[row][col] = self.board[prev_row][prev_col]
         self.board[prev_row][prev_col] = "-"
-        if self.CheckIfMate() == True:
+        is_mate = self.CheckIfMate()
+        is_check = self.CheckIfCheck(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn)
+        is_dead = self.CheckIfDeadPosition()
+        # 50 Move Rule
+        if self.move_counter == 50:
+            self.moves_played.append(move_played)
+            move_played = "1/2-1/2"
+            self.game_end = 1
+        # Stalemate
+        elif is_check == False and is_mate == True:
+            self.moves_played.append(move_played)
+            move_played = "1/2-1/2"
+            self.game_end = 1
+        # Check and Dead Position
+        elif is_check == True and is_dead == True:
+            move_played += "+"
+            self.moves_played.append(move_played)
+            move_played = "1/2-1/2"
+            self.game_end = 1
+        # Dead position
+        elif is_check == False and is_dead == True:
+            self.moves_played.append(move_played)
+            move_played = "1/2-1/2"
+            self.game_end = 1
+        # Checkmate
+        elif is_check == True and is_mate == True:
             move_played += "#"
-        elif self.CheckIfCheck(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn) == True:
+            self.game_end = 1
+        # Check
+        elif is_check == True and is_mate == False:
             move_played += "+"
         self.moves_played.append(move_played)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication([])
     window = MainWindow()
     window.show()
