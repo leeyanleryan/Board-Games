@@ -25,14 +25,6 @@ class MainWindow(QWidget):
         self.pos_square = dict((v, k) for k, v in self.square_pos.items())
         self.turn = 0
         self.board = self.CreateBoard()
-        self.board = [["-", "-", "-", "-", "-", "-", "-", "-"],
-                      ["-", "-", "-", "-", "-", "b", "-", "-"],
-                      ["-", "-", "-", "k", "-", "-", "-", "-"],
-                      ["-", "-", "-", "-", "-", "-", "-", "-"],
-                      ["-", "-", "-", "-", "-", "p", "-", "-"],
-                      ["-", "-", "-", "-", "B", "-", "-", "-"],
-                      ["-", "-", "-", "-", "-", "-", "-", "-"],
-                      ["K", "-", "-", "-", "-", "-", "-", "-"],]
         self.move_counter = 0
         self.moves_played = []
         self.selection = [-1, -1]
@@ -517,6 +509,13 @@ class MainWindow(QWidget):
 
     def FindPawn(self, prev_row, prev_col, row, col, piece_name):
         pool_pawn = []
+        turn_factor = [1, -1]
+        if (row+turn_factor[1-self.turn] in range(8) and col-1 in range(8) and
+            self.board[row+turn_factor[1-self.turn]][col-1] == piece_name):
+            pool_pawn.append((row+turn_factor[1-self.turn], col-1))
+        elif (row+turn_factor[1-self.turn] in range(8) and col+1 in range(8) and
+              self.board[row+turn_factor[1-self.turn]][col+1] == piece_name):
+            pool_pawn.append((row+turn_factor[1-self.turn], col+1))
         return pool_pawn
 
     def FindKnight(self, prev_row, prev_col, row, col, piece_name):
@@ -666,7 +665,7 @@ class MainWindow(QWidget):
         self.legal_moves = []
         return number_of_moves == 0
 
-    def CheckIfDeadPosition(self):
+    def CheckIfDead(self):
         # Having pawn, rook or queen means no draw
         if (self.counter_hashmap["P"] == self.counter_hashmap["p"] == 0 and
             self.counter_hashmap["R"] == self.counter_hashmap["r"] == 0 and
@@ -747,9 +746,36 @@ class MainWindow(QWidget):
         self.buttons[row][col].setIcon(icon)
         self.buttons[prev_row][prev_col].setIcon(icon_blank)
         self.board[prev_row][prev_col] = "-"
-        if self.CheckIfMate() == True:
+        is_mate = self.CheckIfMate()
+        is_check = self.CheckIfCheck(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn)
+        is_dead = self.CheckIfDead()
+        # 50 Move Rule
+        if self.move_counter == 50:
+            self.moves_played.append(move_played)
+            move_played = "1/2-1/2"
+            self.game_end = 1
+        # Stalemate
+        elif is_check == False and is_mate == True:
+            self.moves_played.append(move_played)
+            move_played = "1/2-1/2"
+            self.game_end = 1
+        # Check and Dead Position
+        elif is_check == True and is_dead == True:
+            move_played += "+"
+            self.moves_played.append(move_played)
+            move_played = "1/2-1/2"
+            self.game_end = 1
+        # Dead position
+        elif is_check == False and is_dead == True:
+            self.moves_played.append(move_played)
+            move_played = "1/2-1/2"
+            self.game_end = 1
+        # Checkmate
+        elif is_check == True and is_mate == True:
             move_played += "#"
-        elif self.CheckIfCheck(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn) == True:
+            self.game_end = 1
+        # Check
+        elif is_check == True and is_mate == False:
             move_played += "+"
         self.moves_played.append(move_played)
     
@@ -885,7 +911,7 @@ class MainWindow(QWidget):
         self.board[prev_row][prev_col] = "-"
         is_mate = self.CheckIfMate()
         is_check = self.CheckIfCheck(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn)
-        is_dead = self.CheckIfDeadPosition()
+        is_dead = self.CheckIfDead()
         # 50 Move Rule
         if self.move_counter == 50:
             self.moves_played.append(move_played)
