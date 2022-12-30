@@ -6,7 +6,7 @@ import os
 
 os.chdir("C:/Users/Admin/OneDrive/Projects/Chess/Pictures")
 
-class MainWindow(QWidget):
+class Chess(QWidget):
     def __init__(self):
         super().__init__()
         begin = time()
@@ -507,7 +507,7 @@ class MainWindow(QWidget):
                                 if show_move == True:
                                     self.buttons[turn_row[self.turn]][2].setIcon(icon)
 
-    def FindPawn(self, prev_row, prev_col, row, col, piece_name):
+    def FindPawn(self, row, col, piece_name):
         pool_pawn = []
         turn_factor = [1, -1]
         if (row+turn_factor[1-self.turn] in range(8) and col-1 in range(8) and
@@ -525,9 +525,10 @@ class MainWindow(QWidget):
         for pos in pool_pos:
             check_row = row + pos[0]
             check_col = col + pos[1]
-            if check_row in range(8) and check_col in range(8) and self.board[check_row][check_col] == piece_name:
-                if (check_row, check_col) != (prev_row, prev_col):
-                    pool_knight.append((check_row, check_col))
+            if check_row in range(8) and check_col in range(8):
+                if self.board[check_row][check_col] == piece_name:
+                    if (check_row, check_col) != (prev_row, prev_col):
+                        pool_knight.append((check_row, check_col))
         return pool_knight
 
     def FindBishop(self, prev_row, prev_col, row, col, piece_name):
@@ -619,7 +620,7 @@ class MainWindow(QWidget):
         return pool_rook
 
     def CheckIfCheck(self, king_row, king_col, turn):
-        pool_pawn = self.FindPawn(-1, -1, king_row, king_col, self.turn_pieces[turn][0])
+        pool_pawn = self.FindPawn(king_row, king_col, self.turn_pieces[turn][0])
         pool_knight = self.FindKnight(-1, -1, king_row, king_col, self.turn_pieces[turn][1])
         pool_bishop = self.FindBishop(-1, -1, king_row, king_col ,self.turn_pieces[turn][2])
         pool_rook = self.FindRook(-1, -1, king_row, king_col ,self.turn_pieces[turn][3])
@@ -748,25 +749,12 @@ class MainWindow(QWidget):
         self.board[prev_row][prev_col] = "-"
         is_mate = self.CheckIfMate()
         is_check = self.CheckIfCheck(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn)
+        print(row, col)
+        print(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn)
         is_dead = self.CheckIfDead()
-        # 50 Move Rule
-        if self.move_counter == 50:
-            self.moves_played.append(move_played)
-            move_played = "1/2-1/2"
-            self.game_end = 1
+        print(is_mate, is_check, is_dead)
         # Stalemate
-        elif is_check == False and is_mate == True:
-            self.moves_played.append(move_played)
-            move_played = "1/2-1/2"
-            self.game_end = 1
-        # Check and Dead Position
-        elif is_check == True and is_dead == True:
-            move_played += "+"
-            self.moves_played.append(move_played)
-            move_played = "1/2-1/2"
-            self.game_end = 1
-        # Dead position
-        elif is_check == False and is_dead == True:
+        if is_check == False and is_mate == True:
             self.moves_played.append(move_played)
             move_played = "1/2-1/2"
             self.game_end = 1
@@ -790,13 +778,12 @@ class MainWindow(QWidget):
             pool_knight = self.FindKnight(prev_row, prev_col, row, col, piece_name)
             add_row = 0
             add_col = 0
-            # Check all 8 except knight original pos
             for pos in pool_knight:
                 if pos[0] in range(8) and pos[1] in range(8) and self.board[pos[0]][pos[1]] == piece_name:
-                    if pos[0] == prev_row:
-                        add_row = 1
-                    elif pos[1] == prev_col:
+                    if pos[1] == prev_col:
                         add_col = 1
+                    else:
+                        add_row = 1
             if add_row == 1:
                 move_played += self.pos_square[(prev_row, prev_col)][0]
             if add_col == 1:
@@ -944,6 +931,6 @@ class MainWindow(QWidget):
 
 if __name__ == "__main__":
     app = QApplication([])
-    window = MainWindow()
+    window = Chess()
     window.show()
     app.exec_()
