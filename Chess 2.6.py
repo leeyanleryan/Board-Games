@@ -510,9 +510,11 @@ class Chess(QWidget):
     def FindPawn(self, row, col, piece_name):
         pool_pawn = []
         turn_factor = [1, -1]
+        # Left
         if (row+turn_factor[1-self.turn] in range(8) and col-1 in range(8) and
             self.board[row+turn_factor[1-self.turn]][col-1] == piece_name):
             pool_pawn.append((row+turn_factor[1-self.turn], col-1))
+        # Right
         elif (row+turn_factor[1-self.turn] in range(8) and col+1 in range(8) and
               self.board[row+turn_factor[1-self.turn]][col+1] == piece_name):
             pool_pawn.append((row+turn_factor[1-self.turn], col+1))
@@ -749,10 +751,7 @@ class Chess(QWidget):
         self.board[prev_row][prev_col] = "-"
         is_mate = self.CheckIfMate()
         is_check = self.CheckIfCheck(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn)
-        print(row, col)
-        print(self.king_piece_pos[1-self.turn][0], self.king_piece_pos[1-self.turn][1], self.turn)
         is_dead = self.CheckIfDead()
-        print(is_mate, is_check, is_dead)
         # Stalemate
         if is_check == False and is_mate == True:
             self.moves_played.append(move_played)
