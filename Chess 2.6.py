@@ -2,9 +2,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLa
 from PyQt5.QtGui import QPixmap, QIcon, QPainter
 from PyQt5.QtCore import QSize, QTimer, Qt
 from time import *
-import os
-
-os.chdir("C:/Users/Admin/OneDrive/Projects/Chess/Pictures")
 
 class Chess(QWidget):
     def __init__(self):
@@ -52,20 +49,20 @@ class Chess(QWidget):
         self.grid = QGridLayout(self)
         self.grid.setSpacing(0)
         self.buttons = [[QPushButton(self) for _ in range(8)] for _ in range(8)]
-        self.pawn_p, self.pawn_p_capture = QPixmap("PawnBlack.png"), QPixmap("PawnBlackCapture.png")
-        self.pawn_P, self.pawn_P_capture = QPixmap("PawnWhite.png"), QPixmap("PawnWhiteCapture.png")
-        self.bishop_b, self.bishop_b_capture = QPixmap("BishopBlack.png"), QPixmap("BishopBlackCapture.png")
-        self.bishop_B, self.bishop_B_capture = QPixmap("BishopWhite.png"), QPixmap("BishopWhiteCapture.png")
-        self.knight_n, self.knight_n_capture = QPixmap("KnightBlack.png"), QPixmap("KnightBlackCapture.png")
-        self.knight_N, self.knight_N_capture = QPixmap("KnightWhite.png"), QPixmap("KnightWhiteCapture.png")
-        self.rook_r, self.rook_r_capture = QPixmap("RookBlack.png"), QPixmap("RookBlackCapture.png")
-        self.rook_R, self.rook_R_capture = QPixmap("RookWhite.png"), QPixmap("RookWhiteCapture.png")
-        self.queen_q, self.queen_q_capture = QPixmap("QueenBlack.png"), QPixmap("QueenBlackCapture.png")
-        self.queen_Q, self.queen_Q_capture = QPixmap("QueenWhite.png"), QPixmap("QueenWhiteCapture.png")
-        self.king_k, self.king_k_capture = QPixmap("KingBlack.png"), QPixmap("KingBlackCapture.png")
-        self.king_K, self.king_K_capture = QPixmap("KingWhite.png"), QPixmap("KingWhiteCapture.png")
-        self.legal_move = QPixmap("LegalMove.png")
-        self.piece_capture = QPixmap("PieceCapture.png")
+        self.pawn_p, self.pawn_p_capture = QPixmap("Pictures/PawnBlack.png"), QPixmap("Pictures/PawnBlackCapture.png")
+        self.pawn_P, self.pawn_P_capture = QPixmap("Pictures/PawnWhite.png"), QPixmap("Pictures/PawnWhiteCapture.png")
+        self.bishop_b, self.bishop_b_capture = QPixmap("Pictures/BishopBlack.png"), QPixmap("Pictures/BishopBlackCapture.png")
+        self.bishop_B, self.bishop_B_capture = QPixmap("Pictures/BishopWhite.png"), QPixmap("Pictures/BishopWhiteCapture.png")
+        self.knight_n, self.knight_n_capture = QPixmap("Pictures/KnightBlack.png"), QPixmap("Pictures/KnightBlackCapture.png")
+        self.knight_N, self.knight_N_capture = QPixmap("Pictures/KnightWhite.png"), QPixmap("Pictures/KnightWhiteCapture.png")
+        self.rook_r, self.rook_r_capture = QPixmap("Pictures/RookBlack.png"), QPixmap("Pictures/RookBlackCapture.png")
+        self.rook_R, self.rook_R_capture = QPixmap("Pictures/RookWhite.png"), QPixmap("Pictures/RookWhiteCapture.png")
+        self.queen_q, self.queen_q_capture = QPixmap("Pictures/QueenBlack.png"), QPixmap("Pictures/QueenBlackCapture.png")
+        self.queen_Q, self.queen_Q_capture = QPixmap("Pictures/QueenWhite.png"), QPixmap("Pictures/QueenWhiteCapture.png")
+        self.king_k, self.king_k_capture = QPixmap("Pictures/KingBlack.png"), QPixmap("Pictures/KingBlackCapture.png")
+        self.king_K, self.king_K_capture = QPixmap("Pictures/KingWhite.png"), QPixmap("Pictures/KingWhiteCapture.png")
+        self.legal_move = QPixmap("Pictures/LegalMove.png")
+        self.piece_capture = QPixmap("Pictures/PieceCapture.png")
         self.piece_pixmap = {"r":self.rook_r, "n":self.knight_n, "b":self.bishop_b, "q":self.queen_q, "k":self.king_k, "p":self.pawn_p,
                              "R":self.rook_R, "N":self.knight_N, "B":self.bishop_B, "Q":self.queen_Q, "K":self.king_K, "P":self.pawn_P,
                              "-":""}
@@ -83,9 +80,9 @@ class Chess(QWidget):
                     self.king_white_pos[0] = i
                     self.king_white_pos[1] = j
                 if (i + j) % 2 == 0:
-                    self.buttons[i][j].setStyleSheet("background-image: url(BoardWhite.png); border: 0")
+                    self.buttons[i][j].setStyleSheet("background-image: url(Pictures/BoardWhite.png); border: 0")
                 else:
-                    self.buttons[i][j].setStyleSheet("background-image: url(BoardBlack.png); border: 0")
+                    self.buttons[i][j].setStyleSheet("background-image: url(Pictures/BoardBlack.png); border: 0")
                 icon = QIcon(self.piece_pixmap[self.board[i][j]])
                 self.buttons[i][j].setIcon(icon)
                 self.buttons[i][j].setIconSize(QSize(100, 100))
@@ -124,7 +121,7 @@ class Chess(QWidget):
         make_move = 0
         # Making move
         if (row, col) in self.legal_moves:
-            self.buttons[self.selection[0]][self.selection[1]].setStyleSheet(f"background-image: url({board_pic[(self.selection[0] + self.selection[1]) % 2]}); border: 0")
+            self.buttons[self.selection[0]][self.selection[1]].setStyleSheet(f"background-image: url(Pictures/{board_pic[(self.selection[0] + self.selection[1]) % 2]}); border: 0")
             prev_row = self.selection[0]
             prev_col = self.selection[1]
             self.selection[0] = -1
@@ -133,20 +130,20 @@ class Chess(QWidget):
             make_move = 1
         # Have not selected and selected piece is valid
         elif self.selection[0] == -1 and self.selection[1] == -1 and selected_piece in self.turn_pieces[self.turn]:
-            self.buttons[row][col].setStyleSheet("background-image: url(SelectedPiece.png); border: 0")
+            self.buttons[row][col].setStyleSheet("background-image: url(Pictures/SelectedPiece.png); border: 0")
             self.selection[0] = row
             self.selection[1] = col
             show_move = 1
         # Selected same piece or selected piece is invalid
         elif self.selection[0] == row and self.selection[1] == col or selected_piece not in self.turn_pieces[self.turn]:
-            self.buttons[self.selection[0]][self.selection[1]].setStyleSheet(f"background-image: url({board_pic[(self.selection[0] + self.selection[1]) % 2]}); border: 0")
+            self.buttons[self.selection[0]][self.selection[1]].setStyleSheet(f"background-image: url(Pictures/{board_pic[(self.selection[0] + self.selection[1]) % 2]}); border: 0")
             self.selection[0] = -1
             self.selection[1] = -1
             hide_move = 1
         # Selected different piece and selected piece is valid
         else:
-            self.buttons[self.selection[0]][self.selection[1]].setStyleSheet(f"background-image: url({board_pic[(self.selection[0] + self.selection[1]) % 2]}); border: 0")
-            self.buttons[row][col].setStyleSheet("background-image: url(SelectedPiece.png); border: 0")
+            self.buttons[self.selection[0]][self.selection[1]].setStyleSheet(f"background-image: url(Pictures/{board_pic[(self.selection[0] + self.selection[1]) % 2]}); border: 0")
+            self.buttons[row][col].setStyleSheet("background-image: url(Pictures/SelectedPiece.png); border: 0")
             self.selection[0] = row
             self.selection[1] = col
             hide_move = 1
