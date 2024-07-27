@@ -30,8 +30,8 @@ public class Improved4 {
                 buttons[i][j] = new JButton();
                 buttons[i][j].setPreferredSize(new Dimension(60, 60));
                 gridPanel.add(buttons[i][j]);
-                ImageIcon icon1 = new ImageIcon("RedPiece1.png");
-                ImageIcon icon2 = new ImageIcon("YellowPiece1.png");
+                ImageIcon icon1 = new ImageIcon("Pictures/RedPiece1.png");
+                ImageIcon icon2 = new ImageIcon("Pictures/YellowPiece1.png");
                 Image RED = icon1.getImage().getScaledInstance(buttons[i][j].getWidth()-10, 
                                                                buttons[i][j].getHeight()-10, 
                                                                Image.SCALE_SMOOTH);

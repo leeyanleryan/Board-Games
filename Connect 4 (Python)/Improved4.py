@@ -8,8 +8,8 @@ class MainWindow(QWidget):
         self.grid = QGridLayout(self)
         self.buttons = [[QPushButton(self) for _ in range(7)] for _ in range(6)]
         self.colours = [[None for _ in range(7)] for _ in range(6)]
-        self.red_piece = QPixmap("RedPiece1.png")
-        self.yellow_piece = QPixmap("YellowPiece1.png")
+        self.red_piece = QPixmap("Pictures/RedPiece1.png")
+        self.yellow_piece = QPixmap("Pictures/YellowPiece1.png")
         self.board = [[" " for j in range(7)] for i in range(6)]
         self.turn = 0
         self.outcome = 0
