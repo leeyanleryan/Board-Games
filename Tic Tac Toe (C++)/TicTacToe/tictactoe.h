@@ -20,11 +20,19 @@ private slots:
 
     void on_playFriend_clicked();
 
-    void on_buttonBack_clicked();
-
     void on_buttonFriendBack_clicked();
 
     void on_buttonAIBack_clicked();
+
+    void startGame();
+
+    void checkValid();
+
+    void on_buttonPlayFriend_clicked();
+
+    void on_buttonGameBack_clicked();
+
+    void on_buttonPlayAI_clicked();
 
 private:
     Ui::TicTacToe *ui;
