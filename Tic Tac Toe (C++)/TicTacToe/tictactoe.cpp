@@ -9,12 +9,13 @@ QStringList playerNames;
 std::vector<std::vector<QString>> board;
 int startingTurn;
 int turn;
-int piecesPlaced;
+int piecesPlayed;
 int player1WinCount;
 int player2WinCount;
 int AITurn;
 bool AIPlaying;
 bool gameOver;
+QPair<int, int> previousMove;
 QMap<QPair<int, int>, QPushButton*> buttonMap;
 
 TicTacToe::TicTacToe(QWidget *parent)
@@ -117,7 +118,7 @@ void TicTacToe::on_buttonPlayAI_clicked()
 
 int TicTacToe::checkWin()
 {
-    if (piecesPlaced <= 4) {
+    if (piecesPlayed <= 4) {
         return -1;
     }
     // horizontal and vertical check
@@ -136,7 +137,7 @@ int TicTacToe::checkWin()
     if (board[0][2] != "-" && board[0][2] == board[1][1] && board[1][1] == board[2][0]) {
         return 1;
     }
-    if (piecesPlaced == 9) {
+    if (piecesPlayed == 9) {
         return 0;
     }
     return -1;
@@ -157,7 +158,7 @@ void TicTacToe::clearBoard() {
              {"-", "-", "-"},
              {"-", "-", "-"}};
     turn = startingTurn;
-    piecesPlaced = 0;
+    piecesPlayed = 0;
     gameOver = false;
 }
 
@@ -193,21 +194,30 @@ void delay(int millisecondsToWait)
 }
 
 std::vector<QPair<int, int>> corners = {{0, 0}, {0, 2}, {2, 0}, {2, 2}};
+std::vector<QPair<int, int>> edges = {{0, 1}, {1, 0}, {1, 2}, {2, 1}};
 
 void TicTacToe::makeMoveAI()
 {
     delay(500);
-    QPair<int, int> corner = {-1, -1};
-    if (piecesPlaced == 0) {
-
-        int cornerIndex = QRandomGenerator::global()->bounded(4);
-        corner = corners[cornerIndex];
+    QPair<int, int> coordinate = {-1, -1};
+    // no pieces played, AI goes first, will place on either 4 corners
+    if (piecesPlayed == 0) {
+        coordinate = corners[QRandomGenerator::global()->bounded(4)];
+    }
+    // 1 piece played, AI goes second, will choose center if player placed anywhere else, otherwise corner
+    else if (piecesPlayed == 1) {
+        if (previousMove != qMakePair(1, 1)) {
+            coordinate = {1, 1};
+        }
+        else if (previousMove == qMakePair(1, 1)) {
+            coordinate = corners[QRandomGenerator::global()->bounded(4)];
+        }
     }
 
-    if (corner != qMakePair(-1, -1)) {
-        board[corner.first][corner.second] = pieces[turn];
-        buttonMap[corner]->setText(pieces[turn]);
-        piecesPlaced++;
+    if (coordinate != qMakePair(-1, -1)) {
+        board[coordinate.first][coordinate.second] = pieces[turn];
+        buttonMap[coordinate]->setText(pieces[turn]);
+        piecesPlayed++;
     }
 
     int win = checkWin();
@@ -259,7 +269,8 @@ void TicTacToe::gridButtonClicked()
     QString piece = pieces[turn];
     board[row][col] = piece;
     button->setText(piece);
-    piecesPlaced++;
+    previousMove = qMakePair(row, col);
+    piecesPlayed++;
 
     int win = checkWin();
     // no win yet
