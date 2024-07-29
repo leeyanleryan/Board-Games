@@ -24,15 +24,39 @@ private slots:
 
     void on_buttonAIBack_clicked();
 
-    void startGame();
-
-    void checkValid();
-
     void on_buttonPlayFriend_clicked();
 
     void on_buttonGameBack_clicked();
 
     void on_buttonPlayAI_clicked();
+
+    int checkWin();
+
+    void clearBoard();
+
+    void clearWins();
+
+    void gridButtonClicked();
+
+    void on_buttonTTT1_clicked();
+
+    void on_buttonTTT2_clicked();
+
+    void on_buttonTTT3_clicked();
+
+    void on_buttonTTT4_clicked();
+
+    void on_buttonTTT5_clicked();
+
+    void on_buttonTTT6_clicked();
+
+    void on_buttonTTT7_clicked();
+
+    void on_buttonTTT8_clicked();
+
+    void on_buttonTTT9_clicked();
+
+    void on_buttonNewGame_clicked();
 
 private:
     Ui::TicTacToe *ui;
