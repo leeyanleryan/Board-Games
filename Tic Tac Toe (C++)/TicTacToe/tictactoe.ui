@@ -27,7 +27,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Main">
      <widget class="QPushButton" name="playAI">
@@ -344,7 +344,7 @@
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="player1Tile">
+     <widget class="QLabel" name="txtP1Tile">
       <property name="geometry">
        <rect>
         <x>90</x>
@@ -357,7 +357,7 @@
        <string>Player 1: O</string>
       </property>
      </widget>
-     <widget class="QLabel" name="player2Tile">
+     <widget class="QLabel" name="txtP2Tile">
       <property name="geometry">
        <rect>
         <x>238</x>
@@ -370,7 +370,7 @@
        <string>Player 2: X</string>
       </property>
      </widget>
-     <widget class="QLabel" name="player1Wins">
+     <widget class="QLabel" name="txtP1Wins">
       <property name="geometry">
        <rect>
         <x>90</x>
@@ -383,7 +383,7 @@
        <string>Wins: 0</string>
       </property>
      </widget>
-     <widget class="QLabel" name="player2Wins">
+     <widget class="QLabel" name="txtP2Wins">
       <property name="geometry">
        <rect>
         <x>238</x>
@@ -407,6 +407,25 @@
       </property>
       <property name="text">
        <string>Back</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="txtCurrentTurn">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>45</y>
+        <width>201</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string>It's Player 2's turn!</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
     </widget>
