@@ -34,7 +34,11 @@ private slots:
 
     void clearBoard();
 
+    void setBoardEnabled(bool arg);
+
     void clearWins();
+
+    void makeMoveAI();
 
     void gridButtonClicked();
 

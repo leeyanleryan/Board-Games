@@ -6,11 +6,13 @@
 QStringList pieces;
 QStringList playerNames;
 std::vector<std::vector<QString>> board;
-int starting_turn;
+int startingTurn;
 int turn;
 int piecesPlaced;
 int player1WinCount;
 int player2WinCount;
+int AITurn;
+bool AIPlaying;
 bool gameOver;
 
 TicTacToe::TicTacToe(QWidget *parent)
@@ -20,6 +22,7 @@ TicTacToe::TicTacToe(QWidget *parent)
     ui->setupUi(this);
     pieces = {"X", "O"};
     clearBoard();
+    setBoardEnabled(true);
     clearWins();
     ui->stackedWidget->setCurrentIndex(0);
 }
@@ -52,7 +55,8 @@ void TicTacToe::on_buttonAIBack_clicked()
 void TicTacToe::on_buttonPlayFriend_clicked()
 {
     turn = ui->comboFriendFirst->currentIndex();
-    starting_turn = turn;
+    AIPlaying = false;
+    startingTurn = turn;
     QString player1Name = ui->txtP1Name->text();
     QString player2Name = ui->txtP2Name->text();
     playerNames << player1Name << player2Name;
@@ -71,6 +75,7 @@ void TicTacToe::on_buttonGameBack_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
     clearBoard();
+    setBoardEnabled(true);
     clearWins();
     playerNames = {};
     turn = 0;
@@ -79,7 +84,8 @@ void TicTacToe::on_buttonGameBack_clicked()
 void TicTacToe::on_buttonPlayAI_clicked()
 {
     turn = ui->comboAIFirst->currentIndex();
-    starting_turn = turn;
+    AIPlaying = true;
+    startingTurn = turn;
     QString playerName = ui->txtPName->text();
     QString AIName = ui->txtAIName->text();
     playerNames << playerName << AIName;
@@ -88,6 +94,9 @@ void TicTacToe::on_buttonPlayAI_clicked()
     }
     playerName += ": X";
     AIName += ": O";
+    if (turn == 1) {
+        setBoardEnabled(false);
+    }
     ui->txtP1Tile->setText(playerName);
     ui->txtP2Tile->setText(AIName);
     ui->txtCurrentTurn->setText("It's " + playerNames[turn] + "'s turn!");
@@ -135,10 +144,21 @@ void TicTacToe::clearBoard() {
     board = {{"-", "-", "-"},
              {"-", "-", "-"},
              {"-", "-", "-"}};
-
-    turn = starting_turn;
+    turn = startingTurn;
     piecesPlaced = 0;
     gameOver = false;
+}
+
+void TicTacToe::setBoardEnabled(bool arg) {
+    ui->buttonTTT1->setEnabled(arg);
+    ui->buttonTTT2->setEnabled(arg);
+    ui->buttonTTT3->setEnabled(arg);
+    ui->buttonTTT4->setEnabled(arg);
+    ui->buttonTTT5->setEnabled(arg);
+    ui->buttonTTT6->setEnabled(arg);
+    ui->buttonTTT7->setEnabled(arg);
+    ui->buttonTTT8->setEnabled(arg);
+    ui->buttonTTT9->setEnabled(arg);
 }
 
 void TicTacToe::clearWins()
@@ -146,8 +166,13 @@ void TicTacToe::clearWins()
     ui->txtP1Wins->setText("Wins: 0");
     ui->txtP2Wins->setText("Wins: 0");
 
+    AIPlaying = false;
     player1WinCount = 0;
     player2WinCount = 0;
+}
+
+void TicTacToe::makeMoveAI() {
+
 }
 
 void TicTacToe::gridButtonClicked()
@@ -173,6 +198,13 @@ void TicTacToe::gridButtonClicked()
     // no win yet
     if (win == -1) {
         turn = 1 - turn;
+        if (AIPlaying && turn == 1) {
+            setBoardEnabled(false);
+            makeMoveAI();
+        }
+        else if (AIPlaying && turn == 0) {
+            setBoardEnabled(true);
+        }
         QString newPlayer = playerNames[turn];
         ui->txtCurrentTurn->setText("It's " + newPlayer + "'s turn!");
         return;
@@ -249,6 +281,12 @@ void TicTacToe::on_buttonTTT9_clicked()
 void TicTacToe::on_buttonNewGame_clicked()
 {
     clearBoard();
+    if (turn == 0) {
+        setBoardEnabled(true);
+    }
+    else if (turn == 1) {
+        setBoardEnabled(false);
+    }
     ui->txtCurrentTurn->setText("It's " + playerNames[turn] + "'s turn!");
 }
 
