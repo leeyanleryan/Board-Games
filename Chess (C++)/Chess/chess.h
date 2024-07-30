@@ -2,6 +2,7 @@
 #define CHESS_H
 
 #include <QMainWindow>
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,6 +17,13 @@ class Chess : public QMainWindow
 public:
     Chess(QWidget *parent = nullptr);
     ~Chess();
+
+private slots:
+    void on_test_clicked();
+
+    void setButtonIcon(QPushButton *button, const QString &imagePath);
+
+    void setupButtonMap();
 
 private:
     Ui::Chess *ui;
