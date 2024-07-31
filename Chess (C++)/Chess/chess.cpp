@@ -27,6 +27,7 @@ Chess::~Chess()
 
 void Chess::setButtonIcon(QPushButton *button, const QString &imagePath)
 {
+    /*
     if (!button) {
         qDebug() << "Button is nullptr";
         return;
@@ -40,6 +41,12 @@ void Chess::setButtonIcon(QPushButton *button, const QString &imagePath)
     QIcon icon(imagePath);
     button->setIcon(icon);
     button->setIconSize(button->size()); // Adjust the icon size to the button size
+    */
+
+    QPixmap pixmap(imagePath);
+    QIcon ButtonIcon(pixmap);
+    button->setIcon(ButtonIcon);
+    button->setIconSize(pixmap.rect().size());
 }
 
 void Chess::setupButtonMap() {
@@ -57,5 +64,11 @@ void Chess::setupButtonMap() {
 void Chess::on_test_clicked()
 {
     setButtonIcon(buttonMap[{0, 0}], piecesPath + "KingWhite.png");
+
+    QPixmap pixmap("Pieces/Neo/PawnWhite.png");
+    QIcon ButtonIcon(pixmap);
+    ui->pushButton_5->setIcon(ButtonIcon);
+    ui->pushButton_5->setIconSize(pixmap.rect().size());
+    ui->pushButton_5->setText("LOL");
 }
 

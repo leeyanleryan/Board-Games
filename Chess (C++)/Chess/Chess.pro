@@ -22,3 +22,38 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    Board/Brown/Board.png \
+    Board/Brown/BoardBlack.png \
+    Board/Brown/BoardWhite.png \
+    Board/Brown/SelectedPiece.png \
+    Pieces/Neo/BishopBlack.png \
+    Pieces/Neo/BishopBlackCapture.png \
+    Pieces/Neo/BishopWhite.png \
+    Pieces/Neo/BishopWhiteCapture.png \
+    Pieces/Neo/KingBlack.png \
+    Pieces/Neo/KingBlackCapture.png \
+    Pieces/Neo/KingWhite.png \
+    Pieces/Neo/KingWhiteCapture.png \
+    Pieces/Neo/KnightBlack.png \
+    Pieces/Neo/KnightBlackCapture.png \
+    Pieces/Neo/KnightWhite.png \
+    Pieces/Neo/KnightWhiteCapture.png \
+    Pieces/Neo/LegalMove.png \
+    Pieces/Neo/PawnBlack.png \
+    Pieces/Neo/PawnBlackCapture.png \
+    Pieces/Neo/PawnWhite.png \
+    Pieces/Neo/PawnWhiteCapture.png \
+    Pieces/Neo/PieceCapture.png \
+    Pieces/Neo/QueenBlack.png \
+    Pieces/Neo/QueenBlackCapture.png \
+    Pieces/Neo/QueenWhite.png \
+    Pieces/Neo/QueenWhiteCapture.png \
+    Pieces/Neo/RookBlack.png \
+    Pieces/Neo/RookBlackCapture.png \
+    Pieces/Neo/RookWhite.png \
+    Pieces/Neo/RookWhiteCapture.png
+
+RESOURCES += \
+    resources.qrc
