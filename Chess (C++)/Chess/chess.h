@@ -19,11 +19,13 @@ public:
     ~Chess();
 
 private slots:
-    void on_test_clicked();
+    void setButtonPiece(QPushButton *button, const QString &imagePath);
 
-    void setButtonIcon(QPushButton *button, const QString &imagePath);
+    void setButtonBackground(QPushButton *button, const QString &imagePath);
 
-    void setupButtonMap();
+    void setButtonMap();
+
+    void setChessBoard(QString piecesPath, QString boardPath, QString soundPath);
 
 private:
     Ui::Chess *ui;

@@ -3,9 +3,6 @@
 #include "QPushButton"
 
 QMap<QPair<int, int>, QPushButton*> buttonMap;
-QString piecesPath;
-QString boardPath;
-QString soundPath;
 int turn;
 
 Chess::Chess(QWidget *parent)
@@ -13,11 +10,8 @@ Chess::Chess(QWidget *parent)
     , ui(new Ui::Chess)
 {
     ui->setupUi(this);
-    // default
-    piecesPath = "Pieces/Neo/";
-    boardPath = "Board/Brown/";
-    soundPath = "Sound/Default/";
-    setupButtonMap();
+    setButtonMap();
+    setChessBoard(":/Pieces/Neo/", ":/Board/Brown/", ":/Sound/Default/");
 }
 
 Chess::~Chess()
@@ -25,50 +19,58 @@ Chess::~Chess()
     delete ui;
 }
 
-void Chess::setButtonIcon(QPushButton *button, const QString &imagePath)
+void Chess::setButtonPiece(QPushButton *button, const QString &imagePath)
 {
-    /*
-    if (!button) {
-        qDebug() << "Button is nullptr";
-        return;
-    }
-
-    if (imagePath.isEmpty()) {
-        qDebug() << "Image path is empty";
-        return;
-    }
-    qDebug() << button->objectName();
-    QIcon icon(imagePath);
-    button->setIcon(icon);
-    button->setIconSize(button->size()); // Adjust the icon size to the button size
-    */
-
     QPixmap pixmap(imagePath);
     QIcon ButtonIcon(pixmap);
     button->setIcon(ButtonIcon);
-    button->setIconSize(pixmap.rect().size());
+    // button->setIconSize(pixmap.rect().size());
+    button->setIconSize(QSize(90, 90));
 }
 
-void Chess::setupButtonMap() {
-    for (int row = 0; row < 8; ++row) {
-        for (int col = 0; col < 8; ++col) {
-            QString buttonName = QString("pushButton_%1").arg(row * 8 + col + 1);
+void Chess::setButtonBackground(QPushButton *button, const QString &imagePath)
+{
+    QPixmap pixmap(imagePath);
+    QIcon ButtonIcon(pixmap);
+    button->setStyleSheet("background-image: url(" + imagePath + "); border: 0");
+}
+
+void Chess::setButtonMap()
+{
+    for (int row = 0; row < 8; row++)
+    {
+        for (int col = 0; col < 8; col++)
+        {
+            QString buttonName = QString("pushButton_%1").arg(row*8 + col+1);
             QPushButton *button = findChild<QPushButton*>(buttonName);
-            if (button) {
+            if (button)
+            {
                 buttonMap[qMakePair(row, col)] = button;
             }
         }
     }
 }
 
-void Chess::on_test_clicked()
+void Chess::setChessBoard(QString piecesPath, QString boardPath, QString soundPath)
 {
-    setButtonIcon(buttonMap[{0, 0}], piecesPath + "KingWhite.png");
-
-    QPixmap pixmap("Pieces/Neo/PawnWhite.png");
-    QIcon ButtonIcon(pixmap);
-    ui->pushButton_5->setIcon(ButtonIcon);
-    ui->pushButton_5->setIconSize(pixmap.rect().size());
-    ui->pushButton_5->setText("LOL");
+    for (int row = 0; row < 8; row++)
+    {
+        for (int col = 0; col < 8; col++)
+        {
+            QPushButton *button = buttonMap[{row, col}];
+            if (!button)
+            {
+                continue;
+            }
+            if ((row+col)%2 == 0)
+            {
+                setButtonBackground(button, boardPath + "BoardBlack.png");
+            }
+            else if ((row+col)%2 == 1)
+            {
+                setButtonBackground(button, boardPath + "BoardWhite.png");
+            }
+        }
+    }
 }
 
