@@ -21,9 +21,11 @@ public:
 private slots:
     void setButtonPiece(QPushButton *button, const QString &imagePath);
 
-    void setButtonBackground(QPushButton *button, const QString &imagePath);
+    void setButtonBoard(QPushButton *button, const QString &imagePath);
 
     void setButtonMap();
+
+    void setPieceMap();
 
     void setChessBoard(QString piecesPath, QString boardPath, QString soundPath);
 
