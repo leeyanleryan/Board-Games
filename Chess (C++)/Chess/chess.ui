@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1225</width>
+    <width>1200</width>
     <height>760</height>
    </rect>
   </property>
@@ -17,10 +17,10 @@
    <widget class="QStackedWidget" name="uiMenu">
     <property name="geometry">
      <rect>
-      <x>790</x>
-      <y>10</y>
+      <x>760</x>
+      <y>20</y>
       <width>420</width>
-      <height>740</height>
+      <height>720</height>
      </rect>
     </property>
     <property name="currentIndex">

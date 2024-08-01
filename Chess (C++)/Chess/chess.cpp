@@ -9,6 +9,7 @@ std::vector<std::vector<QString>> board;
 QString pieceImagePath;
 QString boardImagePath;
 QString chessSoundPath;
+QString backgroundPath;
 int turn;
 
 Chess::Chess(QWidget *parent)
@@ -19,14 +20,12 @@ Chess::Chess(QWidget *parent)
     pieceImagePath = ":/Pieces/Neo/";
     boardImagePath = ":/Board/Brown/";
     chessSoundPath = ":/Sound/Default/";
+    backgroundPath = ":/Background/Default/";
+    turn = 0;
 
     // ui setup
     ui->setupUi(this);
-    setDefaultBoard();
-    setButtonPositionMap();
-    setPiecePositionMap();
-    setPieceImageMap();
-    setChessBoard();
+    launchSetup();
 }
 
 Chess::~Chess()
@@ -34,16 +33,26 @@ Chess::~Chess()
     delete ui;
 }
 
+void Chess::launchSetup()
+{
+    setDefaultBoard();
+    setButtonPositionMap();
+    setPiecePositionMap();
+    setPieceImageMap();
+    setChessBoard();
+    setBackground();
+}
+
 void Chess::setDefaultBoard()
 {
-    board.push_back({"r", "n", "b", "q", "k", "b", "n", "r"});
-    board.push_back({"p", "p", "p", "p", "p", "p", "p", "p"});
-    for (int i = 0; i < 4; i++)
-    {
-        board.push_back({"-", "-", "-", "-", "-", "-", "-", "-"});
-    }
-    board.push_back({"P", "P", "P", "P", "P", "P", "P", "P"});
-    board.push_back({"R", "N", "B", "Q", "K", "B", "N", "R"});
+    board.push_back({"r","n","b","q","k","b","n","r"});
+    board.push_back({"p","p","p","p","p","p","p","p"});
+    board.push_back({"-","-","-","-","-","-","-","-"});
+    board.push_back({"-","-","-","-","-","-","-","-"});
+    board.push_back({"-","-","-","-","-","-","-","-"});
+    board.push_back({"-","-","-","-","-","-","-","-"});
+    board.push_back({"P","P","P","P","P","P","P","P"});
+    board.push_back({"R","N","B","Q","K","B","N","R"});
 }
 
 void Chess::setButtonPositionMap()
@@ -65,11 +74,10 @@ void Chess::setPiecePositionMap()
     {
         for (int col = 0; col < 8; col++)
         {
-            if (board[row][col] == "-")
+            if (board[row][col] != "-")
             {
-                continue;
+                piecePositionMap[qMakePair(row, col)] = board[row][col];
             }
-            piecePositionMap[qMakePair(row, col)] = board[row][col];
         }
     }
 }
@@ -125,5 +133,11 @@ void Chess::setChessBoard()
             }
         }
     }
+}
+
+void Chess::setBackground()
+{
+    ui->centralwidget->setStyleSheet("background-image: url(" + backgroundPath + "background.png" + "); border: 0");
+    ui->uiMenu->setStyleSheet("background-image: url(" + backgroundPath + "menu.png" + "); border: 0");
 }
 

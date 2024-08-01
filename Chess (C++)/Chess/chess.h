@@ -19,6 +19,8 @@ public:
     ~Chess();
 
 private slots:
+    void launchSetup();
+
     void setDefaultBoard();
 
     void setButtonPositionMap();
@@ -32,6 +34,8 @@ private slots:
     void setButtonBoard(QPushButton *button, const QString &imagePath);
 
     void setChessBoard();
+
+    void setBackground();
 
 private:
     Ui::Chess *ui;
