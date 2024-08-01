@@ -57,11 +57,12 @@ void Chess::setDefaultBoard()
 
 void Chess::setButtonPositionMap()
 {
+    std::vector<QString> positionAlphabet = {"a","b","c","d","e","f","g","h"};
     for (int row = 0; row < 8; row++)
     {
         for (int col = 0; col < 8; col++)
         {
-            QString buttonName = QString("pushButton_%1").arg(row*8 + col+1);
+            QString buttonName = QString("%1%2").arg(positionAlphabet[col]).arg(8-row);
             QPushButton *button = findChild<QPushButton*>(buttonName);
             buttonPositionMap[qMakePair(row, col)] = button;
         }
@@ -84,13 +85,14 @@ void Chess::setPiecePositionMap()
 
 void Chess::setPieceImageMap()
 {
+    // black
     pieceImageMap["r"] = "RookBlack.png";
     pieceImageMap["n"] = "KnightBlack.png";
     pieceImageMap["b"] = "BishopBlack.png";
     pieceImageMap["q"] = "QueenBlack.png";
     pieceImageMap["k"] = "KingBlack.png";
     pieceImageMap["p"] = "PawnBlack.png";
-
+    // white
     pieceImageMap["R"] = "RookWhite.png";
     pieceImageMap["N"] = "KnightWhite.png";
     pieceImageMap["B"] = "BishopWhite.png";
@@ -141,3 +143,12 @@ void Chess::setBackground()
     ui->uiMenu->setStyleSheet("background-image: url(" + backgroundPath + "menu.png" + "); border: 0");
 }
 
+void Chess::on_a1_pressed()
+{
+    qDebug() << "LOL";
+}
+
+void Chess::on_a1_released()
+{
+    qDebug() << "REL";
+}

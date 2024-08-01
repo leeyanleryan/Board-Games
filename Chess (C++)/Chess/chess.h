@@ -37,6 +37,10 @@ private slots:
 
     void setBackground();
 
+    void on_a1_pressed();
+
+    void on_a1_released();
+
 private:
     Ui::Chess *ui;
 };
