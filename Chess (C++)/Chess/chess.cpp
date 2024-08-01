@@ -40,7 +40,7 @@ void Chess::launchSetup()
     setPiecePositionMap();
     setPieceImageMap();
     setChessBoard();
-    setBackground();
+    setMenu();
 }
 
 void Chess::setDefaultBoard()
@@ -137,18 +137,23 @@ void Chess::setChessBoard()
     }
 }
 
-void Chess::setBackground()
+void Chess::setMenu()
 {
     ui->centralwidget->setStyleSheet("background-image: url(" + backgroundPath + "background.png" + "); border: 0");
+    ui->uiMenu->setCurrentIndex(0);
     ui->uiMenu->setStyleSheet("background-image: url(" + backgroundPath + "menu.png" + "); border: 0");
-}
-
-void Chess::on_a1_pressed()
-{
-    qDebug() << "LOL";
-}
-
-void Chess::on_a1_released()
-{
-    qDebug() << "REL";
+    ui->txtWelcome->setStyleSheet("color: white");
+    QString buttonStyleSheet = "QPushButton {"
+                               "background-image: url(" + backgroundPath + "button.png" + ");"
+                               "border: 0;"
+                               "color: white;"
+                               "}"
+                               "QPushButton:hover {"
+                               "background-image: url(" + backgroundPath + "button.png), linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));"
+                               "}"
+                               "QPushButton:pressed {"
+                               "background-image: url(" + backgroundPath + "button.png), linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));"
+                               "}";
+    ui->buttonPlayComputer->setStyleSheet(buttonStyleSheet);
+    ui->buttonPlayFriend->setStyleSheet(buttonStyleSheet);
 }

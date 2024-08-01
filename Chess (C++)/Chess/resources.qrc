@@ -32,5 +32,6 @@
         <file>Board/Brown/SelectedPiece.png</file>
         <file>Background/Default/background.png</file>
         <file>Background/Default/menu.png</file>
+        <file>Background/Default/button.png</file>
     </qresource>
 </RCC>

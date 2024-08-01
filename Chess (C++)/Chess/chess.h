@@ -35,11 +35,7 @@ private slots:
 
     void setChessBoard();
 
-    void setBackground();
-
-    void on_a1_pressed();
-
-    void on_a1_released();
+    void setMenu();
 
 private:
     Ui::Chess *ui;
