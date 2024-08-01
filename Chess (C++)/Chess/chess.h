@@ -37,6 +37,14 @@ private slots:
 
     void setMenu();
 
+    void on_buttonPlayComputer_clicked();
+
+    void on_buttonComputerNext_clicked();
+
+    void on_buttonComputerBack_clicked();
+
+    void on_buttonGoesFirstBack_clicked();
+
 private:
     Ui::Chess *ui;
 };

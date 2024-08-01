@@ -10,6 +10,9 @@ QString pieceImagePath;
 QString boardImagePath;
 QString chessSoundPath;
 QString backgroundPath;
+QString buttonStyleSheet;
+QString buttonStyleSheetDisabled;
+QString buttonStyleSheetShadow;
 int turn;
 
 Chess::Chess(QWidget *parent)
@@ -21,6 +24,13 @@ Chess::Chess(QWidget *parent)
     boardImagePath = ":/Board/Brown/";
     chessSoundPath = ":/Sound/Default/";
     backgroundPath = ":/Background/Default/";
+    buttonStyleSheet = "QPushButton {background-image: url(" + backgroundPath + "button.png); border: 0; color: white;}"
+                       "QPushButton:hover {background-image: url(" + backgroundPath + "buttonHover.png);}"
+                       "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
+    buttonStyleSheetDisabled = "QPushButton {background-image: url(" + backgroundPath + "button.png); border: 0; color: grey;}"
+                               "QPushButton:hover {background-image: url(" + backgroundPath + "buttonHover.png);}"
+                               "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
+    buttonStyleSheetShadow = "background-image: url(" + backgroundPath + "buttonShadow.png)";
     turn = 0;
 
     // ui setup
@@ -139,23 +149,55 @@ void Chess::setChessBoard()
 
 void Chess::setMenu()
 {
-    ui->centralwidget->setStyleSheet("background-image: url(" + backgroundPath + "background.png" + "); border: 0");
     ui->uiMenu->setCurrentIndex(0);
-    ui->uiMenu->setStyleSheet("background-image: url(" + backgroundPath + "menu.png" + "); border: 0");
+
+    // background
+    ui->centralwidget->setStyleSheet("background-image: url(" + backgroundPath + "background.png); border: 0");
+    ui->uiMenu->setStyleSheet("background-image: url(" + backgroundPath + "menu.png); border: 0");
+
+    // text
     ui->txtWelcome->setStyleSheet("color: white");
-    QString buttonStyleSheet = "QPushButton {"
-                               "background-image: url(" + backgroundPath + "button.png" + ");"
-                               "border: 0;"
-                               "color: white;"
-                               "}"
-                               "QPushButton:hover {"
-                               "background-image: url(" + backgroundPath + "button.png), linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));"
-                               "}"
-                               "QPushButton:pressed {"
-                               "background-image: url(" + backgroundPath + "button.png), linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));"
-                               "}";
+    ui->txtComputer->setStyleSheet("color: white");
+
+    // buttons
     ui->buttonPlayComputer->setStyleSheet(buttonStyleSheet);
-    ui->buttonPlayComputerShadow->setStyleSheet("background-image: url(" + backgroundPath + "buttonShadow.png" + ")");
+    ui->buttonPlayComputerShadow->setStyleSheet(buttonStyleSheetShadow);
     ui->buttonPlayFriend->setStyleSheet(buttonStyleSheet);
-    ui->buttonPlayFriendShadow->setStyleSheet("background-image: url(" + backgroundPath + "buttonShadow.png" + ")");
+    ui->buttonPlayFriendShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonSettings->setStyleSheet(buttonStyleSheet);
+    ui->buttonSettingsShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonExit->setStyleSheet(buttonStyleSheet);
+    ui->buttonExitShadow->setStyleSheet(buttonStyleSheetShadow);
+
+    ui->buttonComputerNext->setStyleSheet(buttonStyleSheet);
+    ui->buttonComputerNextShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonComputerBack->setStyleSheet(buttonStyleSheet);
+    ui->buttonComputerBackShadow->setStyleSheet(buttonStyleSheetShadow);
 }
+
+void Chess::on_buttonPlayComputer_clicked()
+{
+    ui->buttonComputerNext->setEnabled(false);
+    ui->buttonComputerNext->setStyleSheet(buttonStyleSheetDisabled);
+
+    ui->uiMenu->setCurrentIndex(1);
+}
+
+void Chess::on_buttonComputerNext_clicked()
+{
+    ui->uiMenu->setCurrentIndex(4);
+}
+
+
+void Chess::on_buttonComputerBack_clicked()
+{
+    ui->uiMenu->setCurrentIndex(0);
+}
+
+void Chess::on_buttonGoesFirstBack_clicked()
+{
+    ui->uiMenu->setCurrentIndex(1);
+}
+
+
+

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1180</width>
+    <width>1190</width>
     <height>760</height>
    </rect>
   </property>
@@ -17,14 +17,14 @@
    <widget class="QStackedWidget" name="uiMenu">
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>770</x>
       <y>20</y>
       <width>400</width>
       <height>720</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="mainMenu">
      <widget class="QPushButton" name="buttonPlayComputer">
@@ -125,14 +125,264 @@
        <string/>
       </property>
      </widget>
+     <widget class="QPushButton" name="buttonSettings">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>280</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Settings</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonSettingsShadow">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>284</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonExit">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>350</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Exit</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonExitShadow">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>354</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
      <zorder>buttonPlayComputerShadow</zorder>
      <zorder>buttonPlayComputer</zorder>
      <zorder>txtWelcome</zorder>
      <zorder>buttonPlayFriendShadow</zorder>
      <zorder>buttonPlayFriend</zorder>
+     <zorder>buttonSettingsShadow</zorder>
+     <zorder>buttonSettings</zorder>
+     <zorder>buttonExitShadow</zorder>
+     <zorder>buttonExit</zorder>
     </widget>
-    <widget class="QWidget" name="playerSetup"/>
-    <widget class="QWidget" name="chessMenu"/>
+    <widget class="QWidget" name="computerMenu">
+     <widget class="QLabel" name="txtComputer">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>50</y>
+        <width>360</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>LEMON MILK</family>
+        <pointsize>24</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Pick a bot to fight!</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonComputerBack">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>610</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Back</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonComputerBackShadow">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>614</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonComputerNext">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>540</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Next</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonComputerNextShadow">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>544</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <zorder>txtComputer</zorder>
+     <zorder>buttonComputerBackShadow</zorder>
+     <zorder>buttonComputerBack</zorder>
+     <zorder>buttonComputerNextShadow</zorder>
+     <zorder>buttonComputerNext</zorder>
+    </widget>
+    <widget class="QWidget" name="friendMenu"/>
+    <widget class="QWidget" name="settingsMenu"/>
+    <widget class="QWidget" name="goesFirstMenu">
+     <widget class="QLabel" name="txtGoesFirst">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>50</y>
+        <width>360</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>LEMON MILK</family>
+        <pointsize>24</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Who goes first?</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonGoesFirstBack">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>606</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Back</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonGoesFirstBackShadow">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>610</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <zorder>txtGoesFirst</zorder>
+     <zorder>buttonGoesFirstBackShadow</zorder>
+     <zorder>buttonGoesFirstBack</zorder>
+    </widget>
    </widget>
    <widget class="QStackedWidget" name="uiBoard">
     <property name="geometry">
