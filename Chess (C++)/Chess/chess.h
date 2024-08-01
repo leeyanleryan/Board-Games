@@ -19,15 +19,19 @@ public:
     ~Chess();
 
 private slots:
+    void setDefaultBoard();
+
+    void setButtonPositionMap();
+
+    void setPiecePositionMap();
+
+    void setPieceImageMap();
+
     void setButtonPiece(QPushButton *button, const QString &imagePath);
 
     void setButtonBoard(QPushButton *button, const QString &imagePath);
 
-    void setButtonMap();
-
-    void setPieceMap();
-
-    void setChessBoard(QString piecesPath, QString boardPath, QString soundPath);
+    void setChessBoard();
 
 private:
     Ui::Chess *ui;
