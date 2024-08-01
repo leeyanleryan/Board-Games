@@ -11,9 +11,13 @@ QString boardImagePath;
 QString chessSoundPath;
 QString backgroundPath;
 QString buttonStyleSheet;
+QString buttonStyleSheetDifficulty;
+QString buttonStyleSheetDifficultySelected;
 QString buttonStyleSheetDisabled;
 QString buttonStyleSheetShadow;
+QString buttonStyleSheetDifficultyShadow;
 int turn;
+int computerDifficulty;
 
 Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
@@ -27,11 +31,19 @@ Chess::Chess(QWidget *parent)
     buttonStyleSheet = "QPushButton {background-image: url(" + backgroundPath + "button.png); border: 0; color: white;}"
                        "QPushButton:hover {background-image: url(" + backgroundPath + "buttonHover.png);}"
                        "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
+    buttonStyleSheetDifficulty = "QPushButton {background-image: url(" + backgroundPath + "buttonDifficulty.png); border: 0; color: white;}"
+                                 "QPushButton:hover {background-image: url(" + backgroundPath + "buttonDifficultyHover.png);}"
+                                 "QPushButton:pressed {background-image: url(" + backgroundPath + "buttonDifficultySelected.png);}";
+    buttonStyleSheetDifficultySelected = "QPushButton {background-image: url(" + backgroundPath + "buttonDifficultySelected.png); border: 0; color: white;}"
+                                         "QPushButton:hover {background-image: url(" + backgroundPath + "buttonDifficultySelectedHover.png);}"
+                                         "QPushButton:pressed {background-image: url(" + backgroundPath + "buttonDifficultySelected.png);}";
     buttonStyleSheetDisabled = "QPushButton {background-image: url(" + backgroundPath + "button.png); border: 0; color: grey;}"
                                "QPushButton:hover {background-image: url(" + backgroundPath + "buttonHover.png);}"
                                "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
     buttonStyleSheetShadow = "background-image: url(" + backgroundPath + "buttonShadow.png)";
+    buttonStyleSheetDifficultyShadow = "background-image: url(" + backgroundPath + "buttonDifficultyShadow.png)";
     turn = 0;
+    computerDifficulty = 0;
 
     // ui setup
     ui->setupUi(this);
@@ -158,6 +170,7 @@ void Chess::setMenu()
     // text
     ui->txtWelcome->setStyleSheet("color: white");
     ui->txtComputer->setStyleSheet("color: white");
+    ui->txtGoesFirst->setStyleSheet("color: white");
 
     // buttons
     ui->buttonPlayComputer->setStyleSheet(buttonStyleSheet);
@@ -169,18 +182,89 @@ void Chess::setMenu()
     ui->buttonExit->setStyleSheet(buttonStyleSheet);
     ui->buttonExitShadow->setStyleSheet(buttonStyleSheetShadow);
 
-    ui->buttonComputerNext->setStyleSheet(buttonStyleSheet);
+    ui->buttonComputerEasy->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerEasyShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonComputerMedium->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerMediumShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonComputerHard->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerHardShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerImpossibleShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonComputerNext->setEnabled(false);
+    ui->buttonComputerNext->setStyleSheet(buttonStyleSheetDisabled);
     ui->buttonComputerNextShadow->setStyleSheet(buttonStyleSheetShadow);
     ui->buttonComputerBack->setStyleSheet(buttonStyleSheet);
     ui->buttonComputerBackShadow->setStyleSheet(buttonStyleSheetShadow);
+
+    ui->buttonPlay->setStyleSheet(buttonStyleSheet);
+    ui->buttonPlayShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonGoesFirstBack->setStyleSheet(buttonStyleSheet);
+    ui->buttonGoesFirstBackShadow->setStyleSheet(buttonStyleSheetShadow);
 }
 
 void Chess::on_buttonPlayComputer_clicked()
 {
-    ui->buttonComputerNext->setEnabled(false);
-    ui->buttonComputerNext->setStyleSheet(buttonStyleSheetDisabled);
-
     ui->uiMenu->setCurrentIndex(1);
+}
+
+void Chess::on_buttonComputerEasy_clicked()
+{
+    if (computerDifficulty == 1)
+    {
+        return;
+    }
+    computerDifficulty = 1;
+    ui->buttonComputerEasy->setStyleSheet(buttonStyleSheetDifficultySelected);
+    ui->buttonComputerMedium->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerHard->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerNext->setEnabled(true);
+    ui->buttonComputerNext->setStyleSheet(buttonStyleSheet);
+}
+
+void Chess::on_buttonComputerMedium_clicked()
+{
+    if (computerDifficulty == 2)
+    {
+        return;
+    }
+    computerDifficulty = 2;
+    ui->buttonComputerEasy->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerMedium->setStyleSheet(buttonStyleSheetDifficultySelected);
+    ui->buttonComputerHard->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerNext->setEnabled(true);
+    ui->buttonComputerNext->setStyleSheet(buttonStyleSheet);
+}
+
+void Chess::on_buttonComputerHard_clicked()
+{
+    if (computerDifficulty == 3)
+    {
+        return;
+    }
+    computerDifficulty = 3;
+    ui->buttonComputerEasy->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerMedium->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerHard->setStyleSheet(buttonStyleSheetDifficultySelected);
+    ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerNext->setEnabled(true);
+    ui->buttonComputerNext->setStyleSheet(buttonStyleSheet);
+}
+
+void Chess::on_buttonComputerImpossible_clicked()
+{
+    if (computerDifficulty == 4)
+    {
+        return;
+    }
+    computerDifficulty = 4;
+    ui->buttonComputerEasy->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerMedium->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerHard->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficultySelected);
+    ui->buttonComputerNext->setEnabled(true);
+    ui->buttonComputerNext->setStyleSheet(buttonStyleSheet);
 }
 
 void Chess::on_buttonComputerNext_clicked()
@@ -188,9 +272,15 @@ void Chess::on_buttonComputerNext_clicked()
     ui->uiMenu->setCurrentIndex(4);
 }
 
-
 void Chess::on_buttonComputerBack_clicked()
 {
+    computerDifficulty = 0;
+    ui->buttonComputerEasy->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerMedium->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerHard->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonComputerNext->setEnabled(false);
+    ui->buttonComputerNext->setStyleSheet(buttonStyleSheetDisabled);
     ui->uiMenu->setCurrentIndex(0);
 }
 
@@ -198,6 +288,3 @@ void Chess::on_buttonGoesFirstBack_clicked()
 {
     ui->uiMenu->setCurrentIndex(1);
 }
-
-
-

@@ -228,7 +228,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Pick a bot to fight!</string>
+       <string>Pick a difficulty!</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -310,11 +310,171 @@
        <string/>
       </property>
      </widget>
+     <widget class="QPushButton" name="buttonComputerEasy">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>160</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Easy</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonComputerMedium">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>240</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Medium</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonComputerHard">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>320</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Hard</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonComputerImpossible">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>400</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>IMPOSSIBLE</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonComputerEasyShadow">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>164</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonComputerMediumShadow">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>244</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonComputerHardShadow">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>324</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonComputerImpossibleShadow">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>404</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
      <zorder>txtComputer</zorder>
      <zorder>buttonComputerBackShadow</zorder>
      <zorder>buttonComputerBack</zorder>
      <zorder>buttonComputerNextShadow</zorder>
      <zorder>buttonComputerNext</zorder>
+     <zorder>buttonComputerEasyShadow</zorder>
+     <zorder>buttonComputerEasy</zorder>
+     <zorder>buttonComputerMediumShadow</zorder>
+     <zorder>buttonComputerMedium</zorder>
+     <zorder>buttonComputerHardShadow</zorder>
+     <zorder>buttonComputerHard</zorder>
+     <zorder>buttonComputerImpossibleShadow</zorder>
+     <zorder>buttonComputerImpossible</zorder>
     </widget>
     <widget class="QWidget" name="friendMenu"/>
     <widget class="QWidget" name="settingsMenu"/>
@@ -345,7 +505,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>606</y>
+        <y>610</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -364,7 +524,45 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>610</y>
+        <y>614</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonPlay">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>540</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Play</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonPlayShadow">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>544</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -382,6 +580,8 @@
      <zorder>txtGoesFirst</zorder>
      <zorder>buttonGoesFirstBackShadow</zorder>
      <zorder>buttonGoesFirstBack</zorder>
+     <zorder>buttonPlayShadow</zorder>
+     <zorder>buttonPlay</zorder>
     </widget>
    </widget>
    <widget class="QStackedWidget" name="uiBoard">

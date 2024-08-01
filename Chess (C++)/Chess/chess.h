@@ -39,6 +39,14 @@ private slots:
 
     void on_buttonPlayComputer_clicked();
 
+    void on_buttonComputerEasy_clicked();
+
+    void on_buttonComputerMedium_clicked();
+
+    void on_buttonComputerHard_clicked();
+
+    void on_buttonComputerImpossible_clicked();
+
     void on_buttonComputerNext_clicked();
 
     void on_buttonComputerBack_clicked();

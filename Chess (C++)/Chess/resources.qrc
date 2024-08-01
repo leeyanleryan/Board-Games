@@ -35,5 +35,10 @@
         <file>Background/Default/button.png</file>
         <file>Background/Default/buttonShadow.png</file>
         <file>Background/Default/buttonHover.png</file>
+        <file>Background/Default/buttonDifficulty.png</file>
+        <file>Background/Default/buttonDifficultyHover.png</file>
+        <file>Background/Default/buttonDifficultySelected.png</file>
+        <file>Background/Default/buttonDifficultyShadow.png</file>
+        <file>Background/Default/buttonDifficultySelectedHover.png</file>
     </qresource>
 </RCC>
