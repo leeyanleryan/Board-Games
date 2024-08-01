@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="mainMenu">
      <widget class="QPushButton" name="buttonPlayComputer">
@@ -577,11 +577,171 @@
        <string/>
       </property>
      </widget>
+     <widget class="QPushButton" name="buttonP1First">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>160</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Player 1</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonP2First">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>240</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Player 2</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonRandomFirst">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>320</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Random</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonAlternateFirst">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>400</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Alternate</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonP1FirstShadow">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>164</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonP2FirstShadow">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>244</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonRandomFirstShadow">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>324</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonAlternateFirstShadow">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>404</y>
+        <width>190</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
      <zorder>txtGoesFirst</zorder>
      <zorder>buttonGoesFirstBackShadow</zorder>
      <zorder>buttonGoesFirstBack</zorder>
      <zorder>buttonPlayShadow</zorder>
      <zorder>buttonPlay</zorder>
+     <zorder>buttonP1FirstShadow</zorder>
+     <zorder>buttonP1First</zorder>
+     <zorder>buttonP2FirstShadow</zorder>
+     <zorder>buttonP2First</zorder>
+     <zorder>buttonRandomFirstShadow</zorder>
+     <zorder>buttonRandomFirst</zorder>
+     <zorder>buttonAlternateFirstShadow</zorder>
+     <zorder>buttonAlternateFirst</zorder>
     </widget>
    </widget>
    <widget class="QStackedWidget" name="uiBoard">

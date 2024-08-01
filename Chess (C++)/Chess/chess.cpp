@@ -196,7 +196,16 @@ void Chess::setMenu()
     ui->buttonComputerBack->setStyleSheet(buttonStyleSheet);
     ui->buttonComputerBackShadow->setStyleSheet(buttonStyleSheetShadow);
 
-    ui->buttonPlay->setStyleSheet(buttonStyleSheet);
+    ui->buttonP1First->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonP1FirstShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonP2First->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonP2FirstShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonRandomFirst->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonRandomFirstShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonAlternateFirst->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonAlternateFirstShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonPlay->setEnabled(false);
+    ui->buttonPlay->setStyleSheet(buttonStyleSheetDisabled);
     ui->buttonPlayShadow->setStyleSheet(buttonStyleSheetShadow);
     ui->buttonGoesFirstBack->setStyleSheet(buttonStyleSheet);
     ui->buttonGoesFirstBackShadow->setStyleSheet(buttonStyleSheetShadow);
