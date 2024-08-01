@@ -155,5 +155,7 @@ void Chess::setMenu()
                                "background-image: url(" + backgroundPath + "button.png), linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));"
                                "}";
     ui->buttonPlayComputer->setStyleSheet(buttonStyleSheet);
+    ui->buttonPlayComputerShadow->setStyleSheet("background-image: url(" + backgroundPath + "buttonShadow.png" + ")");
     ui->buttonPlayFriend->setStyleSheet(buttonStyleSheet);
+    ui->buttonPlayFriendShadow->setStyleSheet("background-image: url(" + backgroundPath + "buttonShadow.png" + ")");
 }

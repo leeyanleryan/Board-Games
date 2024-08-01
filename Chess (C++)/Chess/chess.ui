@@ -87,6 +87,49 @@
        <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
+     <widget class="QPushButton" name="buttonPlayComputerShadow">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>144</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonPlayFriendShadow">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>214</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <zorder>buttonPlayComputerShadow</zorder>
+     <zorder>buttonPlayComputer</zorder>
+     <zorder>txtWelcome</zorder>
+     <zorder>buttonPlayFriendShadow</zorder>
+     <zorder>buttonPlayFriend</zorder>
     </widget>
     <widget class="QWidget" name="playerSetup"/>
     <widget class="QWidget" name="chessMenu"/>

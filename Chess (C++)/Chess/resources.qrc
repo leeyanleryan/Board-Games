@@ -33,5 +33,6 @@
         <file>Background/Default/background.png</file>
         <file>Background/Default/menu.png</file>
         <file>Background/Default/button.png</file>
+        <file>Background/Default/buttonShadow.png</file>
     </qresource>
 </RCC>
