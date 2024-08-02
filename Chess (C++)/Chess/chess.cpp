@@ -1,6 +1,7 @@
 #include "chess.h"
 #include "ui_chess.h"
 #include "QPushButton"
+#include "QVBoxLayout"
 
 QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
 QMap<QPair<int, int>, QString> piecePositionMap;
@@ -20,6 +21,7 @@ bool chosenFirst;
 bool alternateTurns;
 int computerDifficulty;
 std::vector<QString> playerNames;
+bool gameStarted;
 int turn;
 
 Chess::Chess(QWidget *parent)
@@ -232,6 +234,16 @@ void Chess::setMenu()
     // line edit
     ui->lineP1Name->setStyleSheet("background-image: url(" + backgroundPath + "lineEdit.png); border: 0; color: white");
     ui->lineP2Name->setStyleSheet("background-image: url(" + backgroundPath + "lineEdit.png); border: 0; color: white");
+
+    // scroll
+    ui->scrollMovesPlayed->setStyleSheet("background-image: url(" + backgroundPath + "movesPlayed.png); border: 0; color: white");
+    QWidget *scrollWidget = new QWidget();
+    QVBoxLayout *scrollLayout = new QVBoxLayout(scrollWidget);
+
+    scrollWidget->setLayout(scrollLayout);
+    ui->scrollMovesPlayed->setWidget(scrollWidget);
+    ui->scrollMovesPlayed->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    this->scrollLayout = scrollLayout;
 }
 
 void Chess::on_buttonPlayComputer_clicked()
@@ -395,12 +407,6 @@ void Chess::on_buttonAlternateFirst_clicked()
     }
 }
 
-void Chess::on_buttonPlay_clicked()
-{
-    ui->txtChess->setText("Game 1");
-    ui->uiMenu->setCurrentIndex(5);
-}
-
 void Chess::on_buttonGoesFirstBack_clicked()
 {
     chosenFirst = false;
@@ -474,9 +480,50 @@ void Chess::on_buttonSettings_clicked()
     ui->uiMenu->setCurrentIndex(3);
 }
 
-
 void Chess::on_buttonSettingsBack_clicked()
 {
     ui->uiMenu->setCurrentIndex(0);
 }
 
+void Chess::on_buttonChessBack_clicked()
+{
+    gameStarted = false;
+    turn = 0;
+    clearMoves();
+    ui->uiMenu->setCurrentIndex(4);
+}
+
+void Chess::on_buttonExit_clicked()
+{
+    qApp->exit();
+}
+
+void Chess::on_buttonPlay_clicked()
+{
+    gameStarted = true;
+    ui->txtChess->setText("Game 1");
+    ui->uiMenu->setCurrentIndex(5);
+}
+
+void Chess::addMove(const QString &move)
+{
+    QLabel *label = new QLabel(move, this);
+    scrollLayout->addWidget(label);
+}
+
+void Chess::clearMoves()
+{
+    QLayoutItem *item;
+    while ((item = scrollLayout->takeAt(0)) != nullptr) {
+        delete item->widget();
+        delete item;
+    }
+}
+
+void Chess::on_a1_clicked()
+{
+    if (gameStarted)
+    {
+        addMove("1. e4 e5");
+    }
+}

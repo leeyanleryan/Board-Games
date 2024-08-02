@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include <QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -59,8 +60,6 @@ private slots:
 
     void on_buttonAlternateFirst_clicked();
 
-    void on_buttonPlay_clicked();
-
     void on_buttonGoesFirstBack_clicked();
 
     void on_buttonPlayFriend_clicked();
@@ -77,7 +76,21 @@ private slots:
 
     void on_buttonSettingsBack_clicked();
 
+    void on_buttonChessBack_clicked();
+
+    void on_buttonExit_clicked();
+
+    void on_buttonPlay_clicked();
+
+    void addMove(const QString &move);
+
+    void clearMoves();
+
+    void on_a1_clicked();
+
 private:
     Ui::Chess *ui;
+
+    QVBoxLayout *scrollLayout;
 };
 #endif // CHESS_H
