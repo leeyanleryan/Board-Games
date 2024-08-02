@@ -51,7 +51,19 @@ private slots:
 
     void on_buttonComputerBack_clicked();
 
+    void on_buttonP1First_clicked();
+
+    void on_buttonP2First_clicked();
+
+    void on_buttonRandomFirst_clicked();
+
+    void on_buttonAlternateFirst_clicked();
+
+    void on_buttonPlay_clicked();
+
     void on_buttonGoesFirstBack_clicked();
+
+    void on_buttonPlayFriend_clicked();
 
 private:
     Ui::Chess *ui;

@@ -16,6 +16,8 @@ QString buttonStyleSheetDifficultySelected;
 QString buttonStyleSheetDisabled;
 QString buttonStyleSheetShadow;
 QString buttonStyleSheetDifficultyShadow;
+bool chosenFirst;
+bool alternateTurns;
 int turn;
 int computerDifficulty;
 
@@ -171,6 +173,7 @@ void Chess::setMenu()
     ui->txtWelcome->setStyleSheet("color: white");
     ui->txtComputer->setStyleSheet("color: white");
     ui->txtGoesFirst->setStyleSheet("color: white");
+    ui->txtFriend->setStyleSheet("color: white");
 
     // buttons
     ui->buttonPlayComputer->setStyleSheet(buttonStyleSheet);
@@ -190,11 +193,11 @@ void Chess::setMenu()
     ui->buttonComputerHardShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
     ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonComputerImpossibleShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
-    ui->buttonComputerNext->setEnabled(false);
     ui->buttonComputerNext->setStyleSheet(buttonStyleSheetDisabled);
     ui->buttonComputerNextShadow->setStyleSheet(buttonStyleSheetShadow);
     ui->buttonComputerBack->setStyleSheet(buttonStyleSheet);
     ui->buttonComputerBackShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonComputerNext->setEnabled(false);
 
     ui->buttonP1First->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonP1FirstShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
@@ -204,11 +207,17 @@ void Chess::setMenu()
     ui->buttonRandomFirstShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
     ui->buttonAlternateFirst->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonAlternateFirstShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
-    ui->buttonPlay->setEnabled(false);
     ui->buttonPlay->setStyleSheet(buttonStyleSheetDisabled);
     ui->buttonPlayShadow->setStyleSheet(buttonStyleSheetShadow);
     ui->buttonGoesFirstBack->setStyleSheet(buttonStyleSheet);
     ui->buttonGoesFirstBackShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonPlay->setEnabled(false);
+
+    ui->buttonFriendNext->setStyleSheet(buttonStyleSheetDisabled);
+    ui->buttonFriendNextShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonFriendBack->setStyleSheet(buttonStyleSheet);
+    ui->buttonFriendBackShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonFriendNext->setEnabled(false);
 }
 
 void Chess::on_buttonPlayComputer_clicked()
@@ -227,8 +236,8 @@ void Chess::on_buttonComputerEasy_clicked()
     ui->buttonComputerMedium->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonComputerHard->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficulty);
-    ui->buttonComputerNext->setEnabled(true);
     ui->buttonComputerNext->setStyleSheet(buttonStyleSheet);
+    ui->buttonComputerNext->setEnabled(true);
 }
 
 void Chess::on_buttonComputerMedium_clicked()
@@ -242,8 +251,8 @@ void Chess::on_buttonComputerMedium_clicked()
     ui->buttonComputerMedium->setStyleSheet(buttonStyleSheetDifficultySelected);
     ui->buttonComputerHard->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficulty);
-    ui->buttonComputerNext->setEnabled(true);
     ui->buttonComputerNext->setStyleSheet(buttonStyleSheet);
+    ui->buttonComputerNext->setEnabled(true);
 }
 
 void Chess::on_buttonComputerHard_clicked()
@@ -257,8 +266,8 @@ void Chess::on_buttonComputerHard_clicked()
     ui->buttonComputerMedium->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonComputerHard->setStyleSheet(buttonStyleSheetDifficultySelected);
     ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficulty);
-    ui->buttonComputerNext->setEnabled(true);
     ui->buttonComputerNext->setStyleSheet(buttonStyleSheet);
+    ui->buttonComputerNext->setEnabled(true);
 }
 
 void Chess::on_buttonComputerImpossible_clicked()
@@ -272,8 +281,8 @@ void Chess::on_buttonComputerImpossible_clicked()
     ui->buttonComputerMedium->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonComputerHard->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficultySelected);
-    ui->buttonComputerNext->setEnabled(true);
     ui->buttonComputerNext->setStyleSheet(buttonStyleSheet);
+    ui->buttonComputerNext->setEnabled(true);
 }
 
 void Chess::on_buttonComputerNext_clicked()
@@ -288,12 +297,97 @@ void Chess::on_buttonComputerBack_clicked()
     ui->buttonComputerMedium->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonComputerHard->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonComputerImpossible->setStyleSheet(buttonStyleSheetDifficulty);
-    ui->buttonComputerNext->setEnabled(false);
     ui->buttonComputerNext->setStyleSheet(buttonStyleSheetDisabled);
+    ui->buttonComputerNext->setEnabled(false);
     ui->uiMenu->setCurrentIndex(0);
+}
+
+void Chess::on_buttonP1First_clicked()
+{
+    if (chosenFirst && turn == 0)
+    {
+        return;
+    }
+    chosenFirst = true;
+    turn = 0;
+    ui->buttonP1First->setStyleSheet(buttonStyleSheetDifficultySelected);
+    ui->buttonP2First->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonRandomFirst->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonPlay->setStyleSheet(buttonStyleSheet);
+    ui->buttonPlay->setEnabled(true);
+}
+
+void Chess::on_buttonP2First_clicked()
+{
+    if (chosenFirst && turn == 1)
+    {
+        return;
+    }
+    chosenFirst = true;
+    turn = 1;
+    ui->buttonP1First->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonP2First->setStyleSheet(buttonStyleSheetDifficultySelected);
+    ui->buttonRandomFirst->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonPlay->setStyleSheet(buttonStyleSheet);
+    ui->buttonPlay->setEnabled(true);
+}
+
+void Chess::on_buttonRandomFirst_clicked()
+{
+    if (chosenFirst && turn == 2)
+    {
+        return;
+    }
+    chosenFirst = true;
+    turn = 2;
+    ui->buttonP1First->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonP2First->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonRandomFirst->setStyleSheet(buttonStyleSheetDifficultySelected);
+    ui->buttonPlay->setStyleSheet(buttonStyleSheet);
+    ui->buttonPlay->setEnabled(true);
+}
+
+void Chess::on_buttonAlternateFirst_clicked()
+{
+    if (alternateTurns)
+    {
+        alternateTurns = false;
+        ui->buttonAlternateFirst->setStyleSheet(buttonStyleSheetDifficulty);
+    }
+    else if (!alternateTurns)
+    {
+        alternateTurns = true;
+        ui->buttonAlternateFirst->setStyleSheet(buttonStyleSheetDifficultySelected);
+    }
+}
+
+void Chess::on_buttonPlay_clicked()
+{
+
 }
 
 void Chess::on_buttonGoesFirstBack_clicked()
 {
-    ui->uiMenu->setCurrentIndex(1);
+    chosenFirst = false;
+    turn = 0;
+    ui->buttonP1First->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonP2First->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonRandomFirst->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonAlternateFirst->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonPlay->setStyleSheet(buttonStyleSheetDisabled);
+    ui->buttonPlay->setEnabled(false);
+    if (computerDifficulty != 0)
+    {
+        ui->uiMenu->setCurrentIndex(1);
+    }
+    else
+    {
+        ui->uiMenu->setCurrentIndex(2);
+    }
 }
+
+void Chess::on_buttonPlayFriend_clicked()
+{
+    ui->uiMenu->setCurrentIndex(2);
+}
+
