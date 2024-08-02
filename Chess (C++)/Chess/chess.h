@@ -65,6 +65,18 @@ private slots:
 
     void on_buttonPlayFriend_clicked();
 
+    void on_lineP1Name_editingFinished();
+
+    void on_lineP2Name_editingFinished();
+
+    void on_buttonFriendNext_clicked();
+
+    void on_buttonFriendBack_clicked();
+
+    void on_buttonSettings_clicked();
+
+    void on_buttonSettingsBack_clicked();
+
 private:
     Ui::Chess *ui;
 };

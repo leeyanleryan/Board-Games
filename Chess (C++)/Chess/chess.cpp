@@ -18,8 +18,9 @@ QString buttonStyleSheetShadow;
 QString buttonStyleSheetDifficultyShadow;
 bool chosenFirst;
 bool alternateTurns;
-int turn;
 int computerDifficulty;
+std::vector<QString> playerNames;
+int turn;
 
 Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
@@ -44,8 +45,8 @@ Chess::Chess(QWidget *parent)
                                "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
     buttonStyleSheetShadow = "background-image: url(" + backgroundPath + "buttonShadow.png)";
     buttonStyleSheetDifficultyShadow = "background-image: url(" + backgroundPath + "buttonDifficultyShadow.png)";
-    turn = 0;
     computerDifficulty = 0;
+    turn = 0;
 
     // ui setup
     ui->setupUi(this);
@@ -174,6 +175,10 @@ void Chess::setMenu()
     ui->txtComputer->setStyleSheet("color: white");
     ui->txtGoesFirst->setStyleSheet("color: white");
     ui->txtFriend->setStyleSheet("color: white");
+    ui->txtP1Name->setStyleSheet("color: white");
+    ui->txtP2Name->setStyleSheet("color: white");
+    ui->txtSettings->setStyleSheet("color: white");
+    ui->txtChess->setStyleSheet("color: white");
 
     // buttons
     ui->buttonPlayComputer->setStyleSheet(buttonStyleSheet);
@@ -213,11 +218,20 @@ void Chess::setMenu()
     ui->buttonGoesFirstBackShadow->setStyleSheet(buttonStyleSheetShadow);
     ui->buttonPlay->setEnabled(false);
 
-    ui->buttonFriendNext->setStyleSheet(buttonStyleSheetDisabled);
+    ui->buttonFriendNext->setStyleSheet(buttonStyleSheet);
     ui->buttonFriendNextShadow->setStyleSheet(buttonStyleSheetShadow);
     ui->buttonFriendBack->setStyleSheet(buttonStyleSheet);
     ui->buttonFriendBackShadow->setStyleSheet(buttonStyleSheetShadow);
-    ui->buttonFriendNext->setEnabled(false);
+
+    ui->buttonSettingsBack->setStyleSheet(buttonStyleSheet);
+    ui->buttonSettingsBackShadow->setStyleSheet(buttonStyleSheetShadow);
+
+    ui->buttonChessBack->setStyleSheet(buttonStyleSheet);
+    ui->buttonChessBackShadow->setStyleSheet(buttonStyleSheetShadow);
+
+    // line edit
+    ui->lineP1Name->setStyleSheet("background-image: url(" + backgroundPath + "lineEdit.png); border: 0; color: white");
+    ui->lineP2Name->setStyleSheet("background-image: url(" + backgroundPath + "lineEdit.png); border: 0; color: white");
 }
 
 void Chess::on_buttonPlayComputer_clicked()
@@ -287,6 +301,26 @@ void Chess::on_buttonComputerImpossible_clicked()
 
 void Chess::on_buttonComputerNext_clicked()
 {
+    QString p1Name = "You";
+    QString p2Name;
+    if (computerDifficulty == 1)
+    {
+        p2Name = "Easy BOT";
+    }
+    else if (computerDifficulty == 2)
+    {
+        p2Name = "Medium BOT";
+    }
+    else if (computerDifficulty == 3)
+    {
+        p2Name = "Hard BOT";
+    }
+    else if (computerDifficulty == 4)
+    {
+        p2Name = "IMPOSSIBLE BOT";
+    }
+    ui->buttonP1First->setText(p1Name);
+    ui->buttonP2First->setText(p2Name);
     ui->uiMenu->setCurrentIndex(4);
 }
 
@@ -363,7 +397,8 @@ void Chess::on_buttonAlternateFirst_clicked()
 
 void Chess::on_buttonPlay_clicked()
 {
-
+    ui->txtChess->setText("Game 1");
+    ui->uiMenu->setCurrentIndex(5);
 }
 
 void Chess::on_buttonGoesFirstBack_clicked()
@@ -389,5 +424,59 @@ void Chess::on_buttonGoesFirstBack_clicked()
 void Chess::on_buttonPlayFriend_clicked()
 {
     ui->uiMenu->setCurrentIndex(2);
+}
+
+void Chess::on_lineP1Name_editingFinished()
+{
+    if (ui->lineP1Name->text().isEmpty() || ui->lineP1Name->text() == ui->lineP2Name->text())
+    {
+        ui->buttonFriendNext->setStyleSheet(buttonStyleSheetDisabled);
+        ui->buttonFriendNext->setEnabled(false);
+    }
+    else
+    {
+        ui->buttonFriendNext->setStyleSheet(buttonStyleSheet);
+        ui->buttonFriendNext->setEnabled(true);
+    }
+}
+
+
+void Chess::on_lineP2Name_editingFinished()
+{
+    if (ui->lineP2Name->text().isEmpty() || ui->lineP2Name->text() == ui->lineP1Name->text())
+    {
+        ui->buttonFriendNext->setStyleSheet(buttonStyleSheetDisabled);
+        ui->buttonFriendNext->setEnabled(false);
+    }
+    else
+    {
+        ui->buttonFriendNext->setStyleSheet(buttonStyleSheet);
+        ui->buttonFriendNext->setEnabled(true);
+    }
+}
+
+void Chess::on_buttonFriendNext_clicked()
+{
+    QString p1Name = ui->lineP1Name->text();
+    QString p2Name = ui->lineP2Name->text();
+    ui->buttonP1First->setText(p1Name);
+    ui->buttonP2First->setText(p2Name);
+    ui->uiMenu->setCurrentIndex(4);
+}
+
+void Chess::on_buttonFriendBack_clicked()
+{
+    ui->uiMenu->setCurrentIndex(0);
+}
+
+void Chess::on_buttonSettings_clicked()
+{
+    ui->uiMenu->setCurrentIndex(3);
+}
+
+
+void Chess::on_buttonSettingsBack_clicked()
+{
+    ui->uiMenu->setCurrentIndex(0);
 }
 

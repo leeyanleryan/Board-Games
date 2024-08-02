@@ -40,5 +40,6 @@
         <file>Background/Default/buttonDifficultySelected.png</file>
         <file>Background/Default/buttonDifficultyShadow.png</file>
         <file>Background/Default/buttonDifficultySelectedHover.png</file>
+        <file>Background/Default/lineEdit.png</file>
     </qresource>
 </RCC>
