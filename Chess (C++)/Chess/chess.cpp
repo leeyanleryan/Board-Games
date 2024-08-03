@@ -1,10 +1,13 @@
 #include "chess.h"
 #include "ui_chess.h"
+#include "chess_ai.h"
+#include "QMimeData"
+#include "QDragEnterEvent"
+#include "QDropEvent"
 #include "QPushButton"
 #include "QVBoxLayout"
 #include "QScrollBar"
 #include "QRandomGenerator"
-#include "chess_ai.h"
 
 Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
@@ -90,8 +93,15 @@ void Chess::setButtonPositionMap()
         for (int col = 0; col < 8; col++)
         {
             QString buttonName = QString("%1%2").arg(positionAlphabet[col]).arg(8-row);
-            QPushButton *button = findChild<QPushButton*>(buttonName);
+            QPushButton *pushButton = findChild<QPushButton*>(buttonName);
+            //QPushButton *button = findChild<QPushButton*>(buttonName);
+            ChessButton *button = qobject_cast<ChessButton*>(pushButton);
             buttonPositionMap[qMakePair(row, col)] = button;
+
+            connect(button, &ChessButton::clicked, [this, row, col, button]()
+            {
+                handleDrop(button, button);
+            });
         }
     }
 }
@@ -565,6 +575,30 @@ void Chess::addMove(const QString &move)
         label->setText(label->text() + " " + move);
     }
     autoScroll();
+}
+
+void Chess::handleDrop(ChessButton *source, ChessButton *target)
+{
+    // Example logic for handling the drop event
+    QIcon pieceIcon = source->icon();
+    source->setIcon(QIcon());
+    target->setIcon(pieceIcon);
+}
+
+void Chess::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasImage()) {
+        event->acceptProposedAction();
+    }
+}
+
+void Chess::dropEvent(QDropEvent *event)
+{
+    ChessButton *targetButton = qobject_cast<ChessButton*>(childAt(event->position().toPoint()));
+    if (targetButton) {
+        QIcon pieceIcon = QIcon(QPixmap::fromImage(qvariant_cast<QImage>(event->mimeData()->imageData())));
+        targetButton->setIcon(pieceIcon);
+    }
 }
 
 void Chess::on_a1_clicked()

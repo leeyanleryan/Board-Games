@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include "chess_ai.h"
+#include "chess_button.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,6 +21,11 @@ class Chess : public QMainWindow
 public:
     Chess(QWidget *parent = nullptr);
     ~Chess();
+
+protected:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+
+    void dropEvent(QDropEvent *event) override;
 
 private slots:
     void variableSetup();
@@ -91,6 +97,8 @@ private slots:
     void autoScroll();
 
     void addMove(const QString &move);
+
+    void handleDrop(ChessButton *source, ChessButton *target);
 
     void on_a1_clicked();
 

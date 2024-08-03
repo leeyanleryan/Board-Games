@@ -10,12 +10,14 @@ CONFIG += c++17
 
 SOURCES += \
     chess_ai.cpp \
+    chess_button.cpp \
     main.cpp \
     chess.cpp
 
 HEADERS += \
     chess.h \
-    chess_ai.h
+    chess_ai.h \
+    chess_button.h
 
 FORMS += \
     chess.ui
