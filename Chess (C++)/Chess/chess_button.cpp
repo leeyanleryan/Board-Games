@@ -20,7 +20,8 @@ void ChessButton::mousePressEvent(QMouseEvent *event)
         mimeData->setImageData(icon().pixmap(iconSize()).toImage());
         drag->setMimeData(mimeData);
         drag->setPixmap(icon().pixmap(iconSize()));
-        drag->setHotSpot(event->pos() - rect().topLeft());
+        QPoint center = rect().center();
+        drag->setHotSpot(center);
 
         Chess *chess = nullptr;
         QWidget *pw = parentWidget();
