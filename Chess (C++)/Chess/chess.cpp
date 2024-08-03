@@ -3,6 +3,8 @@
 #include "QPushButton"
 #include "QVBoxLayout"
 #include "QScrollBar"
+#include "QRandomGenerator"
+#include "chess_ai.h"
 
 Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
@@ -42,10 +44,11 @@ void Chess::variableSetup()
                                "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
     buttonStyleSheetShadow = "background-image: url(" + backgroundPath + "buttonShadow.png)";
     buttonStyleSheetDifficultyShadow = "background-image: url(" + backgroundPath + "buttonDifficultyShadow.png)";
+    playerNames = {};
     chosenFirst = false;
+    randomTurn = false;
     alternateTurns = false;
     computerDifficulty = 0;
-    playerNames = {};
     gameStarted = false;
     gameNumber = 0;
     turn = 0;
@@ -221,8 +224,8 @@ void Chess::setMenu()
     ui->buttonSettingsBack->setStyleSheet(buttonStyleSheet);
     ui->buttonSettingsBackShadow->setStyleSheet(buttonStyleSheetShadow);
 
-    ui->buttonChessBack->setStyleSheet(buttonStyleSheet);
-    ui->buttonChessBackShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonChessQuit->setStyleSheet(buttonStyleSheet);
+    ui->buttonChessQuitShadow->setStyleSheet(buttonStyleSheetShadow);
 
     // line edit
     ui->lineP1Name->setStyleSheet("background-image: url(" + backgroundPath + "lineEdit.png); border: 0; color: white");
@@ -341,6 +344,7 @@ void Chess::on_buttonP1First_pressed()
         return;
     }
     chosenFirst = true;
+    randomTurn = false;
     turn = 0;
     ui->buttonP1First->setStyleSheet(buttonStyleSheetDifficultySelected);
     ui->buttonP2First->setStyleSheet(buttonStyleSheetDifficulty);
@@ -356,6 +360,7 @@ void Chess::on_buttonP2First_pressed()
         return;
     }
     chosenFirst = true;
+    randomTurn = false;
     turn = 1;
     ui->buttonP1First->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonP2First->setStyleSheet(buttonStyleSheetDifficultySelected);
@@ -366,12 +371,13 @@ void Chess::on_buttonP2First_pressed()
 
 void Chess::on_buttonRandomFirst_pressed()
 {
-    if (chosenFirst && turn == 2)
+    if (chosenFirst && randomTurn)
     {
         return;
     }
     chosenFirst = true;
-    turn = 2;
+    randomTurn = true;
+    turn = 0;
     ui->buttonP1First->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonP2First->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonRandomFirst->setStyleSheet(buttonStyleSheetDifficultySelected);
@@ -396,6 +402,7 @@ void Chess::on_buttonAlternateFirst_pressed()
 void Chess::on_buttonGoesFirstBack_clicked()
 {
     chosenFirst = false;
+    randomTurn = false;
     alternateTurns = false;
     turn = 0;
     ui->buttonP1First->setStyleSheet(buttonStyleSheetDifficulty);
@@ -477,12 +484,36 @@ void Chess::on_buttonExit_clicked()
     qApp->exit();
 }
 
-void Chess::on_buttonChessBack_clicked()
+void Chess::on_buttonChessQuit_clicked()
 {
+    playerNames = {};
     gameStarted = false;
     gameNumber = 0;
     moveLabels = {};
     ui->uiMenu->setCurrentIndex(4);
+}
+
+void Chess::on_buttonPlay_clicked()
+{
+    if (randomTurn)
+    {
+        turn = QRandomGenerator::global()->bounded(2);
+    }
+    if (turn == 0)
+    {
+        playerNames = {ui->buttonP1First->text(), ui->buttonP2First->text()};
+    }
+    else if (turn == 1)
+    {
+        playerNames = {ui->buttonP2First->text(), ui->buttonP1First->text()};
+    }
+    if (computerDifficulty != 0)
+    {
+        ChessAI chessAI = new ChessAI(this);
+    }
+    qDebug() << playerNames;
+    newGame();
+    ui->uiMenu->setCurrentIndex(5);
 }
 
 void Chess::newGame()
@@ -501,12 +532,6 @@ void Chess::newGame()
     scrollLayoutUI->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
     scrollLayout = scrollLayoutUI;
     ui->txtChess->setText("Game " + QString::number(gameNumber));
-}
-
-void Chess::on_buttonPlay_clicked()
-{
-    newGame();
-    ui->uiMenu->setCurrentIndex(5);
 }
 
 void Chess::autoScroll()
@@ -540,19 +565,33 @@ void Chess::addMove(const QString &move)
 
 void Chess::on_a1_clicked()
 {
-    if (gameStarted)
+    if (!gameStarted)
     {
-        addMove("e4");
+        return;
     }
+
+    addMove("e4");
     turn = 1 - turn;
 }
 
 void Chess::on_b1_clicked()
 {
-    if (gameStarted)
+    if (!gameStarted)
     {
-        addMove("e5");
+        return;
     }
+
+    addMove("e5");
     turn = 1 - turn;
+}
+
+void Chess::on_c1_clicked()
+{
+    if (!gameStarted)
+    {
+        return;
+    }
+
+
 }
 

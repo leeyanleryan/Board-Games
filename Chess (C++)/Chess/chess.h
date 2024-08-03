@@ -20,33 +20,6 @@ public:
     Chess(QWidget *parent = nullptr);
     ~Chess();
 
-    Ui::Chess *ui;
-    QList<QLabel*> moveLabels;
-    QVBoxLayout *scrollLayout;
-
-    QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
-    QMap<QPair<int, int>, QString> piecePositionMap;
-    QMap<QString, QString> pieceImageMap;
-    std::vector<std::vector<QString>> board;
-    QString pieceImagePath;
-    QString boardImagePath;
-    QString chessSoundPath;
-    QString backgroundPath;
-    QString buttonStyleSheet;
-    QString buttonStyleSheetDifficulty;
-    QString buttonStyleSheetDifficultySelected;
-    QString buttonStyleSheetDisabled;
-    QString buttonStyleSheetShadow;
-    QString buttonStyleSheetDifficultyShadow;
-    bool chosenFirst;
-    bool alternateTurns;
-    int computerDifficulty;
-    std::vector<QString> playerNames;
-    bool gameStarted;
-    int gameNumber;
-    int turn;
-    int moveNumber;
-
 private slots:
     void variableSetup();
 
@@ -108,11 +81,11 @@ private slots:
 
     void on_buttonExit_clicked();
 
-    void on_buttonChessBack_clicked();
-
-    void newGame();
+    void on_buttonChessQuit_clicked();
 
     void on_buttonPlay_clicked();
+
+    void newGame();
 
     void autoScroll();
 
@@ -122,8 +95,36 @@ private slots:
 
     void on_b1_clicked();
 
-private:
+    void on_c1_clicked();
 
+private:
+    Ui::Chess *ui;
+
+    QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
+    QMap<QPair<int, int>, QString> piecePositionMap;
+    QMap<QString, QString> pieceImageMap;
+    std::vector<std::vector<QString>> board;
+    QString pieceImagePath;
+    QString boardImagePath;
+    QString chessSoundPath;
+    QString backgroundPath;
+    QString buttonStyleSheet;
+    QString buttonStyleSheetDifficulty;
+    QString buttonStyleSheetDifficultySelected;
+    QString buttonStyleSheetDisabled;
+    QString buttonStyleSheetShadow;
+    QString buttonStyleSheetDifficultyShadow;
+    std::vector<QString> playerNames;
+    bool chosenFirst;
+    bool randomTurn;
+    bool alternateTurns;
+    int computerDifficulty;
+    bool gameStarted;
+    int gameNumber;
+    int turn;
+    int moveNumber;
+    QList<QLabel*> moveLabels;
+    QVBoxLayout *scrollLayout;
 };
 
 #endif // CHESS_H
