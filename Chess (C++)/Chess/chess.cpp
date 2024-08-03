@@ -2,6 +2,7 @@
 #include "ui_chess.h"
 #include "QPushButton"
 #include "QVBoxLayout"
+#include "QScrollBar"
 
 QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
 QMap<QPair<int, int>, QString> piecePositionMap;
@@ -22,7 +23,10 @@ bool alternateTurns;
 int computerDifficulty;
 std::vector<QString> playerNames;
 bool gameStarted;
+int gameNumber;
 int turn;
+int moveNumber;
+QList<QLabel*> moveLabels;
 
 Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
@@ -48,7 +52,9 @@ Chess::Chess(QWidget *parent)
     buttonStyleSheetShadow = "background-image: url(" + backgroundPath + "buttonShadow.png)";
     buttonStyleSheetDifficultyShadow = "background-image: url(" + backgroundPath + "buttonDifficultyShadow.png)";
     computerDifficulty = 0;
+    gameNumber = 0;
     turn = 0;
+    moveNumber = 1;
 
     // ui setup
     ui->setupUi(this);
@@ -237,13 +243,6 @@ void Chess::setMenu()
 
     // scroll
     ui->scrollMovesPlayed->setStyleSheet("background-image: url(" + backgroundPath + "movesPlayed.png); border: 0; color: white");
-    QWidget *scrollWidget = new QWidget();
-    QVBoxLayout *scrollLayout = new QVBoxLayout(scrollWidget);
-
-    scrollWidget->setLayout(scrollLayout);
-    ui->scrollMovesPlayed->setWidget(scrollWidget);
-    ui->scrollMovesPlayed->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    this->scrollLayout = scrollLayout;
 }
 
 void Chess::on_buttonPlayComputer_clicked()
@@ -485,30 +484,70 @@ void Chess::on_buttonSettingsBack_clicked()
     ui->uiMenu->setCurrentIndex(0);
 }
 
-void Chess::on_buttonChessBack_clicked()
-{
-    gameStarted = false;
-    turn = 0;
-    clearMoves();
-    ui->uiMenu->setCurrentIndex(4);
-}
-
 void Chess::on_buttonExit_clicked()
 {
     qApp->exit();
 }
 
-void Chess::on_buttonPlay_clicked()
+void Chess::on_buttonChessBack_clicked()
+{
+    gameStarted = false;
+    gameNumber = 0;
+    turn = 0;
+    moveNumber = 1;
+    moveLabels.clear();
+    clearMoves();
+    ui->uiMenu->setCurrentIndex(4);
+}
+
+void Chess::newGame()
 {
     gameStarted = true;
-    ui->txtChess->setText("Game 1");
+    gameNumber++;
+    QWidget *scrollWidget = new QWidget();
+    QVBoxLayout *scrollLayout = new QVBoxLayout(scrollWidget);
+    scrollWidget->setLayout(scrollLayout);
+    ui->scrollMovesPlayed->setWidget(scrollWidget);
+    ui->scrollMovesPlayed->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    scrollLayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    this->scrollLayout = scrollLayout;
+    ui->txtChess->setText("Game " + QString::number(gameNumber));
+}
+
+void Chess::on_buttonPlay_clicked()
+{
+    newGame();
     ui->uiMenu->setCurrentIndex(5);
+}
+
+void Chess::autoScroll()
+{
+    QScrollBar *scrollBar = ui->scrollMovesPlayed->verticalScrollBar();
+    scrollBar->setValue(scrollBar->maximum());
 }
 
 void Chess::addMove(const QString &move)
 {
     QLabel *label = new QLabel(move, this);
-    scrollLayout->addWidget(label);
+    label->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    label->setMaximumHeight(30);
+    QFont font = label->font();
+    font.setPointSize(12);
+    if (turn == 0)
+    {
+        label = new QLabel(QString("%1. %2").arg(moveNumber).arg(move), this);
+        label->setFont(font);
+        scrollLayout->insertWidget(scrollLayout->count() - 1, label); // Insert before the spacer
+        moveNumber++;
+        moveLabels.append(label);
+    }
+    else if (turn == 1)
+    {
+        label = moveLabels.last();
+        label->setText(label->text() + " " + move);
+    }
+
+    autoScroll();
 }
 
 void Chess::clearMoves()
@@ -524,6 +563,17 @@ void Chess::on_a1_clicked()
 {
     if (gameStarted)
     {
-        addMove("1. e4 e5");
+        addMove("e4");
     }
+    turn = 1 - turn;
 }
+
+void Chess::on_b1_clicked()
+{
+    if (gameStarted)
+    {
+        addMove("e5");
+    }
+    turn = 1 - turn;
+}
+

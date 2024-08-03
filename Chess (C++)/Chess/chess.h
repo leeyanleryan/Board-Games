@@ -76,17 +76,23 @@ private slots:
 
     void on_buttonSettingsBack_clicked();
 
-    void on_buttonChessBack_clicked();
-
     void on_buttonExit_clicked();
 
+    void on_buttonChessBack_clicked();
+
+    void newGame();
+
     void on_buttonPlay_clicked();
+
+    void autoScroll();
 
     void addMove(const QString &move);
 
     void clearMoves();
 
     void on_a1_clicked();
+
+    void on_b1_clicked();
 
 private:
     Ui::Chess *ui;
