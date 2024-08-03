@@ -11,12 +11,14 @@
 
 Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
+    , sourceButton(nullptr)
     , ui(new Ui::Chess)
     , ai(new ChessAI(this))
 {
     ui->setupUi(this);
     variableSetup();
     launchSetup();
+    setAcceptDrops(true);
 }
 
 Chess::~Chess()
@@ -588,7 +590,6 @@ void Chess::handleDrop(ChessButton *source, ChessButton *target)
 void Chess::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasImage()) {
-        ChessButton *sourceButton = qobject_cast<ChessButton*>(childAt(event->position().toPoint()));
         qDebug() << sourceButton->objectName();
         event->acceptProposedAction();
     }
@@ -601,6 +602,9 @@ void Chess::dropEvent(QDropEvent *event)
     if (targetButton) {
         QIcon pieceIcon = QIcon(QPixmap::fromImage(qvariant_cast<QImage>(event->mimeData()->imageData())));
         targetButton->setIcon(pieceIcon);
+        targetButton->setIconSize(QSize(90, 90));
+        event->setDropAction(Qt::MoveAction);
+        event->acceptProposedAction();
     }
 }
 

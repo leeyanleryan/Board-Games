@@ -22,6 +22,8 @@ public:
     Chess(QWidget *parent = nullptr);
     ~Chess();
 
+    ChessButton *sourceButton;
+
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
 

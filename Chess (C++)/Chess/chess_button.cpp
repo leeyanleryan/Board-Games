@@ -1,4 +1,5 @@
 #include "chess_button.h"
+#include "chess.h"
 
 ChessButton::ChessButton(QWidget *parent)
     : QPushButton(parent)
@@ -8,10 +9,46 @@ ChessButton::ChessButton(QWidget *parent)
 
 void ChessButton::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) {
-        dragStartPosition = event->pos();
+    //if (event->button() == Qt::LeftButton) {
+    //    dragStartPosition = event->pos();
+    //}
+    //QPushButton::mousePressEvent(event);
+    if (event->button() == Qt::LeftButton && !icon().isNull())
+    {
+        QDrag *drag = new QDrag(this);
+        QMimeData *mimeData = new QMimeData;
+        mimeData->setImageData(icon().pixmap(iconSize()).toImage());
+        drag->setMimeData(mimeData);
+        drag->setPixmap(icon().pixmap(iconSize()));
+        drag->setHotSpot(event->pos() - rect().topLeft());
+
+        Chess *chess = nullptr;
+        QWidget *pw = parentWidget();
+        while (pw)
+        {
+            chess = qobject_cast<Chess*>(pw);
+            if (chess)
+            {
+                break;
+            }
+            pw = pw->parentWidget();
+        }
+        if (chess)
+        {
+            chess->sourceButton = this;
+        }
+
+        QIcon currentIcon = icon();
+        setIcon(QIcon());
+
+        Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
+
+        if (dropAction != Qt::MoveAction)
+        {
+            // If the drag operation was not successful, restore the icon
+            setIcon(currentIcon);
+        }
     }
-    QPushButton::mousePressEvent(event);
 }
 
 void ChessButton::mouseMoveEvent(QMouseEvent *event)
