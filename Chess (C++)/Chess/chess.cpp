@@ -93,9 +93,7 @@ void Chess::setButtonPositionMap()
         for (int col = 0; col < 8; col++)
         {
             QString buttonName = QString("%1%2").arg(positionAlphabet[col]).arg(8-row);
-            QPushButton *pushButton = findChild<QPushButton*>(buttonName);
-            //QPushButton *button = findChild<QPushButton*>(buttonName);
-            ChessButton *button = qobject_cast<ChessButton*>(pushButton);
+            ChessButton *button = findChild<ChessButton*>(buttonName);
             buttonPositionMap[qMakePair(row, col)] = button;
 
             connect(button, &ChessButton::clicked, [this, row, col, button]()
@@ -579,10 +577,10 @@ void Chess::addMove(const QString &move)
 
 void Chess::handleDrop(ChessButton *source, ChessButton *target)
 {
-    // Example logic for handling the drop event
     QIcon pieceIcon = source->icon();
     source->setIcon(QIcon());
     target->setIcon(pieceIcon);
+    target->setIconSize(QSize(90, 90));
 }
 
 void Chess::dragEnterEvent(QDragEnterEvent *event)
