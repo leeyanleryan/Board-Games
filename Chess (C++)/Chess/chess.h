@@ -8,6 +8,7 @@
 #include <QSet>
 #include "chess_ai.h"
 #include "chess_button.h"
+#include "chess_logic.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,6 +24,8 @@ public:
     Chess(QWidget *parent = nullptr);
     ~Chess();
 
+    QSet<QString> whitePiecesSet;
+    QSet<QString> blackPiecesSet;
     ChessButton *sourceButton;
     bool gameStarted;
 
@@ -102,28 +105,15 @@ private slots:
 
     void addMove(const QString &move);
 
-    void getLegalPawnMovement();
-
-    void getLegalRookMovement();
-
-    void getLegalKnightMovement();
-
-    void getLegalBishopMovement();
-
-    void getLegalQueenMovement();
-
-    void getLegalKingMovement();
-
 private:
     Ui::Chess *ui;
     ChessAI *ai;
+    ChessLogic *logic;
 
     QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
     QMap<QString, QPair<int, int>> coordinatePositionMap;
     QMap<QPair<int, int>, QString> piecePositionMap;
     QMap<QString, QString> pieceImageMap;
-    QSet<QString> whitePiecesSet;
-    QSet<QString> blackPiecesSet;
     std::vector<std::vector<QString>> board;
     QString pieceImagePath;
     QString boardImagePath;
@@ -146,7 +136,6 @@ private:
     int moveNumber;
     QList<QLabel*> moveLabels;
     QVBoxLayout *scrollLayout;
-    QSet<QPair<int, int>> legalMoves;
 };
 
 #endif // CHESS_H

@@ -1,6 +1,7 @@
 #include "chess.h"
 #include "ui_chess.h"
 #include "chess_ai.h"
+#include "chess_logic.h"
 #include "QMimeData"
 #include "QDragEnterEvent"
 #include "QDropEvent"
@@ -29,6 +30,7 @@ Chess::~Chess()
 
 void Chess::variableSetup()
 {
+    logic = new ChessLogic(this);
     buttonPositionMap = {}; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
     coordinatePositionMap = {}; // example: "a8": (0,0), "b8": (0,1)
     piecePositionMap = {}; // example: (0,0): "r", (0,1): "n"
@@ -65,7 +67,6 @@ void Chess::variableSetup()
     turn = 0;
     moveNumber = 1;
     moveLabels = {};
-    legalMoves = {};
 }
 
 void Chess::launchSetup()
@@ -591,66 +592,67 @@ void Chess::dragEnterEvent(QDragEnterEvent *event)
     QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
     QString piece = board[sourceCoord.first][sourceCoord.second];
 
+    logic->board = this->board;
     if (turn == 0)
     {
         if (!whitePiecesSet.contains(piece))
         {
-            legalMoves = {};
+            logic->legalMoves = {};
         }
         else if (piece == "P")
         {
-            legalMoves = {qMakePair(1, 2)};
+            logic->legalMoves = {qMakePair(1, 2)};
         }
         else if (piece == "R")
         {
-            legalMoves = {qMakePair(1, 2)};
+            logic->legalMoves = {qMakePair(1, 2)};
         }
         else if (piece == "N")
         {
-            legalMoves = {qMakePair(1, 2)};
+            logic->legalMoves = {qMakePair(1, 2)};
         }
         else if (piece == "B")
         {
-            legalMoves = {qMakePair(1, 2)};
+            logic->legalMoves = {qMakePair(1, 2)};
         }
         else if (piece == "Q")
         {
-            legalMoves = {qMakePair(1, 2)};
+            logic->legalMoves = {qMakePair(1, 2)};
         }
         else if (piece == "K")
         {
-            legalMoves = {qMakePair(1, 2)};
+            logic->legalMoves = {qMakePair(1, 2)};
         }
     }
     else if (turn == 1)
     {
         if (!blackPiecesSet.contains(piece))
         {
-            legalMoves = {};
+            logic->legalMoves = {};
         }
         else if (piece == "p")
         {
-            legalMoves = {qMakePair(1, 1)};
+            logic->legalMoves = {qMakePair(1, 1)};
         }
         else if (piece == "r")
         {
-            legalMoves = {qMakePair(1, 1)};
+            logic->legalMoves = {qMakePair(1, 1)};
         }
         else if (piece == "n")
         {
-            legalMoves = {qMakePair(1, 1)};
+            logic->legalMoves = {qMakePair(1, 1)};
         }
         else if (piece == "b")
         {
-            legalMoves = {qMakePair(1, 1)};
+            logic->legalMoves = {qMakePair(1, 1)};
         }
         else if (piece == "q")
         {
-            legalMoves = {qMakePair(1, 1)};
+            logic->legalMoves = {qMakePair(1, 1)};
         }
         else if (piece == "k")
         {
-            legalMoves = {qMakePair(1, 1)};
+            logic->legalMoves = {qMakePair(1, 1)};
         }
     }
 }
@@ -670,7 +672,7 @@ void Chess::dropEvent(QDropEvent *event)
         return;
     }
     QPair<int, int> targetCoord = coordinatePositionMap[targetButton->objectName()];
-    if (!legalMoves.contains(targetCoord))
+    if (!logic->legalMoves.contains(targetCoord))
     {
         return;
     }
@@ -684,34 +686,4 @@ void Chess::dropEvent(QDropEvent *event)
     targetButton->setIconSize(QSize(90, 90));
     event->setDropAction(Qt::MoveAction);
     event->acceptProposedAction();
-}
-
-void Chess::getLegalPawnMovement()
-{
-
-}
-
-void Chess::getLegalRookMovement()
-{
-
-}
-
-void Chess::getLegalKnightMovement()
-{
-
-}
-
-void Chess::getLegalBishopMovement()
-{
-
-}
-
-void Chess::getLegalQueenMovement()
-{
-
-}
-
-void Chess::getLegalKingMovement()
-{
-
 }
