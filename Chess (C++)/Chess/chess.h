@@ -100,14 +100,6 @@ private slots:
 
     void addMove(const QString &move);
 
-    void handleDrop(ChessButton *source, ChessButton *target);
-
-    void on_a1_clicked();
-
-    void on_b1_clicked();
-
-    void on_c1_clicked();
-
 private:
     Ui::Chess *ui;
     ChessAI *ai;

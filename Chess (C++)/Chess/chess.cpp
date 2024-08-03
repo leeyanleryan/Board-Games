@@ -97,11 +97,6 @@ void Chess::setButtonPositionMap()
             QString buttonName = QString("%1%2").arg(positionAlphabet[col]).arg(8-row);
             ChessButton *button = findChild<ChessButton*>(buttonName);
             buttonPositionMap[qMakePair(row, col)] = button;
-
-            //connect(button, &ChessButton::clicked, [this, row, col, button]()
-            //{
-            //    handleDrop(button, button);
-            //});
         }
     }
 }
@@ -577,16 +572,6 @@ void Chess::addMove(const QString &move)
     autoScroll();
 }
 
-void Chess::handleDrop(ChessButton *source, ChessButton *target)
-{
-    qDebug() << source->objectName();
-    qDebug() << target->objectName();
-    QIcon pieceIcon = source->icon();
-    source->setIcon(QIcon());
-    target->setIcon(pieceIcon);
-    target->setIconSize(QSize(90, 90));
-}
-
 void Chess::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasImage()) {
@@ -598,8 +583,8 @@ void Chess::dragEnterEvent(QDragEnterEvent *event)
 void Chess::dropEvent(QDropEvent *event)
 {
     ChessButton *targetButton = qobject_cast<ChessButton*>(childAt(event->position().toPoint()));
-    qDebug() << targetButton->objectName();
     if (targetButton) {
+        qDebug() << targetButton->objectName();
         QIcon pieceIcon = QIcon(QPixmap::fromImage(qvariant_cast<QImage>(event->mimeData()->imageData())));
         targetButton->setIcon(pieceIcon);
         targetButton->setIconSize(QSize(90, 90));
@@ -607,37 +592,3 @@ void Chess::dropEvent(QDropEvent *event)
         event->acceptProposedAction();
     }
 }
-
-void Chess::on_a1_clicked()
-{
-    if (!gameStarted)
-    {
-        return;
-    }
-
-    addMove("e4");
-    turn = 1 - turn;
-}
-
-void Chess::on_b1_clicked()
-{
-    if (!gameStarted)
-    {
-        return;
-    }
-
-    addMove("e5");
-    turn = 1 - turn;
-}
-
-void Chess::on_c1_clicked()
-{
-    if (!gameStarted)
-    {
-        return;
-    }
-
-    legalMoves.push_back(qMakePair(1, 2));
-    qDebug() << legalMoves;
-}
-
