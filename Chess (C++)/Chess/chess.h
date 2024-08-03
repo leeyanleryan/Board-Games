@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QLabel>
+#include "chess_ai.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -99,6 +100,7 @@ private slots:
 
 private:
     Ui::Chess *ui;
+    ChessAI *ai;
 
     QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
     QMap<QPair<int, int>, QString> piecePositionMap;

@@ -12,10 +12,14 @@ class ChessAI : public QObject
 public:
     ChessAI(Chess *chessInstance);
 
+    void setDifficulty(int computerDifficulty);
+
     void makeMove();
 
 private:
     Chess *chess;
+
+    int difficulty;
 };
 
 #endif // CHESS_AI_H

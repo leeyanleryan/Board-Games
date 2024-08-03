@@ -9,6 +9,7 @@
 Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Chess)
+    , ai(new ChessAI(this))
 {
     ui->setupUi(this);
     variableSetup();
@@ -18,6 +19,7 @@ Chess::Chess(QWidget *parent)
 Chess::~Chess()
 {
     delete ui;
+    delete ai;
 }
 
 void Chess::variableSetup()
@@ -509,9 +511,8 @@ void Chess::on_buttonPlay_clicked()
     }
     if (computerDifficulty != 0)
     {
-        ChessAI chessAI = new ChessAI(this);
+        ai->setDifficulty(computerDifficulty);
     }
-    qDebug() << playerNames;
     newGame();
     ui->uiMenu->setCurrentIndex(5);
 }
