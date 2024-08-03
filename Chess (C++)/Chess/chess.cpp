@@ -8,11 +8,22 @@ Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Chess)
 {
-    // variable setup
-    // buttonPositionMap;
-    // piecePositionMap;
-    // pieceImageMap;
-    // board;
+    ui->setupUi(this);
+    variableSetup();
+    launchSetup();
+}
+
+Chess::~Chess()
+{
+    delete ui;
+}
+
+void Chess::variableSetup()
+{
+    buttonPositionMap = {};
+    piecePositionMap = {};
+    pieceImageMap = {};
+    board = {};
     pieceImagePath = ":/Pieces/Neo/";
     boardImagePath = ":/Board/Brown/";
     chessSoundPath = ":/Sound/Default/";
@@ -39,17 +50,7 @@ Chess::Chess(QWidget *parent)
     gameNumber = 0;
     turn = 0;
     moveNumber = 1;
-    // QList<QLabel*> moveLabels;
-    // QVBoxLayout *scrollLayout;
-
-    // ui setup
-    ui->setupUi(this);
-    launchSetup();
-}
-
-Chess::~Chess()
-{
-    delete ui;
+    moveLabels = {};
 }
 
 void Chess::launchSetup()
@@ -480,17 +481,18 @@ void Chess::on_buttonChessBack_clicked()
 {
     gameStarted = false;
     gameNumber = 0;
-    turn = 0;
-    moveNumber = 1;
-    moveLabels.clear();
-    clearMoves();
+    moveLabels = {};
     ui->uiMenu->setCurrentIndex(4);
 }
 
 void Chess::newGame()
 {
+    setDefaultBoard();
     gameStarted = true;
     gameNumber++;
+    turn = 0;
+    moveNumber = 1;
+    moveLabels = {};
     QWidget *scrollWidget = new QWidget();
     QVBoxLayout *scrollLayoutUI = new QVBoxLayout(scrollWidget);
     scrollWidget->setLayout(scrollLayoutUI);
@@ -534,15 +536,6 @@ void Chess::addMove(const QString &move)
         label->setText(label->text() + " " + move);
     }
     autoScroll();
-}
-
-void Chess::clearMoves()
-{
-    QLayoutItem *item;
-    while ((item = scrollLayout->takeAt(0)) != nullptr) {
-        delete item->widget();
-        delete item;
-    }
 }
 
 void Chess::on_a1_clicked()

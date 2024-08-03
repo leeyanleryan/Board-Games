@@ -48,6 +48,8 @@ public:
     int moveNumber;
 
 private slots:
+    void variableSetup();
+
     void launchSetup();
 
     void setDefaultBoard();
@@ -115,8 +117,6 @@ private slots:
     void autoScroll();
 
     void addMove(const QString &move);
-
-    void clearMoves();
 
     void on_a1_clicked();
 
