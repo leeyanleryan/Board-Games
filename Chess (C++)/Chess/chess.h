@@ -44,8 +44,6 @@ private slots:
 
     void setPieceImageMap();
 
-    void setPiecesSet();
-
     void setButtonPiece(QPushButton *button, const QString &imagePath);
 
     void setButtonBoard(QPushButton *button, const QString &imagePath);

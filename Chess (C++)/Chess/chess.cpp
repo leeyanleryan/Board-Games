@@ -33,8 +33,8 @@ void Chess::variableSetup()
     coordinatePositionMap = {}; // example: "a8": (0,0), "b8": (0,1)
     piecePositionMap = {}; // example: (0,0): "r", (0,1): "n"
     pieceImageMap = {}; // example: "r": "RookBlack.png"
-    whitePiecesSet = {};
-    blackPiecesSet = {};
+    whitePiecesSet = {"R", "N", "B", "Q", "K", "P"};
+    blackPiecesSet = {"r", "n", "b", "q", "k", "p"};
     board = {}; // 8x8 board
     pieceImagePath = ":/Pieces/Neo/";
     boardImagePath = ":/Board/Brown/";
@@ -74,7 +74,6 @@ void Chess::launchSetup()
     setButtonPositionMap();
     setPiecePositionMap();
     setPieceImageMap();
-    setPiecesSet();
     setChessBoard();
     setMenu();
 }
@@ -136,24 +135,6 @@ void Chess::setPieceImageMap()
     pieceImageMap["Q"] = "QueenWhite.png";
     pieceImageMap["K"] = "KingWhite.png";
     pieceImageMap["P"] = "PawnWhite.png";
-}
-
-void Chess::setPiecesSet()
-{
-    // black
-    blackPiecesSet.insert("r");
-    blackPiecesSet.insert("n");
-    blackPiecesSet.insert("b");
-    blackPiecesSet.insert("q");
-    blackPiecesSet.insert("k");
-    blackPiecesSet.insert("p");
-    // white
-    whitePiecesSet.insert("R");
-    whitePiecesSet.insert("N");
-    whitePiecesSet.insert("B");
-    whitePiecesSet.insert("Q");
-    whitePiecesSet.insert("K");
-    whitePiecesSet.insert("P");
 }
 
 void Chess::setButtonPiece(QPushButton *button, const QString &imagePath)
@@ -616,13 +597,60 @@ void Chess::dragEnterEvent(QDragEnterEvent *event)
         {
             legalMoves = {};
         }
-        else if ()
+        else if (piece == "P")
+        {
+            legalMoves = {qMakePair(1, 2)};
+        }
+        else if (piece == "R")
+        {
+            legalMoves = {qMakePair(1, 2)};
+        }
+        else if (piece == "N")
+        {
+            legalMoves = {qMakePair(1, 2)};
+        }
+        else if (piece == "B")
+        {
+            legalMoves = {qMakePair(1, 2)};
+        }
+        else if (piece == "Q")
+        {
+            legalMoves = {qMakePair(1, 2)};
+        }
+        else if (piece == "K")
+        {
+            legalMoves = {qMakePair(1, 2)};
+        }
     }
     else if (turn == 1)
     {
         if (!blackPiecesSet.contains(piece))
         {
             legalMoves = {};
+        }
+        else if (piece == "p")
+        {
+            legalMoves = {qMakePair(1, 1)};
+        }
+        else if (piece == "r")
+        {
+            legalMoves = {qMakePair(1, 1)};
+        }
+        else if (piece == "n")
+        {
+            legalMoves = {qMakePair(1, 1)};
+        }
+        else if (piece == "b")
+        {
+            legalMoves = {qMakePair(1, 1)};
+        }
+        else if (piece == "q")
+        {
+            legalMoves = {qMakePair(1, 1)};
+        }
+        else if (piece == "k")
+        {
+            legalMoves = {qMakePair(1, 1)};
         }
     }
 }
@@ -642,7 +670,7 @@ void Chess::dropEvent(QDropEvent *event)
         return;
     }
     QPair<int, int> targetCoord = coordinatePositionMap[targetButton->objectName()];
-    if (sourceCoord == targetCoord)
+    if (!legalMoves.contains(targetCoord))
     {
         return;
     }
