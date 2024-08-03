@@ -29,10 +29,11 @@ Chess::~Chess()
 
 void Chess::variableSetup()
 {
-    buttonPositionMap = {};
-    piecePositionMap = {};
-    pieceImageMap = {};
-    board = {};
+    buttonPositionMap = {}; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
+    coordinatePositionMap = {}; // example: "a8": (0,0), "b8": (0,1)
+    piecePositionMap = {}; // example: (0,0): "r", (0,1): "n"
+    pieceImageMap = {}; // example: "r": "RookBlack.png"
+    board = {}; // 8x8 board
     pieceImagePath = ":/Pieces/Neo/";
     boardImagePath = ":/Board/Brown/";
     chessSoundPath = ":/Sound/Default/";
@@ -71,6 +72,7 @@ void Chess::launchSetup()
     setButtonPositionMap();
     setPiecePositionMap();
     setPieceImageMap();
+    setPiecesSet();
     setChessBoard();
     setMenu();
 }
@@ -97,6 +99,7 @@ void Chess::setButtonPositionMap()
             QString buttonName = QString("%1%2").arg(positionAlphabet[col]).arg(8-row);
             ChessButton *button = findChild<ChessButton*>(buttonName);
             buttonPositionMap[qMakePair(row, col)] = button;
+            coordinatePositionMap[buttonName] = qMakePair(row, col);
         }
     }
 }
@@ -131,6 +134,24 @@ void Chess::setPieceImageMap()
     pieceImageMap["Q"] = "QueenWhite.png";
     pieceImageMap["K"] = "KingWhite.png";
     pieceImageMap["P"] = "PawnWhite.png";
+}
+
+void Chess::setPiecesSet()
+{
+    // black
+    blackPiecesSet.insert("r");
+    blackPiecesSet.insert("n");
+    blackPiecesSet.insert("b");
+    blackPiecesSet.insert("q");
+    blackPiecesSet.insert("k");
+    blackPiecesSet.insert("p");
+    // white
+    whitePiecesSet.insert("R");
+    whitePiecesSet.insert("N");
+    whitePiecesSet.insert("B");
+    whitePiecesSet.insert("Q");
+    whitePiecesSet.insert("K");
+    whitePiecesSet.insert("P");
 }
 
 void Chess::setButtonPiece(QPushButton *button, const QString &imagePath)
@@ -574,21 +595,47 @@ void Chess::addMove(const QString &move)
 
 void Chess::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (event->mimeData()->hasImage()) {
-        qDebug() << sourceButton->objectName();
+    if (event->mimeData()->hasImage())
+    {
         event->acceptProposedAction();
     }
 }
 
 void Chess::dropEvent(QDropEvent *event)
 {
-    ChessButton *targetButton = qobject_cast<ChessButton*>(childAt(event->position().toPoint()));
-    if (targetButton) {
-        qDebug() << targetButton->objectName();
-        QIcon pieceIcon = QIcon(QPixmap::fromImage(qvariant_cast<QImage>(event->mimeData()->imageData())));
-        targetButton->setIcon(pieceIcon);
-        targetButton->setIconSize(QSize(90, 90));
-        event->setDropAction(Qt::MoveAction);
-        event->acceptProposedAction();
+    if (!gameStarted || !sourceButton)
+    {
+        return;
     }
+
+    QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
+    if (turn == 0 && !whitePiecesSet.contains(board[sourceCoord.first][sourceCoord.second]))
+    {
+        return;
+    }
+    else if (turn == 1 && !blackPiecesSet.contains(board[sourceCoord.first][sourceCoord.second]))
+    {
+        return;
+    }
+
+    ChessButton *targetButton = qobject_cast<ChessButton*>(childAt(event->position().toPoint()));
+    if (!targetButton)
+    {
+        return;
+    }
+    QPair<int, int> targetCoord = coordinatePositionMap[targetButton->objectName()];
+    placeChessPiece(sourceCoord, targetCoord, targetButton, event);
+}
+
+void Chess::placeChessPiece(QPair<int, int> sourceCoord, QPair<int, int> targetCoord, ChessButton *targetButton, QDropEvent *event)
+{
+    board[targetCoord.first][targetCoord.second] = board[sourceCoord.first][sourceCoord.second];
+    board[sourceCoord.first][sourceCoord.second] = "-";
+    turn = 1 - turn;
+
+    QIcon pieceIcon = QIcon(QPixmap::fromImage(qvariant_cast<QImage>(event->mimeData()->imageData())));
+    targetButton->setIcon(pieceIcon);
+    targetButton->setIconSize(QSize(90, 90));
+    event->setDropAction(Qt::MoveAction);
+    event->acceptProposedAction();
 }

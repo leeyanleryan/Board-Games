@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QSet>
 #include "chess_ai.h"
 #include "chess_button.h"
 
@@ -41,6 +42,8 @@ private slots:
     void setPiecePositionMap();
 
     void setPieceImageMap();
+
+    void setPiecesSet();
 
     void setButtonPiece(QPushButton *button, const QString &imagePath);
 
@@ -100,13 +103,18 @@ private slots:
 
     void addMove(const QString &move);
 
+    void placeChessPiece(QPair<int, int> sourceCoord, QPair<int, int> targetCoord, ChessButton *targetButton, QDropEvent *event);
+
 private:
     Ui::Chess *ui;
     ChessAI *ai;
 
     QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
+    QMap<QString, QPair<int, int>> coordinatePositionMap;
     QMap<QPair<int, int>, QString> piecePositionMap;
     QMap<QString, QString> pieceImageMap;
+    QSet<QString> whitePiecesSet;
+    QSet<QString> blackPiecesSet;
     std::vector<std::vector<QString>> board;
     QString pieceImagePath;
     QString boardImagePath;
