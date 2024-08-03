@@ -33,6 +33,8 @@ void Chess::variableSetup()
     coordinatePositionMap = {}; // example: "a8": (0,0), "b8": (0,1)
     piecePositionMap = {}; // example: (0,0): "r", (0,1): "n"
     pieceImageMap = {}; // example: "r": "RookBlack.png"
+    whitePiecesSet = {};
+    blackPiecesSet = {};
     board = {}; // 8x8 board
     pieceImagePath = ":/Pieces/Neo/";
     boardImagePath = ":/Board/Brown/";
@@ -595,28 +597,44 @@ void Chess::addMove(const QString &move)
 
 void Chess::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (event->mimeData()->hasImage())
+    if (!event->mimeData()->hasImage())
     {
-        event->acceptProposedAction();
+        return;
+    }
+    event->acceptProposedAction();
+
+    if (!sourceButton)
+    {
+        return;
+    }
+    QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
+    QString piece = board[sourceCoord.first][sourceCoord.second];
+
+    if (turn == 0)
+    {
+        if (!whitePiecesSet.contains(piece))
+        {
+            legalMoves = {};
+        }
+        else if ()
+    }
+    else if (turn == 1)
+    {
+        if (!blackPiecesSet.contains(piece))
+        {
+            legalMoves = {};
+        }
     }
 }
 
 void Chess::dropEvent(QDropEvent *event)
 {
-    if (!gameStarted || !sourceButton)
+    if (!sourceButton)
     {
         return;
     }
-
     QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
-    if (turn == 0 && !whitePiecesSet.contains(board[sourceCoord.first][sourceCoord.second]))
-    {
-        return;
-    }
-    else if (turn == 1 && !blackPiecesSet.contains(board[sourceCoord.first][sourceCoord.second]))
-    {
-        return;
-    }
+    QString piece = board[sourceCoord.first][sourceCoord.second];
 
     ChessButton *targetButton = qobject_cast<ChessButton*>(childAt(event->position().toPoint()));
     if (!targetButton)
@@ -624,11 +642,11 @@ void Chess::dropEvent(QDropEvent *event)
         return;
     }
     QPair<int, int> targetCoord = coordinatePositionMap[targetButton->objectName()];
-    placeChessPiece(sourceCoord, targetCoord, targetButton, event);
-}
+    if (sourceCoord == targetCoord)
+    {
+        return;
+    }
 
-void Chess::placeChessPiece(QPair<int, int> sourceCoord, QPair<int, int> targetCoord, ChessButton *targetButton, QDropEvent *event)
-{
     board[targetCoord.first][targetCoord.second] = board[sourceCoord.first][sourceCoord.second];
     board[sourceCoord.first][sourceCoord.second] = "-";
     turn = 1 - turn;
@@ -638,4 +656,34 @@ void Chess::placeChessPiece(QPair<int, int> sourceCoord, QPair<int, int> targetC
     targetButton->setIconSize(QSize(90, 90));
     event->setDropAction(Qt::MoveAction);
     event->acceptProposedAction();
+}
+
+void Chess::getLegalPawnMovement()
+{
+
+}
+
+void Chess::getLegalRookMovement()
+{
+
+}
+
+void Chess::getLegalKnightMovement()
+{
+
+}
+
+void Chess::getLegalBishopMovement()
+{
+
+}
+
+void Chess::getLegalQueenMovement()
+{
+
+}
+
+void Chess::getLegalKingMovement()
+{
+
 }

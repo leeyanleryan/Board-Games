@@ -24,6 +24,7 @@ public:
     ~Chess();
 
     ChessButton *sourceButton;
+    bool gameStarted;
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -103,7 +104,17 @@ private slots:
 
     void addMove(const QString &move);
 
-    void placeChessPiece(QPair<int, int> sourceCoord, QPair<int, int> targetCoord, ChessButton *targetButton, QDropEvent *event);
+    void getLegalPawnMovement();
+
+    void getLegalRookMovement();
+
+    void getLegalKnightMovement();
+
+    void getLegalBishopMovement();
+
+    void getLegalQueenMovement();
+
+    void getLegalKingMovement();
 
 private:
     Ui::Chess *ui;
@@ -131,14 +142,13 @@ private:
     bool randomTurn;
     bool alternateTurns;
     int computerDifficulty;
-    bool gameStarted;
     int gameNumber;
     int aiTurn;
     int turn;
     int moveNumber;
     QList<QLabel*> moveLabels;
     QVBoxLayout *scrollLayout;
-    std::vector<QPair<int, int>> legalMoves;
+    QSet<QPair<int, int>> legalMoves;
 };
 
 #endif // CHESS_H
