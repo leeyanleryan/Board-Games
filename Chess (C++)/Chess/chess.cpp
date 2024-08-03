@@ -53,9 +53,11 @@ void Chess::variableSetup()
     computerDifficulty = 0;
     gameStarted = false;
     gameNumber = 0;
+    aiTurn = 0;
     turn = 0;
     moveNumber = 1;
     moveLabels = {};
+    legalMoves = {};
 }
 
 void Chess::launchSetup()
@@ -511,6 +513,7 @@ void Chess::on_buttonPlay_clicked()
     }
     if (computerDifficulty != 0)
     {
+        aiTurn = 1 - turn;
         ai->setDifficulty(computerDifficulty);
     }
     newGame();
@@ -593,6 +596,7 @@ void Chess::on_c1_clicked()
         return;
     }
 
-
+    legalMoves.push_back(qMakePair(1, 2));
+    qDebug() << legalMoves;
 }
 

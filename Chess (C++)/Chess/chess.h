@@ -123,10 +123,12 @@ private:
     int computerDifficulty;
     bool gameStarted;
     int gameNumber;
+    int aiTurn;
     int turn;
     int moveNumber;
     QList<QLabel*> moveLabels;
     QVBoxLayout *scrollLayout;
+    std::vector<QPair<int, int>> legalMoves;
 };
 
 #endif // CHESS_H
