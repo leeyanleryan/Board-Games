@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,6 +19,33 @@ class Chess : public QMainWindow
 public:
     Chess(QWidget *parent = nullptr);
     ~Chess();
+
+    Ui::Chess *ui;
+    QList<QLabel*> moveLabels;
+    QVBoxLayout *scrollLayout;
+
+    QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
+    QMap<QPair<int, int>, QString> piecePositionMap;
+    QMap<QString, QString> pieceImageMap;
+    std::vector<std::vector<QString>> board;
+    QString pieceImagePath;
+    QString boardImagePath;
+    QString chessSoundPath;
+    QString backgroundPath;
+    QString buttonStyleSheet;
+    QString buttonStyleSheetDifficulty;
+    QString buttonStyleSheetDifficultySelected;
+    QString buttonStyleSheetDisabled;
+    QString buttonStyleSheetShadow;
+    QString buttonStyleSheetDifficultyShadow;
+    bool chosenFirst;
+    bool alternateTurns;
+    int computerDifficulty;
+    std::vector<QString> playerNames;
+    bool gameStarted;
+    int gameNumber;
+    int turn;
+    int moveNumber;
 
 private slots:
     void launchSetup();
@@ -40,25 +68,25 @@ private slots:
 
     void on_buttonPlayComputer_clicked();
 
-    void on_buttonComputerEasy_clicked();
+    void on_buttonComputerEasy_pressed();
 
-    void on_buttonComputerMedium_clicked();
+    void on_buttonComputerMedium_pressed();
 
-    void on_buttonComputerHard_clicked();
+    void on_buttonComputerHard_pressed();
 
-    void on_buttonComputerImpossible_clicked();
+    void on_buttonComputerImpossible_pressed();
 
     void on_buttonComputerNext_clicked();
 
     void on_buttonComputerBack_clicked();
 
-    void on_buttonP1First_clicked();
+    void on_buttonP1First_pressed();
 
-    void on_buttonP2First_clicked();
+    void on_buttonP2First_pressed();
 
-    void on_buttonRandomFirst_clicked();
+    void on_buttonRandomFirst_pressed();
 
-    void on_buttonAlternateFirst_clicked();
+    void on_buttonAlternateFirst_pressed();
 
     void on_buttonGoesFirstBack_clicked();
 
@@ -95,8 +123,7 @@ private slots:
     void on_b1_clicked();
 
 private:
-    Ui::Chess *ui;
 
-    QVBoxLayout *scrollLayout;
 };
+
 #endif // CHESS_H

@@ -4,35 +4,15 @@
 #include "QVBoxLayout"
 #include "QScrollBar"
 
-QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
-QMap<QPair<int, int>, QString> piecePositionMap;
-QMap<QString, QString> pieceImageMap;
-std::vector<std::vector<QString>> board;
-QString pieceImagePath;
-QString boardImagePath;
-QString chessSoundPath;
-QString backgroundPath;
-QString buttonStyleSheet;
-QString buttonStyleSheetDifficulty;
-QString buttonStyleSheetDifficultySelected;
-QString buttonStyleSheetDisabled;
-QString buttonStyleSheetShadow;
-QString buttonStyleSheetDifficultyShadow;
-bool chosenFirst;
-bool alternateTurns;
-int computerDifficulty;
-std::vector<QString> playerNames;
-bool gameStarted;
-int gameNumber;
-int turn;
-int moveNumber;
-QList<QLabel*> moveLabels;
-
 Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Chess)
 {
     // variable setup
+    // buttonPositionMap;
+    // piecePositionMap;
+    // pieceImageMap;
+    // board;
     pieceImagePath = ":/Pieces/Neo/";
     boardImagePath = ":/Board/Brown/";
     chessSoundPath = ":/Sound/Default/";
@@ -51,10 +31,16 @@ Chess::Chess(QWidget *parent)
                                "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
     buttonStyleSheetShadow = "background-image: url(" + backgroundPath + "buttonShadow.png)";
     buttonStyleSheetDifficultyShadow = "background-image: url(" + backgroundPath + "buttonDifficultyShadow.png)";
+    chosenFirst = false;
+    alternateTurns = false;
     computerDifficulty = 0;
+    playerNames = {};
+    gameStarted = false;
     gameNumber = 0;
     turn = 0;
     moveNumber = 1;
+    // QList<QLabel*> moveLabels;
+    // QVBoxLayout *scrollLayout;
 
     // ui setup
     ui->setupUi(this);
@@ -250,7 +236,7 @@ void Chess::on_buttonPlayComputer_clicked()
     ui->uiMenu->setCurrentIndex(1);
 }
 
-void Chess::on_buttonComputerEasy_clicked()
+void Chess::on_buttonComputerEasy_pressed()
 {
     if (computerDifficulty == 1)
     {
@@ -265,7 +251,7 @@ void Chess::on_buttonComputerEasy_clicked()
     ui->buttonComputerNext->setEnabled(true);
 }
 
-void Chess::on_buttonComputerMedium_clicked()
+void Chess::on_buttonComputerMedium_pressed()
 {
     if (computerDifficulty == 2)
     {
@@ -280,7 +266,7 @@ void Chess::on_buttonComputerMedium_clicked()
     ui->buttonComputerNext->setEnabled(true);
 }
 
-void Chess::on_buttonComputerHard_clicked()
+void Chess::on_buttonComputerHard_pressed()
 {
     if (computerDifficulty == 3)
     {
@@ -295,7 +281,7 @@ void Chess::on_buttonComputerHard_clicked()
     ui->buttonComputerNext->setEnabled(true);
 }
 
-void Chess::on_buttonComputerImpossible_clicked()
+void Chess::on_buttonComputerImpossible_pressed()
 {
     if (computerDifficulty == 4)
     {
@@ -347,7 +333,7 @@ void Chess::on_buttonComputerBack_clicked()
     ui->uiMenu->setCurrentIndex(0);
 }
 
-void Chess::on_buttonP1First_clicked()
+void Chess::on_buttonP1First_pressed()
 {
     if (chosenFirst && turn == 0)
     {
@@ -362,7 +348,7 @@ void Chess::on_buttonP1First_clicked()
     ui->buttonPlay->setEnabled(true);
 }
 
-void Chess::on_buttonP2First_clicked()
+void Chess::on_buttonP2First_pressed()
 {
     if (chosenFirst && turn == 1)
     {
@@ -377,7 +363,7 @@ void Chess::on_buttonP2First_clicked()
     ui->buttonPlay->setEnabled(true);
 }
 
-void Chess::on_buttonRandomFirst_clicked()
+void Chess::on_buttonRandomFirst_pressed()
 {
     if (chosenFirst && turn == 2)
     {
@@ -392,7 +378,7 @@ void Chess::on_buttonRandomFirst_clicked()
     ui->buttonPlay->setEnabled(true);
 }
 
-void Chess::on_buttonAlternateFirst_clicked()
+void Chess::on_buttonAlternateFirst_pressed()
 {
     if (alternateTurns)
     {
@@ -409,6 +395,7 @@ void Chess::on_buttonAlternateFirst_clicked()
 void Chess::on_buttonGoesFirstBack_clicked()
 {
     chosenFirst = false;
+    alternateTurns = false;
     turn = 0;
     ui->buttonP1First->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonP2First->setStyleSheet(buttonStyleSheetDifficulty);
@@ -505,12 +492,12 @@ void Chess::newGame()
     gameStarted = true;
     gameNumber++;
     QWidget *scrollWidget = new QWidget();
-    QVBoxLayout *scrollLayout = new QVBoxLayout(scrollWidget);
-    scrollWidget->setLayout(scrollLayout);
+    QVBoxLayout *scrollLayoutUI = new QVBoxLayout(scrollWidget);
+    scrollWidget->setLayout(scrollLayoutUI);
     ui->scrollMovesPlayed->setWidget(scrollWidget);
     ui->scrollMovesPlayed->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    scrollLayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    this->scrollLayout = scrollLayout;
+    scrollLayoutUI->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    scrollLayout = scrollLayoutUI;
     ui->txtChess->setText("Game " + QString::number(gameNumber));
 }
 
@@ -546,7 +533,6 @@ void Chess::addMove(const QString &move)
         label = moveLabels.last();
         label->setText(label->text() + " " + move);
     }
-
     autoScroll();
 }
 
