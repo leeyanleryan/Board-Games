@@ -28,8 +28,6 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
-    QPoint dragStartPosition;
-
     bool isDragging;
 };
 

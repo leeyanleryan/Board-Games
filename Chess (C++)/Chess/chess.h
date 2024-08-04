@@ -27,7 +27,6 @@ public:
     QMap<QString, QPair<int, int>> coordinatePositionMap;
     QSet<QString> whitePiecesSet;
     QSet<QString> blackPiecesSet;
-    //ChessButton *sourceButton;
     QLabel *floatingIconLabel;
     bool gameStarted;
     int turn;

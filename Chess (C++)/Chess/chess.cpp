@@ -12,7 +12,6 @@
 
 Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
-    //, sourceButton(nullptr)
     , floatingIconLabel(new QLabel(this))
     , ui(new Ui::Chess)
     , ai(new ChessAI(this))
@@ -665,7 +664,7 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
     QPair<int, int> targetCoord = coordinatePositionMap[targetButton->objectName()];
 
-    if (!logic->legalMoves.contains(targetCoord))
+    if (sourceCoord == targetCoord || !logic->legalMoves.contains(targetCoord))
     {
         sourceButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
         sourceButton->setIconSize(QSize(90, 90));
