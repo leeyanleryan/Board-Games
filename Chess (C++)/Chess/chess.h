@@ -46,9 +46,9 @@ private slots:
 
     void setPieceImageMap();
 
-    void setButtonPiece(QPushButton *button, const QString &imagePath);
+    void setButtonIcon(QPushButton *button, const QString &imagePath);
 
-    void setButtonBoard(QPushButton *button, const QString &imagePath);
+    void setButtonStyleSheet(QPushButton *button, const QString &imagePath);
 
     void setChessBoard();
 
@@ -104,6 +104,12 @@ private slots:
 
     void addMove(const QString &move);
 
+    void showLegalMoveImages();
+
+    void hideLegalMoveImages();
+
+    void resetButtonStyleSheet(ChessButton *button);
+
 private:
     Ui::Chess *ui;
     ChessAI *ai;
@@ -135,6 +141,11 @@ private:
     QList<QLabel*> moveLabels;
     QVBoxLayout *scrollLayout;
     QSet<QPair<int, int>> legalMoves;
+
+    ChessButton *prevMovedSourceButton;
+    ChessButton *prevMovedTargetButton;
+    ChessButton *prevClickedSourceButton;
+    int prevSourceButtonClicks;
 };
 
 #endif // CHESS_H

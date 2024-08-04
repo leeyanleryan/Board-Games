@@ -77,6 +77,10 @@ void Chess::variableSetup()
     moveNumber = 1;
     moveLabels = {};
     legalMoves = {};
+    prevMovedSourceButton = nullptr;
+    prevMovedTargetButton = nullptr;
+    prevClickedSourceButton = nullptr;
+    prevSourceButtonClicks = 0;
 }
 
 void Chess::launchSetup()
@@ -148,7 +152,7 @@ void Chess::setPieceImageMap()
     pieceImageMap["P"] = "PawnWhite";
 }
 
-void Chess::setButtonPiece(QPushButton *button, const QString &imagePath)
+void Chess::setButtonIcon(QPushButton *button, const QString &imagePath)
 {
     QPixmap pixmap(imagePath);
     QIcon ButtonIcon(pixmap);
@@ -156,7 +160,7 @@ void Chess::setButtonPiece(QPushButton *button, const QString &imagePath)
     button->setIconSize(QSize(90, 90));
 }
 
-void Chess::setButtonBoard(QPushButton *button, const QString &imagePath)
+void Chess::setButtonStyleSheet(QPushButton *button, const QString &imagePath)
 {
     button->setStyleSheet("background-image: url(" + imagePath + "); border: 0");
 }
@@ -170,15 +174,15 @@ void Chess::setChessBoard()
             QPushButton *button = buttonPositionMap[{row, col}];
             if ((row+col)%2 == 0)
             {
-                setButtonBoard(button, boardImagePath + "BoardWhite.png");
+                setButtonStyleSheet(button, boardImagePath + "BoardWhite.png");
             }
             else if ((row+col)%2 == 1)
             {
-                setButtonBoard(button, boardImagePath + "BoardBlack.png");
+                setButtonStyleSheet(button, boardImagePath + "BoardBlack.png");
             }
             if (piecePositionMap.contains(qMakePair(row, col)))
             {
-                setButtonPiece(button, pieceImagePath + pieceImageMap[piecePositionMap[qMakePair(row, col)]] + ".png");
+                setButtonIcon(button, pieceImagePath + pieceImageMap[piecePositionMap[qMakePair(row, col)]] + ".png");
             }
         }
     }
@@ -587,16 +591,8 @@ void Chess::addMove(const QString &move)
     autoScroll();
 }
 
-void Chess::showLegalMoves(ChessButton *sourceButton)
+void Chess::showLegalMoveImages()
 {
-    if (!sourceButton)
-    {
-        return;
-    }
-
-    QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
-    legalMoves = logic->getLegalMoves(board, sourceCoord, turn);
-
     for (auto it = legalMoves.begin(); it != legalMoves.end(); ++it)
     {
         QPair<int, int> coord = *it;
@@ -605,12 +601,89 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
 
         if (piece == "-")
         {
-            setButtonPiece(button, pieceImagePath + "LegalMove.png");
+            setButtonIcon(button, pieceImagePath + "LegalMove.png");
         }
         else
         {
-            setButtonPiece(button, pieceImagePath + pieceImageMap[piece] + "Capture.png");
+            setButtonIcon(button, pieceImagePath + pieceImageMap[piece] + "Capture.png");
         }
+    }
+}
+
+void Chess::hideLegalMoveImages()
+{
+    for (auto it = legalMoves.begin(); it != legalMoves.end(); ++it)
+    {
+        QPair<int, int> coord = *it;
+        QString piece = board[coord.first][coord.second];
+        QPushButton *button = buttonPositionMap[coord];
+
+        if (piece == "-")
+        {
+            buttonPositionMap[coord]->setIcon(QIcon());
+        }
+        else
+        {
+            setButtonIcon(button, pieceImagePath + pieceImageMap[piece] + ".png");
+        }
+    }
+}
+
+void Chess::resetButtonStyleSheet(ChessButton *button)
+{
+    QPair<int, int> coordinate = coordinatePositionMap[button->objectName()];
+    int row = coordinate.first;
+    int col = coordinate.second;
+    if ((row+col)%2 == 0)
+    {
+        setButtonStyleSheet(button, boardImagePath + "BoardWhite.png");
+    }
+    else if ((row+col)%2 == 1)
+    {
+        setButtonStyleSheet(button, boardImagePath + "BoardBlack.png");
+    }
+}
+
+void Chess::showLegalMoves(ChessButton *sourceButton)
+{
+    if (!sourceButton)
+    {
+        return;
+    }
+
+    // clicked on previously moved source or target button
+    if ((prevMovedSourceButton && prevMovedSourceButton == sourceButton) ||
+        (prevMovedTargetButton && prevMovedTargetButton == sourceButton))
+    {
+
+    }
+    // not clicked before
+    else if (!prevClickedSourceButton)
+    {
+        legalMoves = logic->getLegalMoves(board, coordinatePositionMap[sourceButton->objectName()], turn);
+        showLegalMoveImages();
+
+        setButtonStyleSheet(sourceButton, boardImagePath + "SelectedPiece.png");
+        prevClickedSourceButton = sourceButton;
+        prevSourceButtonClicks = 1;
+    }
+    // has clicked before, clicked on same button
+    else if (prevClickedSourceButton == sourceButton)
+    {
+        prevClickedSourceButton = nullptr;
+        prevSourceButtonClicks = 2;
+    }
+    // has clicked before, clicked on different button
+    else if (prevClickedSourceButton != sourceButton)
+    {
+        hideLegalMoveImages();
+        legalMoves = logic->getLegalMoves(board, coordinatePositionMap[sourceButton->objectName()], turn);
+        showLegalMoveImages();
+
+        resetButtonStyleSheet(prevClickedSourceButton);
+        setButtonStyleSheet(sourceButton, boardImagePath + "SelectedPiece.png");
+        prevClickedSourceButton = sourceButton;
+        prevSourceButtonClicks = 1;
     }
 }
 
@@ -624,7 +697,23 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
     QPair<int, int> targetCoord = coordinatePositionMap[targetButton->objectName()];
 
-    if (sourceCoord == targetCoord || !legalMoves.contains(targetCoord))
+    if (sourceCoord == targetCoord)
+    {
+        if (prevSourceButtonClicks == 2)
+        {
+            resetButtonStyleSheet(sourceButton);
+
+            hideLegalMoveImages();
+            legalMoves = {};
+
+            prevSourceButtonClicks = 0;
+        }
+
+        sourceButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
+        sourceButton->setIconSize(QSize(90, 90));
+        return;
+    }
+    if (!legalMoves.contains(targetCoord))
     {
         sourceButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
         sourceButton->setIconSize(QSize(90, 90));
@@ -635,16 +724,25 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     board[sourceCoord.first][sourceCoord.second] = "-";
     turn = 1 - turn;
 
-    for (auto it = legalMoves.begin(); it != legalMoves.end(); ++it)
-    {
-        QPair<int, int> coord = *it;
+    hideLegalMoveImages();
 
-        if (board[coord.first][coord.second] == "-")
-        {
-            buttonPositionMap[coord]->setIcon(QIcon());
-        }
+    if (!prevMovedSourceButton || !prevMovedTargetButton)
+    {
+        prevMovedSourceButton = sourceButton;
+        prevMovedTargetButton = targetButton;
+    }
+    else
+    {
+        resetButtonStyleSheet(prevMovedSourceButton);
+        resetButtonStyleSheet(prevMovedTargetButton);
+
+        prevMovedSourceButton = sourceButton;
+        prevMovedTargetButton = targetButton;
     }
 
+    legalMoves = {};
+    prevClickedSourceButton = nullptr;
+    setButtonStyleSheet(targetButton, boardImagePath + "SelectedPiece.png");
     targetButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
     targetButton->setIconSize(QSize(90, 90));
 }
