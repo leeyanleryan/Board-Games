@@ -34,7 +34,7 @@ void Chess::variableSetup()
     buttonPositionMap = {}; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
     coordinatePositionMap = {}; // example: "a8": (0,0), "b8": (0,1)
     piecePositionMap = {}; // example: (0,0): "r", (0,1): "n"
-    pieceImageMap = {}; // example: "r": "RookBlack.png"
+    pieceImageMap = {}; // example: "r": "RookBlack"
     QSet<QString> whitePiecesSet = {"R", "N", "B", "Q", "K", "P"};
     QSet<QString> blackPiecesSet = {"r", "n", "b", "q", "k", "p"};
     piecesSet.push_back(whitePiecesSet);
@@ -133,19 +133,19 @@ void Chess::setPiecePositionMap()
 void Chess::setPieceImageMap()
 {
     // black
-    pieceImageMap["r"] = "RookBlack.png";
-    pieceImageMap["n"] = "KnightBlack.png";
-    pieceImageMap["b"] = "BishopBlack.png";
-    pieceImageMap["q"] = "QueenBlack.png";
-    pieceImageMap["k"] = "KingBlack.png";
-    pieceImageMap["p"] = "PawnBlack.png";
+    pieceImageMap["r"] = "RookBlack";
+    pieceImageMap["n"] = "KnightBlack";
+    pieceImageMap["b"] = "BishopBlack";
+    pieceImageMap["q"] = "QueenBlack";
+    pieceImageMap["k"] = "KingBlack";
+    pieceImageMap["p"] = "PawnBlack";
     // white
-    pieceImageMap["R"] = "RookWhite.png";
-    pieceImageMap["N"] = "KnightWhite.png";
-    pieceImageMap["B"] = "BishopWhite.png";
-    pieceImageMap["Q"] = "QueenWhite.png";
-    pieceImageMap["K"] = "KingWhite.png";
-    pieceImageMap["P"] = "PawnWhite.png";
+    pieceImageMap["R"] = "RookWhite";
+    pieceImageMap["N"] = "KnightWhite";
+    pieceImageMap["B"] = "BishopWhite";
+    pieceImageMap["Q"] = "QueenWhite";
+    pieceImageMap["K"] = "KingWhite";
+    pieceImageMap["P"] = "PawnWhite";
 }
 
 void Chess::setButtonPiece(QPushButton *button, const QString &imagePath)
@@ -178,7 +178,7 @@ void Chess::setChessBoard()
             }
             if (piecePositionMap.contains(qMakePair(row, col)))
             {
-                setButtonPiece(button, pieceImagePath + pieceImageMap[piecePositionMap[qMakePair(row, col)]]);
+                setButtonPiece(button, pieceImagePath + pieceImageMap[piecePositionMap[qMakePair(row, col)]] + ".png");
             }
         }
     }
@@ -596,6 +596,22 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
 
     QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
     legalMoves = logic->getLegalMoves(board, sourceCoord, turn);
+
+    for (auto it = legalMoves.begin(); it != legalMoves.end(); ++it)
+    {
+        QPair<int, int> coord = *it;
+        QString piece = board[coord.first][coord.second];
+        QPushButton *button = buttonPositionMap[coord];
+
+        if (piece == "-")
+        {
+            setButtonPiece(button, pieceImagePath + "LegalMove.png");
+        }
+        else
+        {
+            setButtonPiece(button, pieceImagePath + pieceImageMap[piece] + "Capture.png");
+        }
+    }
 }
 
 void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
@@ -618,6 +634,16 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     board[targetCoord.first][targetCoord.second] = board[sourceCoord.first][sourceCoord.second];
     board[sourceCoord.first][sourceCoord.second] = "-";
     turn = 1 - turn;
+
+    for (auto it = legalMoves.begin(); it != legalMoves.end(); ++it)
+    {
+        QPair<int, int> coord = *it;
+
+        if (board[coord.first][coord.second] == "-")
+        {
+            buttonPositionMap[coord]->setIcon(QIcon());
+        }
+    }
 
     targetButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
     targetButton->setIconSize(QSize(90, 90));
