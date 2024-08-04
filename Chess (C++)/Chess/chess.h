@@ -29,7 +29,6 @@ public:
     QSet<QString> blackPiecesSet;
     QLabel *floatingIconLabel;
     bool gameStarted;
-    int turn;
 
     void showLegalMoves(ChessButton *sourceButton);
 
@@ -132,9 +131,11 @@ private:
     int computerDifficulty;
     int gameNumber;
     int aiTurn;
+    int turn;
     int moveNumber;
     QList<QLabel*> moveLabels;
     QVBoxLayout *scrollLayout;
+    QSet<QPair<int, int>> legalMoves;
 };
 
 #endif // CHESS_H

@@ -13,9 +13,14 @@ class ChessLogic : public QObject
 public:
     ChessLogic(Chess *chessInstance);
 
-    std::vector<std::vector<QString>> board;
+    QSet<QPair<int, int>> getLegalMoves(std::vector<std::vector<QString>> chessBoard, QPair<int, int> sourceCoord, int turn);
+
+private:
+    Chess *chess;
 
     QSet<QPair<int, int>> legalMoves;
+
+    std::vector<std::vector<QString>> board;
 
     void getLegalPawnMovement();
 
@@ -46,9 +51,6 @@ public:
     bool kingIsChecked();
 
     bool kingIsMated();
-
-private:
-    Chess *chess;
 };
 
 #endif // CHESS_LOGIC_H

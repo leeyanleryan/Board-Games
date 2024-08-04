@@ -74,6 +74,7 @@ void Chess::variableSetup()
     turn = 0;
     moveNumber = 1;
     moveLabels = {};
+    legalMoves = {};
 }
 
 void Chess::launchSetup()
@@ -592,71 +593,7 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
     }
 
     QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
-    QString piece = board[sourceCoord.first][sourceCoord.second];
-    logic->board = board;
-
-    if (turn == 0)
-    {
-        if (!whitePiecesSet.contains(piece))
-        {
-            logic->legalMoves = {};
-        }
-        else if (piece == "P")
-        {
-            logic->legalMoves = {qMakePair(1, 2)};
-        }
-        else if (piece == "R")
-        {
-            logic->legalMoves = {qMakePair(1, 2)};
-        }
-        else if (piece == "N")
-        {
-            logic->legalMoves = {qMakePair(1, 2)};
-        }
-        else if (piece == "B")
-        {
-            logic->legalMoves = {qMakePair(1, 2)};
-        }
-        else if (piece == "Q")
-        {
-            logic->legalMoves = {qMakePair(1, 2)};
-        }
-        else if (piece == "K")
-        {
-            logic->legalMoves = {qMakePair(1, 2)};
-        }
-    }
-    else if (turn == 1)
-    {
-        if (!blackPiecesSet.contains(piece))
-        {
-            logic->legalMoves = {};
-        }
-        else if (piece == "p")
-        {
-            logic->legalMoves = {qMakePair(1, 1)};
-        }
-        else if (piece == "r")
-        {
-            logic->legalMoves = {qMakePair(1, 1)};
-        }
-        else if (piece == "n")
-        {
-            logic->legalMoves = {qMakePair(1, 1)};
-        }
-        else if (piece == "b")
-        {
-            logic->legalMoves = {qMakePair(1, 1)};
-        }
-        else if (piece == "q")
-        {
-            logic->legalMoves = {qMakePair(1, 1)};
-        }
-        else if (piece == "k")
-        {
-            logic->legalMoves = {qMakePair(1, 1)};
-        }
-    }
+    legalMoves = logic->getLegalMoves(board, sourceCoord, turn);
 }
 
 void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
@@ -669,7 +606,7 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
     QPair<int, int> targetCoord = coordinatePositionMap[targetButton->objectName()];
 
-    if (sourceCoord == targetCoord || !logic->legalMoves.contains(targetCoord))
+    if (sourceCoord == targetCoord || !legalMoves.contains(targetCoord))
     {
         sourceButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
         sourceButton->setIconSize(QSize(90, 90));
