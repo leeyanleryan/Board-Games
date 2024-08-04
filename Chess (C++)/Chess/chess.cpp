@@ -655,7 +655,14 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
     if ((prevMovedSourceButton && prevMovedSourceButton == sourceButton) ||
         (prevMovedTargetButton && prevMovedTargetButton == sourceButton))
     {
+        hideLegalMoveImages();
+        legalMoves = {};
 
+        if (prevClickedSourceButton)
+        {
+            resetButtonStyleSheet(prevClickedSourceButton);
+            prevClickedSourceButton = nullptr;
+        }
     }
     // not clicked before
     else if (!prevClickedSourceButton)
@@ -687,6 +694,18 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
     }
 }
 
+void Chess::makeMove(ChessButton *targetButton)
+{
+    QPixmap pixmap = prevClickedSourceButton->icon().pixmap(prevClickedSourceButton->iconSize());
+    floatingIconLabel->setPixmap(pixmap);
+    floatingIconLabel->setFixedSize(pixmap.size());
+    floatingIconLabel->raise();
+    floatingIconLabel->setVisible(false);
+    prevClickedSourceButton->setIcon(QIcon());
+    prevClickedSourceButton->setIconSize(QSize(90, 90));
+    makeMove(prevClickedSourceButton, targetButton);
+}
+
 void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
 {
     if (!sourceButton || !targetButton)
@@ -701,14 +720,16 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     {
         if (prevSourceButtonClicks == 2)
         {
-            resetButtonStyleSheet(sourceButton);
+            if (!(prevMovedTargetButton && prevMovedTargetButton == sourceButton))
+            {
+                resetButtonStyleSheet(sourceButton);
+            }
 
             hideLegalMoveImages();
             legalMoves = {};
 
             prevSourceButtonClicks = 0;
         }
-
         sourceButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
         sourceButton->setIconSize(QSize(90, 90));
         return;
@@ -725,23 +746,18 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     turn = 1 - turn;
 
     hideLegalMoveImages();
+    legalMoves = {};
 
-    if (!prevMovedSourceButton || !prevMovedTargetButton)
-    {
-        prevMovedSourceButton = sourceButton;
-        prevMovedTargetButton = targetButton;
-    }
-    else
+    if (prevMovedSourceButton && prevMovedTargetButton)
     {
         resetButtonStyleSheet(prevMovedSourceButton);
         resetButtonStyleSheet(prevMovedTargetButton);
-
-        prevMovedSourceButton = sourceButton;
-        prevMovedTargetButton = targetButton;
     }
 
-    legalMoves = {};
+    prevMovedSourceButton = sourceButton;
+    prevMovedTargetButton = targetButton;
     prevClickedSourceButton = nullptr;
+
     setButtonStyleSheet(targetButton, boardImagePath + "SelectedPiece.png");
     targetButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
     targetButton->setIconSize(QSize(90, 90));

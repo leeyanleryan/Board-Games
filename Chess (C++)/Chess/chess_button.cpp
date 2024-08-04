@@ -49,6 +49,13 @@ void ChessButton::mousePressEvent(QMouseEvent *event)
         return;
     }
 
+    QPair<int, int> sourceCoord = chess->coordinatePositionMap[objectName()];
+    if (chess->legalMoves.contains(sourceCoord))
+    {
+        chess->makeMove(this);
+        return;
+    }
+
     isDragging = true;
 
     QPixmap pixmap = icon().pixmap(iconSize());

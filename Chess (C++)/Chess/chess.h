@@ -28,8 +28,11 @@ public:
     std::vector<QSet<QString>> piecesSet;
     QLabel *floatingIconLabel;
     bool gameStarted;
+    QSet<QPair<int, int>> legalMoves;
 
     void showLegalMoves(ChessButton *sourceButton);
+
+    void makeMove(ChessButton *targetButton);
 
     void makeMove(ChessButton *sourceButton, ChessButton *targetButton);
 
@@ -140,7 +143,6 @@ private:
     int moveNumber;
     QList<QLabel*> moveLabels;
     QVBoxLayout *scrollLayout;
-    QSet<QPair<int, int>> legalMoves;
 
     ChessButton *prevMovedSourceButton;
     ChessButton *prevMovedTargetButton;
