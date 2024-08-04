@@ -12,36 +12,38 @@ QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::vector<std::vector<QString>
 {
     board = chessBoard;
     this->sourceCoord = sourceCoord;
+    sourceRow = sourceCoord.first;
+    sourceCol = sourceCoord.second;
+    sourcePiece = board[sourceRow][sourceCol];
     this->turn = turn;
-    piece = board[sourceCoord.first][sourceCoord.second];
     legalMoves = {};
 
-    if (!chess->piecesSet[turn].contains(piece))
+    if (!chess->piecesSet[turn].contains(sourcePiece))
     {
         return legalMoves;
     }
 
-    if (piece == "P" || piece == "p")
+    if (sourcePiece == "P" || sourcePiece == "p")
     {
         legalMoves = {qMakePair(1, 2)};
     }
-    else if (piece == "R" || piece == "r")
+    else if (sourcePiece == "R" || sourcePiece == "r")
     {
         getLegalRookMovement();
     }
-    else if (piece == "N" || piece == "n")
+    else if (sourcePiece == "N" || sourcePiece == "n")
     {
         getLegalKnightMovement();
     }
-    else if (piece == "B" || piece == "b")
+    else if (sourcePiece == "B" || sourcePiece == "b")
     {
         getLegalBishopMovement();
     }
-    else if (piece == "Q" || piece == "q")
+    else if (sourcePiece == "Q" || sourcePiece == "q")
     {
-        legalMoves = {qMakePair(1, 2)};
+        getLegalQueenMovement();
     }
-    else if (piece == "K" || piece == "k")
+    else if (sourcePiece == "K" || sourcePiece == "k")
     {
         legalMoves = {qMakePair(1, 2)};
     }
@@ -56,7 +58,70 @@ void ChessLogic::getLegalPawnMovement()
 
 void ChessLogic::getLegalRookMovement()
 {
-
+    // up
+    for (int i = 0; i < sourceRow; i++)
+    {
+        QPair<int, int> targetCoord = qMakePair(sourceRow-i-1, sourceCol);
+        QString targetPiece = board[targetCoord.first][targetCoord.second];
+        if (chess->piecesSet[turn].contains(targetPiece))
+        {
+            break;
+        }
+        else if (chess->piecesSet[1-turn].contains(targetPiece))
+        {
+            legalMoves.insert(targetCoord);
+            break;
+        }
+        legalMoves.insert(targetCoord);
+    }
+    // down
+    for (int i = 0; i < 7-sourceRow; i++)
+    {
+        QPair<int, int> targetCoord = qMakePair(sourceRow+i+1, sourceCol);
+        QString targetPiece = board[targetCoord.first][targetCoord.second];
+        if (chess->piecesSet[turn].contains(targetPiece))
+        {
+            break;
+        }
+        else if (chess->piecesSet[1-turn].contains(targetPiece))
+        {
+            legalMoves.insert(targetCoord);
+            break;
+        }
+        legalMoves.insert(targetCoord);
+    }
+    // left
+    for (int i = 0; i < sourceCol; i++)
+    {
+        QPair<int, int> targetCoord = qMakePair(sourceRow, sourceCol-i-1);
+        QString targetPiece = board[targetCoord.first][targetCoord.second];
+        if (chess->piecesSet[turn].contains(targetPiece))
+        {
+            break;
+        }
+        else if (chess->piecesSet[1-turn].contains(targetPiece))
+        {
+            legalMoves.insert(targetCoord);
+            break;
+        }
+        legalMoves.insert(targetCoord);
+    }
+    // right
+    for (int i = 0; i < 7-sourceCol; i++)
+    {
+        QPair<int, int> targetCoord = qMakePair(sourceRow, sourceCol+i+1);
+        QString targetPiece = board[targetCoord.first][targetCoord.second];
+        if (chess->piecesSet[turn].contains(targetPiece))
+        {
+            break;
+        }
+        else if (chess->piecesSet[1-turn].contains(targetPiece))
+        {
+            legalMoves.insert(targetCoord);
+            break;
+        }
+        legalMoves.insert(targetCoord);
+    }
 }
 
 void ChessLogic::getLegalKnightMovement()
@@ -68,33 +133,28 @@ void ChessLogic::getLegalKnightMovement()
 
     for (QPair<int, int> coord : pool)
     {
-        QPair<int, int> targetCoord = qMakePair(sourceCoord.first + coord.first, sourceCoord.second + coord.second);
-        int row = targetCoord.first;
-        int col = targetCoord.second;
-        if (row < 0 || row > 7 || col < 0 || col > 7)
+        QPair<int, int> targetCoord = qMakePair(sourceRow + coord.first, sourceCol + coord.second);
+        int targetRow = targetCoord.first;
+        int targetCol = targetCoord.second;
+        if (targetRow < 0 || targetRow > 7 || targetCol < 0 || targetCol > 7)
         {
             continue;
         }
-
-        QString targetPiece = board[row][col];
+        QString targetPiece = board[targetRow][targetCol];
         if (chess->piecesSet[turn].contains(targetPiece))
         {
             continue;
         }
-
         legalMoves.insert(targetCoord);
     }
 }
 
 void ChessLogic::getLegalBishopMovement()
 {
-    int row = sourceCoord.first;
-    int col = sourceCoord.second;
-
     // top-left
-    for (int i = 0; i < std::min(row, col); i++)
+    for (int i = 0; i < std::min(sourceRow, sourceCol); i++)
     {
-        QPair<int, int> targetCoord = qMakePair(row-i-1, col-i-1);
+        QPair<int, int> targetCoord = qMakePair(sourceRow-i-1, sourceCol-i-1);
         QString targetPiece = board[targetCoord.first][targetCoord.second];
         if (chess->piecesSet[turn].contains(targetPiece))
         {
@@ -108,9 +168,9 @@ void ChessLogic::getLegalBishopMovement()
         legalMoves.insert(targetCoord);
     }
     // top-right
-    for (int i = 0; i < std::min(row, 7-col); i++)
+    for (int i = 0; i < std::min(sourceRow, 7-sourceCol); i++)
     {
-        QPair<int, int> targetCoord = qMakePair(row-i-1, col+i+1);
+        QPair<int, int> targetCoord = qMakePair(sourceRow-i-1, sourceCol+i+1);
         QString targetPiece = board[targetCoord.first][targetCoord.second];
         if (chess->piecesSet[turn].contains(targetPiece))
         {
@@ -124,9 +184,9 @@ void ChessLogic::getLegalBishopMovement()
         legalMoves.insert(targetCoord);
     }
     // bottom-left
-    for (int i = 0; i < std::min(7-row, col); i++)
+    for (int i = 0; i < std::min(7-sourceRow, sourceCol); i++)
     {
-        QPair<int, int> targetCoord = qMakePair(row+i+1, col-i-1);
+        QPair<int, int> targetCoord = qMakePair(sourceRow+i+1, sourceCol-i-1);
         QString targetPiece = board[targetCoord.first][targetCoord.second];
         if (chess->piecesSet[turn].contains(targetPiece))
         {
@@ -140,9 +200,9 @@ void ChessLogic::getLegalBishopMovement()
         legalMoves.insert(targetCoord);
     }
     // bottom-right
-    for (int i = 0; i < std::min(7-row, 7-col); i++)
+    for (int i = 0; i < std::min(7-sourceRow, 7-sourceCol); i++)
     {
-        QPair<int, int> targetCoord = qMakePair(row+i+1, col+i+1);
+        QPair<int, int> targetCoord = qMakePair(sourceRow+i+1, sourceCol+i+1);
         QString targetPiece = board[targetCoord.first][targetCoord.second];
         if (chess->piecesSet[turn].contains(targetPiece))
         {
@@ -159,7 +219,8 @@ void ChessLogic::getLegalBishopMovement()
 
 void ChessLogic::getLegalQueenMovement()
 {
-
+    getLegalRookMovement();
+    getLegalBishopMovement();
 }
 
 void ChessLogic::getLegalKingMovement()
@@ -197,7 +258,7 @@ std::vector<QPair<int, int>> findEnemyKing()
     return {};
 }
 
-bool pieceIsPinned()
+bool sourcePieceIsPinned()
 {
     return false;
 }

@@ -24,7 +24,11 @@ private:
 
     QPair<int, int> sourceCoord;
 
-    QString piece;
+    int sourceRow;
+
+    int sourceCol;
+
+    QString sourcePiece;
 
     int turn;
 
