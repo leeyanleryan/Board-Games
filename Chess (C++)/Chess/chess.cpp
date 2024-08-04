@@ -661,6 +661,11 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
 
 void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
 {
+    if (!sourceButton || !targetButton)
+    {
+        return;
+    }
+
     QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
     QPair<int, int> targetCoord = coordinatePositionMap[targetButton->objectName()];
 

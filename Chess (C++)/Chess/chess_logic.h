@@ -29,6 +29,24 @@ public:
 
     void getLegalKingMovement();
 
+    std::vector<QPair<int, int>> findEnemyPawn();
+
+    std::vector<QPair<int, int>> findEnemyRook();
+
+    std::vector<QPair<int, int>> findEnemyKnight();
+
+    std::vector<QPair<int, int>> findEnemyBishop();
+
+    std::vector<QPair<int, int>> findEnemyQueen();
+
+    std::vector<QPair<int, int>> findEnemyKing();
+
+    bool pieceIsPinned();
+
+    bool kingIsChecked();
+
+    bool kingIsMated();
+
 private:
     Chess *chess;
 };

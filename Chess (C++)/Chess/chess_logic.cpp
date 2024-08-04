@@ -36,3 +36,49 @@ void ChessLogic::getLegalKingMovement()
 {
 
 }
+
+
+std::vector<QPair<int, int>> findEnemyPawn()
+{
+    return {};
+}
+
+std::vector<QPair<int, int>> findEnemyRook()
+{
+    return {};
+}
+
+std::vector<QPair<int, int>> findEnemyKnight()
+{
+    return {};
+}
+
+std::vector<QPair<int, int>> findEnemyBishop()
+{
+    return {};
+}
+
+std::vector<QPair<int, int>> findEnemyQueen()
+{
+    return {};
+}
+
+std::vector<QPair<int, int>> findEnemyKing()
+{
+    return {};
+}
+
+bool pieceIsPinned()
+{
+    return false;
+}
+
+bool kingIsChecked()
+{
+    return false;
+}
+
+bool kingIsMated()
+{
+    return false;
+}

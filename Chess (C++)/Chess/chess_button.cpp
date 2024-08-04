@@ -2,9 +2,12 @@
 #include "chess.h"
 #include "chess_logic.h"
 
+Chess *chess;
+
 ChessButton::ChessButton(QWidget *parent)
     : QPushButton(parent)
 {
+    chess = nullptr;
     isDragging = false;
 }
 
@@ -25,126 +28,87 @@ void ChessButton::leaveEvent(QEvent *event)
 
 void ChessButton::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && !icon().isNull())
+    if (event->button() != Qt::LeftButton || icon().isNull())
     {
-        Chess *chess = nullptr;
-        QWidget *pw = parentWidget();
-        while (pw)
-        {
-            chess = qobject_cast<Chess*>(pw);
-            if (chess)
-            {
-                break;
-            }
-            pw = pw->parentWidget();
-        }
-        if (!chess || !chess->gameStarted)
-        {
-            return;
-        }
+        return;
+    }
 
-        isDragging = true;
-        chess->showLegalMoves(this);
+    chess = nullptr;
+    QWidget *pw = parentWidget();
+    while (pw)
+    {
+        chess = qobject_cast<Chess*>(pw);
+        if (chess)
+        {
+            break;
+        }
+        pw = pw->parentWidget();
+    }
+    if (!chess || !chess->gameStarted)
+    {
+        return;
+    }
 
-        QPixmap pixmap = icon().pixmap(iconSize());
-        chess->floatingIconLabel->setPixmap(pixmap);
-        chess->floatingIconLabel->setFixedSize(pixmap.size());
+    isDragging = true;
+
+    QPixmap pixmap = icon().pixmap(iconSize());
+    chess->floatingIconLabel->setPixmap(pixmap);
+    chess->floatingIconLabel->setFixedSize(pixmap.size());
+    setIcon(QIcon());
+
+    QPoint topLeft = this->geometry().topLeft();
+    QPoint eventPos = event->position().toPoint();
+    int x = topLeft.x() + eventPos.x() - 35;
+    int y = topLeft.y() + eventPos.y() - 35;
+    chess->floatingIconLabel->move(x, y);
+    chess->floatingIconLabel->raise();
+    chess->floatingIconLabel->setVisible(true);
+
+    chess->showLegalMoves(this);
+    QApplication::setOverrideCursor(Qt::ClosedHandCursor);
+}
+
+void ChessButton::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!isDragging)
+    {
+        return;
+    }
+
+    if (chess->floatingIconLabel->isVisible())
+    {
         QPoint topLeft = this->geometry().topLeft();
         QPoint eventPos = event->position().toPoint();
         int x = topLeft.x() + eventPos.x() - 35;
         int y = topLeft.y() + eventPos.y() - 35;
         chess->floatingIconLabel->move(x, y);
-        chess->floatingIconLabel->raise();
-        chess->floatingIconLabel->setVisible(true);
-        setIcon(QIcon());
-
-        QApplication::setOverrideCursor(Qt::ClosedHandCursor);
-    }
-}
-
-void ChessButton::mouseMoveEvent(QMouseEvent *event)
-{
-    if (isDragging)
-    {
-        Chess *chess = nullptr;
-        QWidget *pw = parentWidget();
-        while (pw)
-        {
-            chess = qobject_cast<Chess*>(pw);
-            if (chess)
-            {
-                break;
-            }
-            pw = pw->parentWidget();
-        }
-        if (!chess || !chess->gameStarted)
-        {
-            return;
-        }
-
-        if (chess->floatingIconLabel->isVisible())
-        {
-            QPoint topLeft = this->geometry().topLeft();
-            QPoint eventPos = event->position().toPoint();
-            int x = topLeft.x() + eventPos.x() - 35;
-            int y = topLeft.y() + eventPos.y() - 35;
-            chess->floatingIconLabel->move(x, y);
-        }
     }
 }
 
 void ChessButton::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && isDragging)
+    if (event->button() != Qt::LeftButton || !isDragging)
     {
-        Chess *chess = nullptr;
-        QWidget *pw = parentWidget();
-        while (pw)
-        {
-            chess = qobject_cast<Chess*>(pw);
-            if (chess)
-            {
-                break;
-            }
-            pw = pw->parentWidget();
-        }
-        if (!chess || !chess->gameStarted)
-        {
-            return;
-        }
-
-        isDragging = false;
-        chess->floatingIconLabel->setVisible(false);
-        QApplication::restoreOverrideCursor();
-
-        QPoint topLeft = this->geometry().topLeft();
-        QPoint eventPos = event->position().toPoint();
-        int x, y;
-        if (eventPos.x() >= 0)
-        {
-            x = topLeft.x() + 90*(eventPos.x()/90) + 45;
-        }
-        else
-        {
-            x = topLeft.x() + 90*(-1 + eventPos.x()/90) + 45;
-        }
-        if (eventPos.y() >= 0)
-        {
-            y = topLeft.y() + 90*(eventPos.y()/90) + 45;
-        }
-        else
-        {
-            y = topLeft.y() + 90*(-1 + eventPos.y()/90) + 45;
-        }
-
-        ChessButton *targetButton = qobject_cast<ChessButton*>(chess->childAt(QPoint(x, y)));
-        if (!targetButton)
-        {
-            this->setIcon(chess->floatingIconLabel->pixmap(Qt::ReturnByValue));
-            this->setIconSize(QSize(90, 90));
-            return;
-        }
-
-        chess->makeMove(this, targetButton);
+        return;
     }
+
+    isDragging = false;
+
+    QPoint topLeft = this->geometry().topLeft();
+    QPoint eventPos = event->position().toPoint();
+    int x = topLeft.x() + 90 * (eventPos.x() >= 0 ? eventPos.x() / 90 : -1 + eventPos.x() / 90) + 45;
+    int y = topLeft.y() + 90 * (eventPos.y() >= 0 ? eventPos.y() / 90 : -1 + eventPos.y() / 90) + 45;
+    ChessButton *targetButton = qobject_cast<ChessButton*>(chess->childAt(QPoint(x, y)));
+
+    chess->floatingIconLabel->setVisible(false);
+
+    if (!targetButton)
+    {
+        this->setIcon(chess->floatingIconLabel->pixmap(Qt::ReturnByValue));
+        this->setIconSize(QSize(90, 90));
+        return;
+    }
+
+    chess->makeMove(this, targetButton);
+    QApplication::restoreOverrideCursor();
 }
