@@ -29,7 +29,7 @@ QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::vector<std::vector<QString>
         }
         else if (piece == "N")
         {
-            legalMoves = {qMakePair(1, 2)};
+            getLegalKnightMovement(sourceCoord, turn);
         }
         else if (piece == "B")
         {
@@ -89,9 +89,25 @@ void ChessLogic::getLegalRookMovement()
 
 }
 
-void ChessLogic::getLegalKnightMovement()
+void ChessLogic::getLegalKnightMovement(QPair<int, int> sourceCoord, int turn)
 {
+    std::vector<QPair<int, int>> pool = {qMakePair(-2, -1), qMakePair(-2, 1),
+                                         qMakePair(-1, -2), qMakePair(-1, 2),
+                                         qMakePair( 1, -2), qMakePair( 1, 2),
+                                         qMakePair( 2, -1), qMakePair( 2, 1)};
 
+    for (QPair<int, int> coord : pool)
+    {
+        QPair<int, int> targetCoord = qMakePair(sourceCoord.first + coord.first, sourceCoord.second + coord.second);
+        int row = targetCoord.first;
+        int col = targetCoord.second;
+        if (row < 0 || row > 7 || col < 0 || col > 7)
+        {
+            continue;
+        }
+
+        QString targetPiece = board[row][col];
+    }
 }
 
 void ChessLogic::getLegalBishopMovement()

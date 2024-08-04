@@ -26,7 +26,7 @@ private:
 
     void getLegalRookMovement();
 
-    void getLegalKnightMovement();
+    void getLegalKnightMovement(QPair<int, int> sourceCoord, int turn);
 
     void getLegalBishopMovement();
 
