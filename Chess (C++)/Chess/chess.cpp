@@ -13,6 +13,7 @@
 Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
     , sourceButton(nullptr)
+    , floatingIconLabel(new QLabel(this))
     , ui(new Ui::Chess)
     , ai(new ChessAI(this))
 {
@@ -37,6 +38,13 @@ void Chess::variableSetup()
     pieceImageMap = {}; // example: "r": "RookBlack.png"
     whitePiecesSet = {"R", "N", "B", "Q", "K", "P"};
     blackPiecesSet = {"r", "n", "b", "q", "k", "p"};
+    floatingIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
+    floatingIconLabel->setVisible(false);
+    floatingIconLabel->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    floatingIconLabel->setAttribute(Qt::WA_NoSystemBackground, true);
+    floatingIconLabel->setAttribute(Qt::WA_TranslucentBackground, true);
+    floatingIconLabel->setAttribute(Qt::WA_ShowWithoutActivating, true);
+    floatingIconLabel->raise();
     board = {}; // 8x8 board
     pieceImagePath = ":/Pieces/Neo/";
     boardImagePath = ":/Board/Brown/";
@@ -577,6 +585,19 @@ void Chess::addMove(const QString &move)
     autoScroll();
 }
 
+// void Chess::mouseMoveEvent(QMouseEvent *event)
+// {
+//     if (floatingIconLabel->isVisible() && sourceButton)
+//     {
+//         QPoint topLeft = sourceButton->geometry().topLeft();
+//         QPoint eventPos = event->position().toPoint();
+//         int x = topLeft.x() + eventPos.x() - 35;
+//         int y = topLeft.y() + eventPos.y() - 35;
+//         floatingIconLabel->move(x, y);
+//     }
+//     QMainWindow::mouseMoveEvent(event);
+// }
+
 void Chess::dragEnterEvent(QDragEnterEvent *event)
 {
     if (!event->mimeData()->hasImage())
@@ -659,6 +680,7 @@ void Chess::dragEnterEvent(QDragEnterEvent *event)
 
 void Chess::dropEvent(QDropEvent *event)
 {
+    qDebug() << "DROP";
     if (!sourceButton)
     {
         return;

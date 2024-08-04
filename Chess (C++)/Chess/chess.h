@@ -27,9 +27,12 @@ public:
     QSet<QString> whitePiecesSet;
     QSet<QString> blackPiecesSet;
     ChessButton *sourceButton;
+    QLabel *floatingIconLabel;
     bool gameStarted;
 
 protected:
+    //void mouseMoveEvent(QMouseEvent *event) override;
+
     void dragEnterEvent(QDragEnterEvent *event) override;
 
     void dropEvent(QDropEvent *event) override;
