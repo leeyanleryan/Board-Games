@@ -22,11 +22,17 @@ private:
 
     std::vector<std::vector<QString>> board;
 
+    QPair<int, int> sourceCoord;
+
+    QString piece;
+
+    int turn;
+
     void getLegalPawnMovement();
 
     void getLegalRookMovement();
 
-    void getLegalKnightMovement(QPair<int, int> sourceCoord, int turn);
+    void getLegalKnightMovement();
 
     void getLegalBishopMovement();
 

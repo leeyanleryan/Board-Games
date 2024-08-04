@@ -35,8 +35,10 @@ void Chess::variableSetup()
     coordinatePositionMap = {}; // example: "a8": (0,0), "b8": (0,1)
     piecePositionMap = {}; // example: (0,0): "r", (0,1): "n"
     pieceImageMap = {}; // example: "r": "RookBlack.png"
-    whitePiecesSet = {"R", "N", "B", "Q", "K", "P"};
-    blackPiecesSet = {"r", "n", "b", "q", "k", "p"};
+    QSet<QString> whitePiecesSet = {"R", "N", "B", "Q", "K", "P"};
+    QSet<QString> blackPiecesSet = {"r", "n", "b", "q", "k", "p"};
+    piecesSet.push_back(whitePiecesSet);
+    piecesSet.push_back(blackPiecesSet);
     floatingIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
     floatingIconLabel->setVisible(false);
     floatingIconLabel->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);

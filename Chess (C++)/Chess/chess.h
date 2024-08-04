@@ -25,8 +25,7 @@ public:
     ~Chess();
 
     QMap<QString, QPair<int, int>> coordinatePositionMap;
-    QSet<QString> whitePiecesSet;
-    QSet<QString> blackPiecesSet;
+    std::vector<QSet<QString>> piecesSet;
     QLabel *floatingIconLabel;
     bool gameStarted;
 
