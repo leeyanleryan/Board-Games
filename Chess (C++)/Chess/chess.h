@@ -24,18 +24,17 @@ public:
     Chess(QWidget *parent = nullptr);
     ~Chess();
 
+    QMap<QString, QPair<int, int>> coordinatePositionMap;
     QSet<QString> whitePiecesSet;
     QSet<QString> blackPiecesSet;
-    ChessButton *sourceButton;
+    //ChessButton *sourceButton;
     QLabel *floatingIconLabel;
     bool gameStarted;
+    int turn;
 
-protected:
-    //void mouseMoveEvent(QMouseEvent *event) override;
+    void showLegalMoves(ChessButton *sourceButton);
 
-    void dragEnterEvent(QDragEnterEvent *event) override;
-
-    void dropEvent(QDropEvent *event) override;
+    void makeMove(ChessButton *sourceButton, ChessButton *targetButton);
 
 private slots:
     void variableSetup();
@@ -114,7 +113,6 @@ private:
     ChessLogic *logic;
 
     QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
-    QMap<QString, QPair<int, int>> coordinatePositionMap;
     QMap<QPair<int, int>, QString> piecePositionMap;
     QMap<QString, QString> pieceImageMap;
     std::vector<std::vector<QString>> board;
@@ -135,7 +133,6 @@ private:
     int computerDifficulty;
     int gameNumber;
     int aiTurn;
-    int turn;
     int moveNumber;
     QList<QLabel*> moveLabels;
     QVBoxLayout *scrollLayout;

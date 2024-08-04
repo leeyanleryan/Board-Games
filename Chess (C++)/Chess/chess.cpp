@@ -12,7 +12,7 @@
 
 Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
-    , sourceButton(nullptr)
+    //, sourceButton(nullptr)
     , floatingIconLabel(new QLabel(this))
     , ui(new Ui::Chess)
     , ai(new ChessAI(this))
@@ -585,35 +585,17 @@ void Chess::addMove(const QString &move)
     autoScroll();
 }
 
-// void Chess::mouseMoveEvent(QMouseEvent *event)
-// {
-//     if (floatingIconLabel->isVisible() && sourceButton)
-//     {
-//         QPoint topLeft = sourceButton->geometry().topLeft();
-//         QPoint eventPos = event->position().toPoint();
-//         int x = topLeft.x() + eventPos.x() - 35;
-//         int y = topLeft.y() + eventPos.y() - 35;
-//         floatingIconLabel->move(x, y);
-//     }
-//     QMainWindow::mouseMoveEvent(event);
-// }
-
-void Chess::dragEnterEvent(QDragEnterEvent *event)
+void Chess::showLegalMoves(ChessButton *sourceButton)
 {
-    if (!event->mimeData()->hasImage())
-    {
-        return;
-    }
-    event->acceptProposedAction();
-
     if (!sourceButton)
     {
         return;
     }
+
     QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
     QString piece = board[sourceCoord.first][sourceCoord.second];
+    logic->board = board;
 
-    logic->board = this->board;
     if (turn == 0)
     {
         if (!whitePiecesSet.contains(piece))
@@ -678,24 +660,15 @@ void Chess::dragEnterEvent(QDragEnterEvent *event)
     }
 }
 
-void Chess::dropEvent(QDropEvent *event)
+void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
 {
-    qDebug() << "DROP";
-    if (!sourceButton)
-    {
-        return;
-    }
     QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
-    QString piece = board[sourceCoord.first][sourceCoord.second];
-
-    ChessButton *targetButton = qobject_cast<ChessButton*>(childAt(event->position().toPoint()));
-    if (!targetButton)
-    {
-        return;
-    }
     QPair<int, int> targetCoord = coordinatePositionMap[targetButton->objectName()];
+
     if (!logic->legalMoves.contains(targetCoord))
     {
+        sourceButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
+        sourceButton->setIconSize(QSize(90, 90));
         return;
     }
 
@@ -703,9 +676,6 @@ void Chess::dropEvent(QDropEvent *event)
     board[sourceCoord.first][sourceCoord.second] = "-";
     turn = 1 - turn;
 
-    QIcon pieceIcon = QIcon(QPixmap::fromImage(qvariant_cast<QImage>(event->mimeData()->imageData())));
-    targetButton->setIcon(pieceIcon);
+    targetButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
     targetButton->setIconSize(QSize(90, 90));
-    event->setDropAction(Qt::MoveAction);
-    event->acceptProposedAction();
 }
