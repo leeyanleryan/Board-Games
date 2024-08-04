@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QPushButton>
 #include <QMouseEvent>
+#include <QCursor>
 #include <QDrag>
 #include <QMimeData>
 #include <QApplication>
@@ -16,6 +17,10 @@ public:
     explicit ChessButton(QWidget *parent = nullptr);
 
 protected:
+    void enterEvent(QEnterEvent *event) override;
+
+    void leaveEvent(QEvent *event) override;
+
     void mousePressEvent(QMouseEvent *event) override;
 
     void mouseMoveEvent(QMouseEvent *event) override;

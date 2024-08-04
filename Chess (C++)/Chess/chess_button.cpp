@@ -7,6 +7,21 @@ ChessButton::ChessButton(QWidget *parent)
     isDragging = false;
 }
 
+void ChessButton::enterEvent(QEnterEvent *event)
+{
+    if (!icon().isNull())
+    {
+        QApplication::setOverrideCursor(Qt::OpenHandCursor);
+        QPushButton::enterEvent(event);
+    }
+}
+
+void ChessButton::leaveEvent(QEvent *event)
+{
+    QApplication::restoreOverrideCursor();
+    QPushButton::leaveEvent(event);
+}
+
 void ChessButton::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && !icon().isNull())
@@ -41,24 +56,7 @@ void ChessButton::mousePressEvent(QMouseEvent *event)
         chess->floatingIconLabel->setVisible(true);
         setIcon(QIcon());
 
-        QApplication::setOverrideCursor(Qt::PointingHandCursor);
-
-        // QDrag *drag = new QDrag(this);
-        // QMimeData *mimeData = new QMimeData;
-        // mimeData->setImageData(icon().pixmap(iconSize()).toImage());
-        // drag->setMimeData(mimeData);
-        // drag->setPixmap(icon().pixmap(iconSize()));
-        // drag->setHotSpot(rect().center());
-
-        // QIcon currentIcon = icon();
-        // setIcon(QIcon());
-
-        // Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
-
-        // if (dropAction != Qt::MoveAction)
-        // {
-        //     setIcon(currentIcon);
-        // }
+        QApplication::setOverrideCursor(Qt::ClosedHandCursor);
     }
 }
 
@@ -121,11 +119,7 @@ void ChessButton::mouseReleaseEvent(QMouseEvent *event)
         QPoint topLeft = chess->sourceButton->geometry().topLeft();
         QPoint eventPos = event->position().toPoint();
         int x, y;
-        if (eventPos.x() >= 0 && eventPos.x() <= 90)
-        {
-            x = topLeft.x() + 45;
-        }
-        else if (eventPos.x() > 90)
+        if (eventPos.x() >= 0)
         {
             x = topLeft.x() + 90*(eventPos.x()/90) + 45;
         }
@@ -133,11 +127,7 @@ void ChessButton::mouseReleaseEvent(QMouseEvent *event)
         {
             x = topLeft.x() + 90*(-1 + eventPos.x()/90) + 45;
         }
-        if (eventPos.y() >= 0 && eventPos.y() <= 90)
-        {
-            y = topLeft.y() + 45;
-        }
-        else if (eventPos.y() > 90)
+        if (eventPos.y() >= 0)
         {
             y = topLeft.y() + 90*(eventPos.y()/90) + 45;
         }
@@ -148,9 +138,9 @@ void ChessButton::mouseReleaseEvent(QMouseEvent *event)
 
         QPoint targetPoint(x,y);
 
-        qDebug() << topLeft;
-        qDebug() << eventPos;
-        qDebug() << x << y;
+        //qDebug() << topLeft;
+        //qDebug() << eventPos;
+        //qDebug() << x << y;
 
         ChessButton *targetButton = qobject_cast<ChessButton*>(chess->childAt(targetPoint));
         if (targetButton && targetButton != chess->sourceButton)
