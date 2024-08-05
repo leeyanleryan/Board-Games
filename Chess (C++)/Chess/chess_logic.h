@@ -27,11 +27,8 @@ private:
     std::vector<std::vector<QString>> board;
 
     QPair<int, int> sourceCoord;
-
     int sourceRow;
-
     int sourceCol;
-
     QString sourcePiece;
 
     int turn;
@@ -41,6 +38,8 @@ private:
     //bool isChecked;
 
     bool getLegalMovesHelper(int targetRow, int targetCol);
+
+    void addLegalMoveIfNotPinned(QPair<int, int> targetCoord, int targetRow, int targetCol, QString targetPiece);
 
     void getLegalPawnMovement();
 
@@ -54,6 +53,10 @@ private:
 
     void getLegalKingMovement();
 
+    bool hitEnemyPiece(int eRow, int eCol);
+
+    bool hitPiece(int targetRow, int targetCol);
+
     std::vector<QPair<int, int>> findEnemyPawn();
 
     std::vector<QPair<int, int>> findEnemyRook();
@@ -65,8 +68,6 @@ private:
     std::vector<QPair<int, int>> findEnemyQueen();
 
     std::vector<QPair<int, int>> findEnemyKing();
-
-    bool pieceIsPinned();
 
     bool kingIsChecked();
 
