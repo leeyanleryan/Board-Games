@@ -24,6 +24,8 @@ public:
     Chess(QWidget *parent = nullptr);
     ~Chess();
 
+    ChessLogic *logic;
+
     QMap<QString, QPair<int, int>> coordinatePositionMap;
     std::vector<QSet<QString>> piecesSet;
     QLabel *floatingIconLabel;
@@ -116,7 +118,6 @@ private slots:
 private:
     Ui::Chess *ui;
     ChessAI *ai;
-    ChessLogic *logic;
 
     QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
     QMap<QPair<int, int>, QString> piecePositionMap;

@@ -18,6 +18,10 @@ public:
 private:
     Chess *chess;
 
+    std::vector<QPair<int, int>> kingCoords;
+
+    std::vector<bool> kingCanCastle;
+
     QSet<QPair<int, int>> legalMoves;
 
     std::vector<std::vector<QString>> board;
