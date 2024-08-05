@@ -753,10 +753,16 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
         return;
     }
 
-    if (board[sourceCoord.first][sourceCoord.second] == "K" || board[sourceCoord.first][sourceCoord.second] == "k")
+    QString sourcePiece = board[sourceCoord.first][sourceCoord.second];
+
+    if (sourcePiece == "K" || sourcePiece == "k")
     {
-        logic->kingCoords[turn] = qMakePair(targetCoord.first, targetCoord.second);
+        logic->kingCoords[turn] = targetCoord;
         logic->kingHasMoved[turn] = true;
+    }
+    else if ((sourcePiece == "P" || sourcePiece == "p") && abs(targetCoord.first - sourceCoord.first) == 2)
+    {
+
     }
 
     board[targetCoord.first][targetCoord.second] = board[sourceCoord.first][sourceCoord.second];
