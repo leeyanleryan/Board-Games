@@ -96,14 +96,23 @@ void Chess::launchSetup()
 
 void Chess::setDefaultBoard()
 {
-    board.push_back({"r","n","b","q","k","b","n","r"});
-    board.push_back({"p","p","p","p","p","p","p","p"});
+    // board.push_back({"r","n","b","q","k","b","n","r"});
+    // board.push_back({"p","p","p","p","p","p","p","p"});
+    // board.push_back({"-","-","-","-","-","-","-","-"});
+    // board.push_back({"-","-","-","-","-","-","-","-"});
+    // board.push_back({"-","-","-","-","-","-","-","-"});
+    // board.push_back({"-","-","-","-","-","-","-","-"});
+    // board.push_back({"P","P","P","P","P","P","P","P"});
+    // board.push_back({"R","N","B","Q","K","B","N","R"});
+
+    board.push_back({"r","n","b","q","-","b","n","r"});
+    board.push_back({"-","-","-","-","-","-","-","-"});
+    board.push_back({"B","-","-","-","-","-","k","-"});
     board.push_back({"-","-","-","-","-","-","-","-"});
     board.push_back({"-","-","-","-","-","-","-","-"});
+    board.push_back({"-","-","-","-","-","-","K","-"});
     board.push_back({"-","-","-","-","-","-","-","-"});
-    board.push_back({"-","-","-","-","-","-","-","-"});
-    board.push_back({"P","P","P","P","P","P","P","P"});
-    board.push_back({"R","N","B","Q","K","B","N","R"});
+    board.push_back({"R","N","B","Q","-","-","N","R"});
 }
 
 void Chess::setButtonPositionMap()
@@ -742,6 +751,12 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
         sourceButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
         sourceButton->setIconSize(QSize(90, 90));
         return;
+    }
+
+    if (board[sourceCoord.first][sourceCoord.second] == "K" || board[sourceCoord.first][sourceCoord.second] == "k")
+    {
+        logic->kingCoords[turn] = qMakePair(targetCoord.first, targetCoord.second);
+        logic->kingHasMoved[turn] = true;
     }
 
     board[targetCoord.first][targetCoord.second] = board[sourceCoord.first][sourceCoord.second];

@@ -5,8 +5,16 @@
 ChessLogic::ChessLogic(Chess *chessInstance)
     : chess(chessInstance)
 {
-    kingCoords = {qMakePair(7, 4), qMakePair(0, 4)};
-    kingCanCastle = {true, true};
+    kingCoords = {qMakePair(5, 6), qMakePair(2, 6)};
+    kingHasMoved = {false, false};
+
+    pawnPieces = {"P", "p"};
+    rookPieces = {"R", "r"};
+    knightPieces = {"N", "n"};
+    bishopPieces = {"B", "b"};
+    queenPieces = {"Q", "q"};
+
+    pawnDirections = {-1, 1};
 }
 
 QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::vector<std::vector<QString>> chessBoard, QPair<int, int> sourceCoord, int turn)
@@ -17,8 +25,6 @@ QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::vector<std::vector<QString>
     sourceCol = sourceCoord.second;
     sourcePiece = board[sourceRow][sourceCol];
     this->turn = turn;
-    //isPinned = pieceIsPinned();
-    //isChecked = kingIsChecked();
 
     if (!chess->piecesSet[turn].contains(sourcePiece))
     {
@@ -58,11 +64,11 @@ QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::vector<std::vector<QString>
 void ChessLogic::getLegalPawnMovement()
 {
     std::vector<int> homeRow = {6, 1};
-    std::vector<int> direction = {-1, 1};
-    QPair<int, int> forwardOnce = qMakePair(sourceRow+direction[turn], sourceCol);
-    QPair<int, int> forwardTwice = qMakePair(sourceRow+2*direction[turn], sourceCol);
-    QPair<int, int> diagonalLeft = qMakePair(sourceRow+direction[turn], sourceCol-1);
-    QPair<int, int> diagonalRight = qMakePair(sourceRow+direction[turn], sourceCol+1);
+    QPair<int, int> forwardOnce = qMakePair(sourceRow+pawnDirections[turn], sourceCol);
+    QPair<int, int> forwardTwice = qMakePair(sourceRow+2*pawnDirections[turn], sourceCol);
+    QPair<int, int> diagonalLeft = qMakePair(sourceRow+pawnDirections[turn], sourceCol-1);
+    QPair<int, int> diagonalRight = qMakePair(sourceRow+pawnDirections[turn], sourceCol+1);
+
     // Can move forward if no piece in front
     if (forwardOnce.first >= 0 && forwardOnce.first <= 7 && board[forwardOnce.first][forwardOnce.second] == "-")
     {
@@ -99,7 +105,7 @@ bool ChessLogic::getLegalMovesHelper(int targetRow, int targetCol)
     }
     else if (chess->piecesSet[1-turn].contains(targetPiece))
     {
-        legalMoves.insert(targetCoord);
+        addLegalMoveIfNotPinned(targetCoord, targetRow, targetCol, targetPiece);
         return true;
     }
     addLegalMoveIfNotPinned(targetCoord, targetRow, targetCol, targetPiece);
@@ -257,48 +263,27 @@ void ChessLogic::getLegalKingMovement()
 std::vector<QPair<int, int>> ChessLogic::findEnemyPawn()
 {
     std::vector<QPair<int, int>> enemyPawnPool = {};
-    std::vector<QString> pawnPieces = {"P", "p"};
-    std::vector<int> direction = {-1, 1};
     QPair<int, int> kingCoord = kingCoords[turn];
     int kingRow = kingCoord.first;
     int kingCol = kingCoord.second;
 
-    // find if there is enemy pawn at top/bottom left
-    if (board[kingRow + direction[turn]][kingCol-1] == pawnPieces[1-turn])
+    // diagonal left
+    if (kingCol-1 >= 0 && board[kingRow + pawnDirections[turn]][kingCol-1] == pawnPieces[1-turn])
     {
-        enemyPawnPool.push_back(qMakePair(kingRow + direction[turn], kingCol-1));
+        enemyPawnPool.push_back(qMakePair(kingRow + pawnDirections[turn], kingCol-1));
     }
-    // find if there is enemy pawn at top/bottom right
-    if (board[kingRow + direction[turn]][kingCol+1] == pawnPieces[1-turn])
+    // diagonal right
+    if (kingCol+1 <= 7 && board[kingRow + pawnDirections[turn]][kingCol+1] == pawnPieces[1-turn])
     {
-        enemyPawnPool.push_back(qMakePair(kingRow + direction[turn], kingCol+1));
+        enemyPawnPool.push_back(qMakePair(kingRow + pawnDirections[turn], kingCol+1));
     }
 
     return enemyPawnPool;
 }
 
-bool ChessLogic::hitPiece(int targetRow, int targetCol)
-{
-    // QPair<int, int> targetCoord = qMakePair(kingRow-i-1, kingCol);
-    // QString targetPiece = board[targetCoord.first][targetCoord.second];
-    // if (targetPiece == rookPieces[1-turn] || targetPiece == queenPieces[1-turn])
-    // {
-    //     enemyPiecePool.push_back(targetCoord);
-    //     return true;
-    // }
-    // else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
-    // {
-    //     return true;
-    // }
-    // return false;
-    return false;
-}
-
 std::vector<QPair<int, int>> ChessLogic::findEnemyRook()
 {
     std::vector<QPair<int, int>> enemyRookPool = {};
-    std::vector<QString> rookPieces = {"R", "r"};
-    std::vector<QString> queenPieces = {"Q", "q"};
     QPair<int, int> kingCoord = kingCoords[turn];
     int kingRow = kingCoord.first;
     int kingCol = kingCoord.second;
@@ -370,7 +355,6 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyRook()
 std::vector<QPair<int, int>> ChessLogic::findEnemyKnight()
 {
     std::vector<QPair<int, int>> enemyKnightPool = {};
-    std::vector<QString> knightPieces = {"N", "n"};
     QPair<int, int> kingCoord = kingCoords[turn];
     int kingRow = kingCoord.first;
     int kingCol = kingCoord.second;
@@ -402,8 +386,6 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyKnight()
 std::vector<QPair<int, int>> ChessLogic::findEnemyBishop()
 {
     std::vector<QPair<int, int>> enemyBishopPool = {};
-    std::vector<QString> bishopPieces = {"B", "b"};
-    std::vector<QString> queenPieces = {"Q", "q"};
     QPair<int, int> kingCoord = kingCoords[turn];
     int kingRow = kingCoord.first;
     int kingCol = kingCoord.second;
@@ -486,11 +468,6 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyQueen()
     }
 
     return enemyQueenPool;
-}
-
-std::vector<QPair<int, int>> ChessLogic::findEnemyKing()
-{
-    return {};
 }
 
 bool ChessLogic::kingIsChecked()
