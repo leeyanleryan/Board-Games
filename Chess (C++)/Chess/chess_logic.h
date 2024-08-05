@@ -36,6 +36,12 @@ private:
 
     int turn;
 
+    //bool isPinned;
+
+    //bool isChecked;
+
+    bool getLegalMovesHelper(int targetRow, int targetCol);
+
     void getLegalPawnMovement();
 
     void getLegalRookMovement();
