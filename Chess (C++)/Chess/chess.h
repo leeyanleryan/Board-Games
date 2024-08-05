@@ -149,6 +149,7 @@ private:
     ChessButton *prevMovedTargetButton;
     ChessButton *prevClickedSourceButton;
     int prevSourceButtonClicks;
+    bool moveIsIllegal;
 };
 
 #endif // CHESS_H

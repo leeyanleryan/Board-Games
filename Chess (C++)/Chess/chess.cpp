@@ -81,6 +81,7 @@ void Chess::variableSetup()
     prevMovedTargetButton = nullptr;
     prevClickedSourceButton = nullptr;
     prevSourceButtonClicks = 0;
+    moveIsIllegal = false;
 }
 
 void Chess::launchSetup()
@@ -650,14 +651,12 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
     {
         return;
     }
-
     // clicked on previously moved source or target button
     if ((prevMovedSourceButton && prevMovedSourceButton == sourceButton) ||
         (prevMovedTargetButton && prevMovedTargetButton == sourceButton))
     {
         hideLegalMoveImages();
         legalMoves = {};
-
         if (prevClickedSourceButton)
         {
             resetButtonStyleSheet(prevClickedSourceButton);
@@ -677,7 +676,10 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
     // has clicked before, clicked on same button
     else if (prevClickedSourceButton == sourceButton)
     {
-        prevClickedSourceButton = nullptr;
+        if (!moveIsIllegal)
+        {
+            prevClickedSourceButton = nullptr;
+        }
         prevSourceButtonClicks = 2;
     }
     // has clicked before, clicked on different button
@@ -715,6 +717,7 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
 
     QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
     QPair<int, int> targetCoord = coordinatePositionMap[targetButton->objectName()];
+    moveIsIllegal = false;
 
     if (sourceCoord == targetCoord)
     {
@@ -724,7 +727,6 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
             {
                 resetButtonStyleSheet(sourceButton);
             }
-
             hideLegalMoveImages();
             legalMoves = {};
 
@@ -736,6 +738,7 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     }
     if (!legalMoves.contains(targetCoord))
     {
+        moveIsIllegal = true;
         sourceButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
         sourceButton->setIconSize(QSize(90, 90));
         return;
