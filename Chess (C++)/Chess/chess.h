@@ -26,7 +26,7 @@ public:
 
     ChessLogic *logic;
 
-    QMap<QString, QPair<int, int>> coordinatePositionMap;
+    QMap<QString, QPair<int, int>> coordinatePositionMap; // example: "a8": (0,0), "b8": (0,1)
     QLabel *floatingIconLabel;
     bool gameStarted;
     QSet<QPair<int, int>> legalMoves;
@@ -120,9 +120,9 @@ private:
     Ui::Chess *ui;
     ChessAI *ai;
 
-    QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
-    QMap<QPair<int, int>, char> piecePositionMap;
-    QMap<char, QString> pieceImageMap;
+    QMap<QPair<int, int>, QPushButton*> buttonPositionMap; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
+    QMap<QPair<int, int>, char> piecePositionMap; // example: (0,0): 'r', (0,1): 'n'
+    QMap<char, QString> pieceImageMap; // example: 'r': "RookBlack"
     std::array<std::array<char, 8>, 8> board;
     QString pieceImagePath;
     QString boardImagePath;

@@ -68,7 +68,7 @@ QSet<QPair<int, int>> ChessLogic::getLegalMoves(const std::array<std::array<char
     return legalMoves;
 }
 
-void ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn)
+QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn)
 {
     if ((sourcePiece == 'P' || sourcePiece == 'p') && abs(targetCoord.first - sourceCoord.first) == 2)
     {
@@ -83,6 +83,11 @@ void ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, Q
     chessBoard[targetCoord.first][targetCoord.second] = chessBoard[sourceCoord.first][sourceCoord.second];
     chessBoard[sourceCoord.first][sourceCoord.second] = '-';
     currTurn = 1 - currTurn;
+
+    QString move(sourcePiece);
+
+
+    return move;
 }
 
 void ChessLogic::getLegalPawnMovement()
