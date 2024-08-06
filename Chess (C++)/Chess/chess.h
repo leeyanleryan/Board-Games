@@ -26,6 +26,7 @@ public:
 
     ChessLogic *logic;
 
+    QMap<QPair<int, int>, QPushButton*> coordinateButtonMap; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
     QMap<QString, QPair<int, int>> notationCoordinateMap; // example: "a8": (0,0), "b8": (0,1)
     QMap<QPair<int, int>, QString> coordinateNotationMap; // example: (0,0): "a8", (0,1): "b8"
 
@@ -126,7 +127,6 @@ private:
     Ui::Chess *ui;
     ChessAI *ai;
 
-    QMap<QPair<int, int>, QPushButton*> coordinateButtonMap; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
     QMap<QPair<int, int>, char> coordinatePieceMap; // example: (0,0): 'r', (0,1): 'n'
     QMap<char, QString> pieceImageMap; // example: 'r': "RookBlack"
 

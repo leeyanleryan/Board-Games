@@ -19,6 +19,9 @@ ChessLogic::ChessLogic(Chess *chessInstance)
     kingPieces = {'K', 'k'};
 
     pawnDirections = {-1, 1};
+    pawnHomeRows = {6, 1};
+
+    enPassantCoord = qMakePair(-1, -1);
 }
 
 QSet<QPair<int, int>> ChessLogic::getLegalMoves(const std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> sCoord, int currTurn)
@@ -68,11 +71,28 @@ QSet<QPair<int, int>> ChessLogic::getLegalMoves(const std::array<std::array<char
     return legalMoves;
 }
 
-QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn)
+QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn, bool changeUI)
 {
-    if ((sourcePiece == 'P' || sourcePiece == 'p') && abs(targetCoord.first - sourceCoord.first) == 2)
-    {
+    int targetRow = targetCoord.first;
+    int targetCol = targetCoord.second;
+    char targetPiece = chessBoard[targetRow][targetCol];
 
+    enPassantCoord = qMakePair(-1, -1);
+
+    if (sourcePiece == 'P' || sourcePiece == 'p')
+    {
+        if (abs(targetRow - sourceRow) == 2)
+        {
+            enPassantCoord = targetCoord;
+        }
+        if (targetPiece == '-' && targetCol != sourceCol)
+        {
+            chessBoard[targetRow + pawnDirections[1-turn]][targetCol] = '-';
+            if (changeUI)
+            {
+                chess->coordinateButtonMap[qMakePair(targetRow + pawnDirections[1-turn], targetCol)]->setIcon(QIcon());
+            }
+        }
     }
     else if (sourcePiece == 'K' || sourcePiece == 'k')
     {
@@ -80,8 +100,8 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
         kingHasMoved[turn] = true;
     }
 
-    chessBoard[targetCoord.first][targetCoord.second] = chessBoard[sourceCoord.first][sourceCoord.second];
-    chessBoard[sourceCoord.first][sourceCoord.second] = '-';
+    chessBoard[targetRow][targetCol] = chessBoard[sourceRow][sourceCol];
+    chessBoard[sourceRow][sourceCol] = '-';
     currTurn = 1 - currTurn;
 
     QString move(sourcePiece);
@@ -111,40 +131,6 @@ void ChessLogic::setKingInfo(const std::array<std::array<char, 8>, 8> &chessBoar
     kingHasMoved[1] = blackKingHasMoved;
 }
 
-void ChessLogic::getLegalPawnMovement()
-{
-    std::vector<int> homeRow = {6, 1};
-    QPair<int, int> forwardOnce = qMakePair(sourceRow+pawnDirections[turn], sourceCol);
-    QPair<int, int> forwardTwice = qMakePair(sourceRow+2*pawnDirections[turn], sourceCol);
-    QPair<int, int> diagonalLeft = qMakePair(sourceRow+pawnDirections[turn], sourceCol-1);
-    QPair<int, int> diagonalRight = qMakePair(sourceRow+pawnDirections[turn], sourceCol+1);
-
-    // Can move forward if no piece in front
-    if (forwardOnce.first >= 0 && forwardOnce.first <= 7 && board[forwardOnce.first][forwardOnce.second] == '-')
-    {
-        legalMoves.insert(forwardOnce);
-    }
-    // Home square can move one extra
-    if (sourceRow == homeRow[turn] && board[forwardTwice.first][forwardTwice.second] == '-')
-    {
-        legalMoves.insert(forwardTwice);
-    }
-    // Capture diagonally left
-    if (diagonalLeft.second >= 0 && piecesSet[1-turn].contains(board[diagonalLeft.first][diagonalLeft.second]))
-    {
-        legalMoves.insert(diagonalLeft);
-    }
-    // Capture diagonally right
-    if (diagonalRight.second <= 7 && piecesSet[1-turn].contains(board[diagonalRight.first][diagonalRight.second]))
-    {
-        legalMoves.insert(diagonalRight);
-    }
-    // En passant left
-
-    // En passant right
-
-}
-
 bool ChessLogic::getLegalMovesHelper(int targetRow, int targetCol)
 {
     QPair<int, int> targetCoord = qMakePair(targetRow, targetCol);
@@ -172,6 +158,51 @@ void ChessLogic::addLegalMoveIfNotPinned(QPair<int, int> targetCoord, int target
     }
     board[targetRow][targetCol] = targetPiece;
     board[sourceRow][sourceCol] = sourcePiece;
+}
+
+void ChessLogic::getLegalPawnMovement()
+{
+    QPair<int, int> forwardOnce = qMakePair(sourceRow+pawnDirections[turn], sourceCol);
+    QPair<int, int> forwardTwice = qMakePair(sourceRow+2*pawnDirections[turn], sourceCol);
+    QPair<int, int> diagonalLeft = qMakePair(sourceRow+pawnDirections[turn], sourceCol-1);
+    QPair<int, int> diagonalRight = qMakePair(sourceRow+pawnDirections[turn], sourceCol+1);
+    QPair<int, int> straightLeft = qMakePair(sourceRow, sourceCol-1);
+    QPair<int, int> straightRight = qMakePair(sourceRow, sourceCol+1);
+
+    // Can move forward if no piece in front
+    if (forwardOnce.first >= 0 && forwardOnce.first <= 7 && board[forwardOnce.first][forwardOnce.second] == '-')
+    {
+        addLegalMoveIfNotPinned(forwardOnce, forwardOnce.first, forwardOnce.second, pawnPieces[turn]);
+    }
+    // Home square can move one extra
+    if (sourceRow == pawnHomeRows[turn] && board[forwardTwice.first][forwardTwice.second] == '-')
+    {
+        addLegalMoveIfNotPinned(forwardTwice, forwardTwice.first, forwardTwice.second, pawnPieces[turn]);
+    }
+    // Capture diagonally left
+    if (diagonalLeft.second >= 0 && piecesSet[1-turn].contains(board[diagonalLeft.first][diagonalLeft.second]))
+    {
+        addLegalMoveIfNotPinned(diagonalLeft, diagonalLeft.first, diagonalLeft.second, pawnPieces[turn]);
+    }
+    // Capture diagonally right
+    if (diagonalRight.second <= 7 && piecesSet[1-turn].contains(board[diagonalRight.first][diagonalRight.second]))
+    {
+        addLegalMoveIfNotPinned(diagonalRight, diagonalRight.first, diagonalRight.second, pawnPieces[turn]);
+    }
+    // En passant left
+    if (straightLeft.second >= 0 && board[straightLeft.first][straightLeft.second] == pawnPieces[1-turn] && straightLeft == enPassantCoord)
+    {
+        board[straightLeft.first][straightLeft.second] = '-';
+        addLegalMoveIfNotPinned(diagonalLeft, diagonalLeft.first, diagonalLeft.second, pawnPieces[turn]);
+        board[straightLeft.first][straightLeft.second] = pawnPieces[1-turn];
+    }
+    // En passant right
+    if (straightRight.second <= 7 && board[straightRight.first][straightRight.second] == pawnPieces[1-turn] && straightRight == enPassantCoord)
+    {
+        board[straightRight.first][straightRight.second] = '-';
+        addLegalMoveIfNotPinned(diagonalRight, diagonalRight.first, diagonalRight.second, pawnPieces[turn]);
+        board[straightRight.first][straightRight.second] = pawnPieces[1-turn];
+    }
 }
 
 void ChessLogic::getLegalRookMovement()

@@ -787,7 +787,7 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
         return;
     }
 
-    addMove(logic->makeLegalMove(board, targetCoord, turn));
+    addMove(logic->makeLegalMove(board, targetCoord, turn, true));
 
     hideLegalMoveImages();
     legalMoves = {};

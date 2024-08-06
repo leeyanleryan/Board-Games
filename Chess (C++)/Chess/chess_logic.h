@@ -15,7 +15,7 @@ public:
 
     QSet<QPair<int, int>> getLegalMoves(const std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> sCoord, int currTurn);
 
-    QString makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn);
+    QString makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn, bool changeUI);
 
     void setKingInfo(const std::array<std::array<char, 8>, 8> &chessBoard, bool whiteKingHasMoved, bool blackKingHasMoved);
 
@@ -50,6 +50,9 @@ private:
     std::array<char, 2> kingPieces;
 
     std::array<int, 2> pawnDirections;
+    std::array<int, 2> pawnHomeRows;
+
+    QPair<int, int> enPassantCoord;
 
     bool getLegalMovesHelper(int targetRow, int targetCol);
 
