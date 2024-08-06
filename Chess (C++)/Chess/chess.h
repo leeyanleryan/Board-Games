@@ -160,8 +160,8 @@ private:
     ChessButton *prevMovedSourceButton;
     ChessButton *prevMovedTargetButton;
     ChessButton *prevClickedSourceButton;
-    int prevSourceButtonClicks;
-    bool moveIsIllegal;
+    int sourceButtonDrops;
+    bool clickedSameButton;
 };
 
 #endif // CHESS_H

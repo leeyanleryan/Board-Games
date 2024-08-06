@@ -82,8 +82,7 @@ void Chess::variableSetup()
     prevMovedSourceButton = nullptr;
     prevMovedTargetButton = nullptr;
     prevClickedSourceButton = nullptr;
-    prevSourceButtonClicks = 0;
-    moveIsIllegal = false;
+    sourceButtonDrops = 0;
 }
 
 void Chess::launchSetup()
@@ -595,6 +594,8 @@ void Chess::newGame()
     prevMovedSourceButton = nullptr;
     prevMovedTargetButton = nullptr;
     prevClickedSourceButton = nullptr;
+    sourceButtonDrops = 0;
+    clickedSameButton = false;
 
     logic->setKingCoords(board);
     logic->kingHasMoved = {false, false};
@@ -703,12 +704,14 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
     {
         return;
     }
+
     // clicked on previously moved source or target button
     if ((prevMovedSourceButton && prevMovedSourceButton == sourceButton) ||
         (prevMovedTargetButton && prevMovedTargetButton == sourceButton))
     {
         hideLegalMoveImages();
         legalMoves = {};
+
         if (prevClickedSourceButton)
         {
             resetButtonStyleSheet(prevClickedSourceButton);
@@ -718,25 +721,25 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
     // not clicked before
     else if (!prevClickedSourceButton)
     {
+        clickedSameButton = false;
+
         legalMoves = logic->getLegalMoves(board, notationCoordinateMap[sourceButton->objectName()], turn);
         showLegalMoveImages();
 
         setButtonStyleSheet(sourceButton, boardImagePath + "SelectedPiece.png");
         prevClickedSourceButton = sourceButton;
-        prevSourceButtonClicks = 1;
     }
     // has clicked before, clicked on same button
     else if (prevClickedSourceButton == sourceButton)
     {
-        if (!moveIsIllegal)
-        {
-            prevClickedSourceButton = nullptr;
-        }
-        prevSourceButtonClicks = 2;
+        clickedSameButton = true;
     }
     // has clicked before, clicked on different button
     else if (prevClickedSourceButton != sourceButton)
     {
+        sourceButtonDrops = 0;
+        clickedSameButton = false;
+
         hideLegalMoveImages();
         legalMoves = logic->getLegalMoves(board, notationCoordinateMap[sourceButton->objectName()], turn);
         showLegalMoveImages();
@@ -744,7 +747,6 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
         resetButtonStyleSheet(prevClickedSourceButton);
         setButtonStyleSheet(sourceButton, boardImagePath + "SelectedPiece.png");
         prevClickedSourceButton = sourceButton;
-        prevSourceButtonClicks = 1;
     }
 }
 
@@ -769,28 +771,34 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
 
     QPair<int, int> sourceCoord = notationCoordinateMap[sourceButton->objectName()];
     QPair<int, int> targetCoord = notationCoordinateMap[targetButton->objectName()];
-    moveIsIllegal = false;
 
     if (sourceCoord == targetCoord)
     {
-        if (prevSourceButtonClicks == 2)
+        if (sourceButtonDrops == 0)
         {
-            if (!(prevMovedTargetButton && prevMovedTargetButton == sourceButton))
-            {
-                resetButtonStyleSheet(sourceButton);
-            }
+            sourceButtonDrops = 1;
+        }
+        else if (sourceButtonDrops == 1 && clickedSameButton)
+        {
+            clickedSameButton = false;
+            prevClickedSourceButton = nullptr;
+
+            resetButtonStyleSheet(sourceButton);
             hideLegalMoveImages();
             legalMoves = {};
 
-            prevSourceButtonClicks = 0;
+            sourceButtonDrops = 0;
         }
         sourceButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
         sourceButton->setIconSize(QSize(90, 90));
         return;
     }
-    if (!legalMoves.contains(targetCoord))
+    else if (!legalMoves.contains(targetCoord))
     {
-        moveIsIllegal = true;
+        if (sourceButtonDrops == 0)
+        {
+            sourceButtonDrops = 1;
+        }
         sourceButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
         sourceButton->setIconSize(QSize(90, 90));
         return;
