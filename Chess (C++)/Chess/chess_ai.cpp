@@ -12,7 +12,7 @@ void ChessAI::makeMove()
 
 }
 
-char ChessAI::promotePawn()
+char ChessAI::promotePawn(QPair<int, int> sourceCoord, QPair<int, int> targetCoord)
 {
     return chess->logic->queenPieces[turn];
 }

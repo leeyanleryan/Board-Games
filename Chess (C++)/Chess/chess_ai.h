@@ -18,7 +18,7 @@ public:
 
     void makeMove();
 
-    char promotePawn();
+    char promotePawn(QPair<int, int> sourceCoord, QPair<int, int> targetCoord);
 
 private:
     Chess *chess;

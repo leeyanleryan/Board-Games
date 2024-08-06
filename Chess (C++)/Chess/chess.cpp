@@ -825,7 +825,16 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
         return;
     }
 
-    addMove(logic->makeLegalMove(board, targetCoord, turn, true));
+    QString move = logic->makeLegalMove(board, targetCoord, turn, true);
+    // cancelled promotion
+    if (move == "")
+    {
+        return;
+    }
+    else
+    {
+        addMove(move);
+    }
 
     hideLegalMoveImages();
     legalMoves = {};
@@ -857,7 +866,7 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     qDebug() << "Time taken: " << timeTakenToMove;
 }
 
-char Chess::promotePawn()
+char Chess::promotePawn(QPair<int, int> sourceCoord, QPair<int, int> targetCoord)
 {
     return logic->queenPieces[turn];
 }

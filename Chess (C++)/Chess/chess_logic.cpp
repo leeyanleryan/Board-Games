@@ -113,14 +113,22 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
         // pawn promoted to piece
         else if (sourceRow == pawnHomeRows[1-turn] && (targetRow == 7 || targetRow == 0))
         {
-            hasPromoted = true;
             if (changeUI)
             {
-                promotedPiece = chess->promotePawn();
+                promotedPiece = chess->promotePawn(sourceCoord, targetCoord);
             }
             else
             {
-                promotedPiece = chess->ai->promotePawn();
+                promotedPiece = chess->ai->promotePawn(sourceCoord, targetCoord);
+            }
+
+            if (promotedPiece == '-')
+            {
+                return "";
+            }
+            else
+            {
+                hasPromoted = true;
             }
         }
     }

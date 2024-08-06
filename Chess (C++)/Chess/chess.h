@@ -53,7 +53,7 @@ public:
 
     void makeMove(ChessButton *sourceButton, ChessButton *targetButton);
 
-    char promotePawn();
+    char promotePawn(QPair<int, int> sourceCoord, QPair<int, int> targetCoord);
 
 private slots:
     void variableSetup();

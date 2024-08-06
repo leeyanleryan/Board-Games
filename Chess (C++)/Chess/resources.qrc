@@ -42,5 +42,6 @@
         <file>Background/Default/buttonDifficultySelectedHover.png</file>
         <file>Background/Default/lineEdit.png</file>
         <file>Background/Default/movesPlayed.png</file>
+        <file>Background/Default/promoteBackground.png</file>
     </qresource>
 </RCC>
