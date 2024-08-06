@@ -13,12 +13,11 @@ class ChessLogic : public QObject
 public:
     ChessLogic(Chess *chessInstance);
 
-    std::vector<QPair<int, int>> kingCoords;
-    std::vector<bool> kingHasMoved;
-
     QSet<QPair<int, int>> getLegalMoves(const std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> sCoord, int currTurn);
 
     QString makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn);
+
+    void setKingInfo(const std::array<std::array<char, 8>, 8> &chessBoard, bool whiteKingHasMoved, bool blackKingHasMoved);
 
 private:
     Chess *chess;
@@ -31,6 +30,9 @@ private:
     int sourceRow;
     int sourceCol;
     char sourcePiece;
+
+    std::array<QPair<int, int>, 2> kingCoords;
+    std::array<bool, 2> kingHasMoved;
 
     QPair<int, int> kingCoord;
     int kingRow;

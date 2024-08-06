@@ -43,10 +43,10 @@ void Chess::variableSetup()
     pieceImageMap = {}; // example: 'r': "RookBlack"
     floatingIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
     floatingIconLabel->setVisible(false);
-    floatingIconLabel->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-    floatingIconLabel->setAttribute(Qt::WA_NoSystemBackground, true);
-    floatingIconLabel->setAttribute(Qt::WA_TranslucentBackground, true);
-    floatingIconLabel->setAttribute(Qt::WA_ShowWithoutActivating, true);
+    //floatingIconLabel->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    //floatingIconLabel->setAttribute(Qt::WA_NoSystemBackground, true);
+    //floatingIconLabel->setAttribute(Qt::WA_TranslucentBackground, true);
+    //floatingIconLabel->setAttribute(Qt::WA_ShowWithoutActivating, true);
     floatingIconLabel->raise();
     board = {};
     pieceImagePath = ":/Pieces/Neo/";
@@ -594,6 +594,7 @@ void Chess::newGame()
     prevMovedSourceButton = nullptr;
     prevMovedTargetButton = nullptr;
     prevClickedSourceButton = nullptr;
+    logic->setKingInfo(board, false, false);
     setChessBoard();
     QWidget *scrollWidget = new QWidget();
     QVBoxLayout *scrollLayoutUI = new QVBoxLayout(scrollWidget);

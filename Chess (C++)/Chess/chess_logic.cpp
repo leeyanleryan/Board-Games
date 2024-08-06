@@ -5,8 +5,8 @@
 ChessLogic::ChessLogic(Chess *chessInstance)
     : chess(chessInstance)
 {
-    kingCoords = {qMakePair(7, 4), qMakePair(0, 4)};
-    kingHasMoved = {false, false};
+    kingCoords = {};
+    kingHasMoved = {};
 
     piecesSet[0] = {'R', 'N', 'B', 'Q', 'K', 'P'};
     piecesSet[1] = {'r', 'n', 'b', 'q', 'k', 'p'};
@@ -88,6 +88,27 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
     move += chess->coordinateNotationMap[targetCoord];
 
     return move;
+}
+
+void ChessLogic::setKingInfo(const std::array<std::array<char, 8>, 8> &chessBoard, bool whiteKingHasMoved, bool blackKingHasMoved)
+{
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            if (chessBoard[i][j] == 'K')
+            {
+                kingCoords[0] = qMakePair(i, j);
+            }
+            if (chessBoard[i][j] == 'k')
+            {
+                kingCoords[1] = qMakePair(i, j);
+            }
+        }
+    }
+
+    kingHasMoved[0] = whiteKingHasMoved;
+    kingHasMoved[1] = blackKingHasMoved;
 }
 
 void ChessLogic::getLegalPawnMovement()
