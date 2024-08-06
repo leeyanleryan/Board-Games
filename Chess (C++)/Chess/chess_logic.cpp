@@ -8,6 +8,9 @@ ChessLogic::ChessLogic(Chess *chessInstance)
     kingCoords = {qMakePair(5, 6), qMakePair(2, 6)};
     kingHasMoved = {false, false};
 
+    piecesSet[0] = {"R", "N", "B", "Q", "K", "P"};
+    piecesSet[1] = {"r", "n", "b", "q", "k", "p"};
+
     pawnPieces = {"P", "p"};
     rookPieces = {"R", "r"};
     knightPieces = {"N", "n"};
@@ -30,7 +33,7 @@ QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::vector<std::vector<QString>
     kingCol = kingCoord.second;
     turn = currTurn;
 
-    if (!chess->piecesSet[turn].contains(sourcePiece))
+    if (!piecesSet[turn].contains(sourcePiece))
     {
         return {};
     }
@@ -84,12 +87,12 @@ void ChessLogic::getLegalPawnMovement()
         legalMoves.insert(forwardTwice);
     }
     // Capture diagonally left
-    if (diagonalLeft.second >= 0 && chess->piecesSet[1-turn].contains(board[diagonalLeft.first][diagonalLeft.second]))
+    if (diagonalLeft.second >= 0 && piecesSet[1-turn].contains(board[diagonalLeft.first][diagonalLeft.second]))
     {
         legalMoves.insert(diagonalLeft);
     }
     // Capture diagonally right
-    if (diagonalRight.second <= 7 && chess->piecesSet[1-turn].contains(board[diagonalRight.first][diagonalRight.second]))
+    if (diagonalRight.second <= 7 && piecesSet[1-turn].contains(board[diagonalRight.first][diagonalRight.second]))
     {
         legalMoves.insert(diagonalRight);
     }
@@ -103,11 +106,11 @@ bool ChessLogic::getLegalMovesHelper(int targetRow, int targetCol)
 {
     QPair<int, int> targetCoord = qMakePair(targetRow, targetCol);
     QString targetPiece = board[targetRow][targetCol];
-    if (chess->piecesSet[turn].contains(targetPiece))
+    if (piecesSet[turn].contains(targetPiece))
     {
         return true;
     }
-    else if (chess->piecesSet[1-turn].contains(targetPiece))
+    else if (piecesSet[1-turn].contains(targetPiece))
     {
         addLegalMoveIfNotPinned(targetCoord, targetRow, targetCol, targetPiece);
         return true;
@@ -181,7 +184,7 @@ void ChessLogic::getLegalKnightMovement()
             continue;
         }
         QString targetPiece = board[targetRow][targetCol];
-        if (chess->piecesSet[turn].contains(targetPiece))
+        if (piecesSet[turn].contains(targetPiece))
         {
             continue;
         }
@@ -247,7 +250,7 @@ void ChessLogic::getLegalKingMovement()
             continue;
         }
         QString targetPiece = board[targetRow][targetCol];
-        if (chess->piecesSet[turn].contains(targetPiece))
+        if (piecesSet[turn].contains(targetPiece))
         {
             continue;
         }
@@ -302,7 +305,7 @@ bool ChessLogic::findEnemyRookHelper(std::vector<QPair<int, int>> &enemyRookPool
         enemyRookPool.push_back(targetCoord);
         return true;
     }
-    else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+    else if (piecesSet[turn].contains(targetPiece) || piecesSet[1-turn].contains(targetPiece))
     {
         return true;
     }
@@ -385,7 +388,7 @@ bool ChessLogic::findEnemyBishopHelper(std::vector<QPair<int, int>> &enemyBishop
         enemyBishopPool.push_back(targetCoord);
         return true;
     }
-    else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+    else if (piecesSet[turn].contains(targetPiece) || piecesSet[1-turn].contains(targetPiece))
     {
         return true;
     }

@@ -27,7 +27,6 @@ public:
     ChessLogic *logic;
 
     QMap<QString, QPair<int, int>> coordinatePositionMap;
-    std::vector<QSet<QString>> piecesSet;
     QLabel *floatingIconLabel;
     bool gameStarted;
     QSet<QPair<int, int>> legalMoves;
@@ -133,7 +132,7 @@ private:
     QString buttonStyleSheetDisabled;
     QString buttonStyleSheetShadow;
     QString buttonStyleSheetDifficultyShadow;
-    std::vector<QString> playerNames;
+    std::array<QString, 2> playerNames;
     bool chosenFirst;
     bool randomTurn;
     bool alternateTurns;

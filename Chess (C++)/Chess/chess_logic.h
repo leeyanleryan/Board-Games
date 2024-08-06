@@ -36,6 +36,8 @@ private:
 
     int turn;
 
+    std::array<QSet<QString>, 2> piecesSet;
+
     std::array<QString, 2> pawnPieces;
     std::array<QString, 2> rookPieces;
     std::array<QString, 2> knightPieces;
@@ -43,7 +45,7 @@ private:
     std::array<QString, 2> queenPieces;
     std::array<QString, 2> kingPieces;
 
-    std::vector<int> pawnDirections;
+    std::array<int, 2> pawnDirections;
 
     bool getLegalMovesHelper(int targetRow, int targetCol);
 
