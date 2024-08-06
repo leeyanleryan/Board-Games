@@ -7,6 +7,7 @@ ChessLogic::ChessLogic(Chess *chessInstance)
 {
     kingCoords = {};
     kingHasMoved = {};
+    rookHasMoved = {};
 
     piecesSet[0] = {'R', 'N', 'B', 'Q', 'K', 'P'};
     piecesSet[1] = {'r', 'n', 'b', 'q', 'k', 'p'};
@@ -110,6 +111,11 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
         kingCoords[turn] = targetCoord;
         kingHasMoved[turn] = true;
     }
+    else if (sourcePiece == 'R' || sourcePiece == 'r')
+    {
+        move += sourcePiece;
+        rookHasMoved[turn] = true;
+    }
     else
     {
         move += sourcePiece;
@@ -129,7 +135,7 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
     return move;
 }
 
-void ChessLogic::setKingInfo(const std::array<std::array<char, 8>, 8> &chessBoard, bool whiteKingHasMoved, bool blackKingHasMoved)
+void ChessLogic::setKingCoords(const std::array<std::array<char, 8>, 8> &chessBoard)
 {
     for (int i = 0; i < 8; i++)
     {
@@ -145,9 +151,6 @@ void ChessLogic::setKingInfo(const std::array<std::array<char, 8>, 8> &chessBoar
             }
         }
     }
-
-    kingHasMoved[0] = whiteKingHasMoved;
-    kingHasMoved[1] = blackKingHasMoved;
 }
 
 bool ChessLogic::getLegalMovesHelper(int targetRow, int targetCol)
@@ -173,6 +176,7 @@ void ChessLogic::addLegalMoveIfNotPinned(QPair<int, int> targetCoord, int target
     board[sourceRow][sourceCol] = '-';
     if (!kingIsChecked())
     {
+        qDebug() << "LOL";
         legalMoves.insert(targetCoord);
     }
     board[targetRow][targetCol] = targetPiece;
@@ -191,35 +195,37 @@ void ChessLogic::getLegalPawnMovement()
     // Can move forward if no piece in front
     if (forwardOnce.first >= 0 && forwardOnce.first <= 7 && board[forwardOnce.first][forwardOnce.second] == '-')
     {
-        addLegalMoveIfNotPinned(forwardOnce, forwardOnce.first, forwardOnce.second, pawnPieces[turn]);
+        addLegalMoveIfNotPinned(forwardOnce, forwardOnce.first, forwardOnce.second, board[forwardOnce.first][forwardOnce.second]);
     }
     // Home square can move one extra
     if (sourceRow == pawnHomeRows[turn] && board[forwardTwice.first][forwardTwice.second] == '-')
     {
-        addLegalMoveIfNotPinned(forwardTwice, forwardTwice.first, forwardTwice.second, pawnPieces[turn]);
+        qDebug() << sourceCoord;
+        qDebug() << forwardTwice;
+        addLegalMoveIfNotPinned(forwardTwice, forwardTwice.first, forwardTwice.second, board[forwardTwice.first][forwardTwice.second]);
     }
     // Capture diagonally left
     if (diagonalLeft.second >= 0 && piecesSet[1-turn].contains(board[diagonalLeft.first][diagonalLeft.second]))
     {
-        addLegalMoveIfNotPinned(diagonalLeft, diagonalLeft.first, diagonalLeft.second, pawnPieces[turn]);
+        addLegalMoveIfNotPinned(diagonalLeft, diagonalLeft.first, diagonalLeft.second, board[diagonalLeft.first][diagonalLeft.second]);
     }
     // Capture diagonally right
     if (diagonalRight.second <= 7 && piecesSet[1-turn].contains(board[diagonalRight.first][diagonalRight.second]))
     {
-        addLegalMoveIfNotPinned(diagonalRight, diagonalRight.first, diagonalRight.second, pawnPieces[turn]);
+        addLegalMoveIfNotPinned(diagonalRight, diagonalRight.first, diagonalRight.second, board[diagonalRight.first][diagonalRight.second]);
     }
     // En passant left
     if (straightLeft.second >= 0 && board[straightLeft.first][straightLeft.second] == pawnPieces[1-turn] && straightLeft == enPassantCoord)
     {
         board[straightLeft.first][straightLeft.second] = '-';
-        addLegalMoveIfNotPinned(diagonalLeft, diagonalLeft.first, diagonalLeft.second, pawnPieces[turn]);
+        addLegalMoveIfNotPinned(diagonalLeft, diagonalLeft.first, diagonalLeft.second, board[diagonalLeft.first][diagonalLeft.second]);
         board[straightLeft.first][straightLeft.second] = pawnPieces[1-turn];
     }
     // En passant right
     if (straightRight.second <= 7 && board[straightRight.first][straightRight.second] == pawnPieces[1-turn] && straightRight == enPassantCoord)
     {
         board[straightRight.first][straightRight.second] = '-';
-        addLegalMoveIfNotPinned(diagonalRight, diagonalRight.first, diagonalRight.second, pawnPieces[turn]);
+        addLegalMoveIfNotPinned(diagonalRight, diagonalRight.first, diagonalRight.second, board[diagonalRight.first][diagonalRight.second]);
         board[straightRight.first][straightRight.second] = pawnPieces[1-turn];
     }
 }
@@ -342,11 +348,13 @@ void ChessLogic::getLegalKingMovement()
         {
             continue;
         }
+
         char targetPiece = board[targetRow][targetCol];
         if (piecesSet[turn].contains(targetPiece))
         {
             continue;
         }
+
         QPair<int, int> enemyKingCoord = kingCoords[1-turn];
         int kingRowDiff = enemyKingCoord.first - targetRow;
         int kingColDiff = enemyKingCoord.second - targetCol;
@@ -354,21 +362,25 @@ void ChessLogic::getLegalKingMovement()
         {
             continue;
         }
-        board[targetRow][targetCol] = sourcePiece;
-        board[sourceRow][sourceCol] = '-';
+
         kingCoord = qMakePair(targetRow, targetCol);
         kingRow = targetRow;
         kingCol = targetCol;
-        if (!kingIsChecked())
-        {
-            legalMoves.insert(targetCoord);
-        }
-        board[targetRow][targetCol] = targetPiece;
-        board[sourceRow][sourceCol] = sourcePiece;
+        addLegalMoveIfNotPinned(targetCoord, targetRow, targetCol, targetPiece);
         kingCoord = qMakePair(sourceRow, sourceCol);
         kingRow = sourceRow;
         kingCol = sourceCol;
     }
+
+    if (kingHasMoved[turn] || rookHasMoved[turn])
+    {
+        return;
+    }
+
+    QPair<int, int> leftCastle = qMakePair(0, -2);
+    QPair<int, int> rightCastle = qMakePair(0, 2);
+
+
 }
 
 std::vector<QPair<int, int>> ChessLogic::findEnemyPawn()
@@ -393,6 +405,8 @@ bool ChessLogic::findEnemyRookHelper(std::vector<QPair<int, int>> &enemyRookPool
 {
     QPair<int, int> targetCoord = qMakePair(targetRow, targetCol);
     char targetPiece = board[targetCoord.first][targetCoord.second];
+    qDebug() << "HERE IT IS" << targetCoord;
+    qDebug() << targetPiece;
     if (targetPiece == rookPieces[1-turn] || targetPiece == queenPieces[1-turn])
     {
         enemyRookPool.push_back(targetCoord);
@@ -540,6 +554,8 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyQueen()
     {
         enemyQueenPool.push_back(enemyBishop);
     }
+
+    qDebug() << enemyQueenPool;
 
     return enemyQueenPool;
 }

@@ -585,17 +585,23 @@ void Chess::on_buttonPlay_clicked()
 
 void Chess::newGame()
 {
-    setDefaultBoard();
     gameStarted = true;
     gameNumber++;
     turn = 0;
     moveNumber = 1;
     moveLabels = {};
+
     prevMovedSourceButton = nullptr;
     prevMovedTargetButton = nullptr;
     prevClickedSourceButton = nullptr;
-    logic->setKingInfo(board, false, false);
+
+    logic->setKingCoords(board);
+    logic->kingHasMoved = {false, false};
+    logic->rookHasMoved = {false, false};
+
+    setDefaultBoard();
     setChessBoard();
+
     QWidget *scrollWidget = new QWidget();
     QVBoxLayout *scrollLayoutUI = new QVBoxLayout(scrollWidget);
     scrollWidget->setLayout(scrollLayoutUI);
@@ -603,6 +609,7 @@ void Chess::newGame()
     ui->scrollMovesPlayed->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     scrollLayoutUI->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
     scrollLayout = scrollLayoutUI;
+
     ui->txtChess->setText("Game " + QString::number(gameNumber));
 }
 
