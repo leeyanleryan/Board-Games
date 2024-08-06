@@ -51,7 +51,7 @@ void ChessButton::mousePressEvent(QMouseEvent *event)
         return;
     }
 
-    QPair<int, int> sourceCoord = chess->coordinatePositionMap[objectName()];
+    QPair<int, int> sourceCoord = chess->notationCoordinateMap[objectName()];
     if (chess->legalMoves.contains(sourceCoord))
     {
         chess->makeMove(this);

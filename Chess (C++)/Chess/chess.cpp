@@ -47,9 +47,9 @@ Chess::~Chess()
 void Chess::variableSetup()
 {
     logic = new ChessLogic(this);
-    buttonPositionMap = {}; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
-    coordinatePositionMap = {}; // example: "a8": (0,0), "b8": (0,1)
-    piecePositionMap = {}; // example: (0,0): 'r', (0,1): 'n'
+    coordinateButtonMap = {}; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
+    notationCoordinateMap = {}; // example: "a8": (0,0), "b8": (0,1)
+    coordinatePieceMap = {}; // example: (0,0): 'r', (0,1): 'n'
     pieceImageMap = {}; // example: 'r': "RookBlack"
     floatingIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
     floatingIconLabel->setVisible(false);
@@ -99,8 +99,8 @@ void Chess::variableSetup()
 void Chess::launchSetup()
 {
     setDefaultBoard();
-    setButtonPositionMap();
-    setPiecePositionMap();
+    setCoordinateButtonMap();
+    setCoordinatePieceMap();
     setPieceImageMap();
     setChessBoard();
     setMenu();
@@ -129,22 +129,24 @@ void Chess::setDefaultBoard()
     */
 }
 
-void Chess::setButtonPositionMap()
+void Chess::setCoordinateButtonMap()
 {
-    std::vector<char> positionAlphabet = {'a','b','c','d','e','f','g','h'};
+    std::array<char, 8> alphabetPosition = {'a','b','c','d','e','f','g','h'};
     for (int row = 0; row < 8; row++)
     {
         for (int col = 0; col < 8; col++)
         {
-            QString buttonName = QString("%1%2").arg(positionAlphabet[col]).arg(8-row);
-            ChessButton *button = findChild<ChessButton*>(buttonName);
-            buttonPositionMap[qMakePair(row, col)] = button;
-            coordinatePositionMap[buttonName] = qMakePair(row, col);
+            QString notation = QString("%1%2").arg(alphabetPosition[col]).arg(8-row);
+            ChessButton *button = findChild<ChessButton*>(notation);
+            QPair<int, int> coord = qMakePair(row, col);
+            coordinateButtonMap[coord] = button;
+            notationCoordinateMap[notation] = coord;
+            coordinateNotationMap[coord] = notation;
         }
     }
 }
 
-void Chess::setPiecePositionMap()
+void Chess::setCoordinatePieceMap()
 {
     for (int row = 0; row < 8; row++)
     {
@@ -152,7 +154,7 @@ void Chess::setPiecePositionMap()
         {
             if (board[row][col] != '-')
             {
-                piecePositionMap[qMakePair(row, col)] = board[row][col];
+                coordinatePieceMap[qMakePair(row, col)] = board[row][col];
             }
         }
     }
@@ -195,7 +197,7 @@ void Chess::setChessBoard()
     {
         for (int col = 0; col < 8; col++)
         {
-            QPushButton *button = buttonPositionMap[{row, col}];
+            QPushButton *button = coordinateButtonMap[{row, col}];
             if ((row+col)%2 == 0)
             {
                 setButtonStyleSheet(button, boardImagePath + "BoardWhite.png");
@@ -204,9 +206,9 @@ void Chess::setChessBoard()
             {
                 setButtonStyleSheet(button, boardImagePath + "BoardBlack.png");
             }
-            if (piecePositionMap.contains(qMakePair(row, col)))
+            if (coordinatePieceMap.contains(qMakePair(row, col)))
             {
-                setButtonIcon(button, pieceImagePath + pieceImageMap[piecePositionMap[qMakePair(row, col)]] + ".png");
+                setButtonIcon(button, pieceImagePath + pieceImageMap[coordinatePieceMap[qMakePair(row, col)]] + ".png");
             }
         }
     }
@@ -599,7 +601,7 @@ void Chess::addMove(const QString &move)
     label->setMaximumHeight(30);
     QFont font = label->font();
     font.setPointSize(12);
-    if (turn == 0)
+    if (1-turn == 0)
     {
         label = new QLabel(QString("%1. %2").arg(moveNumber).arg(move), this);
         label->setFont(font);
@@ -607,7 +609,7 @@ void Chess::addMove(const QString &move)
         moveNumber++;
         moveLabels.append(label);
     }
-    else if (turn == 1)
+    else if (1-turn == 1)
     {
         label = moveLabels.last();
         label->setText(label->text() + " " + move);
@@ -621,7 +623,7 @@ void Chess::showLegalMoveImages()
     {
         QPair<int, int> coord = *it;
         char piece = board[coord.first][coord.second];
-        QPushButton *button = buttonPositionMap[coord];
+        QPushButton *button = coordinateButtonMap[coord];
 
         if (piece == '-')
         {
@@ -640,11 +642,11 @@ void Chess::hideLegalMoveImages()
     {
         QPair<int, int> coord = *it;
         char piece = board[coord.first][coord.second];
-        QPushButton *button = buttonPositionMap[coord];
+        QPushButton *button = coordinateButtonMap[coord];
 
         if (piece == '-')
         {
-            buttonPositionMap[coord]->setIcon(QIcon());
+            coordinateButtonMap[coord]->setIcon(QIcon());
         }
         else
         {
@@ -655,7 +657,7 @@ void Chess::hideLegalMoveImages()
 
 void Chess::resetButtonStyleSheet(ChessButton *button)
 {
-    QPair<int, int> coordinate = coordinatePositionMap[button->objectName()];
+    QPair<int, int> coordinate = notationCoordinateMap[button->objectName()];
     int row = coordinate.first;
     int col = coordinate.second;
     if ((row+col)%2 == 0)
@@ -689,7 +691,7 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
     // not clicked before
     else if (!prevClickedSourceButton)
     {
-        legalMoves = logic->getLegalMoves(board, coordinatePositionMap[sourceButton->objectName()], turn);
+        legalMoves = logic->getLegalMoves(board, notationCoordinateMap[sourceButton->objectName()], turn);
         showLegalMoveImages();
 
         setButtonStyleSheet(sourceButton, boardImagePath + "SelectedPiece.png");
@@ -709,7 +711,7 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
     else if (prevClickedSourceButton != sourceButton)
     {
         hideLegalMoveImages();
-        legalMoves = logic->getLegalMoves(board, coordinatePositionMap[sourceButton->objectName()], turn);
+        legalMoves = logic->getLegalMoves(board, notationCoordinateMap[sourceButton->objectName()], turn);
         showLegalMoveImages();
 
         resetButtonStyleSheet(prevClickedSourceButton);
@@ -738,8 +740,8 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
         return;
     }
 
-    QPair<int, int> sourceCoord = coordinatePositionMap[sourceButton->objectName()];
-    QPair<int, int> targetCoord = coordinatePositionMap[targetButton->objectName()];
+    QPair<int, int> sourceCoord = notationCoordinateMap[sourceButton->objectName()];
+    QPair<int, int> targetCoord = notationCoordinateMap[targetButton->objectName()];
     moveIsIllegal = false;
 
     if (sourceCoord == targetCoord)
@@ -767,7 +769,7 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
         return;
     }
 
-    logic->makeLegalMove(board, targetCoord, turn);
+    addMove(logic->makeLegalMove(board, targetCoord, turn));
 
     hideLegalMoveImages();
     legalMoves = {};

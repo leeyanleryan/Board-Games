@@ -85,7 +85,7 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
     currTurn = 1 - currTurn;
 
     QString move(sourcePiece);
-
+    move += chess->coordinateNotationMap[targetCoord];
 
     return move;
 }
