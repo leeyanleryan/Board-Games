@@ -41,7 +41,8 @@ public:
 
     QSet<QPair<int, int>> legalMoves;
 
-    std::chrono::duration<double> timeTakenToMove;
+    std::chrono::duration<double, std::milli> timeTakenToLoad;
+    std::chrono::duration<double, std::milli> timeTakenToMove;
 
     void setButtonIcon(QPushButton *button, const QString &imagePath);
 

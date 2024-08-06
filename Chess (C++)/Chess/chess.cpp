@@ -24,7 +24,7 @@ Chess::Chess(QWidget *parent)
     setAcceptDrops(true);
 
     auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> timeTakenToLoad = end-start;
+    timeTakenToLoad = end-start;
     qDebug() << "Time taken: " << timeTakenToLoad;
 }
 
@@ -567,9 +567,6 @@ void Chess::on_buttonPlay_clicked()
     newGame();
     ui->uiMenu->setCurrentIndex(5);
 
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> timeTakenToLoad = end-start;
-
     qDebug();
     for (const std::array<char, 8> &row : board)
     {
@@ -580,6 +577,10 @@ void Chess::on_buttonPlay_clicked()
         }
     }
     qDebug();
+
+    auto end = std::chrono::high_resolution_clock::now();
+    timeTakenToLoad = end-start;
+
     qDebug() << "Time taken: " << timeTakenToLoad;
 }
 
