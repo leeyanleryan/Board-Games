@@ -7,7 +7,8 @@ ChessLogic::ChessLogic(Chess *chessInstance)
 {
     kingCoords = {};
     kingHasMoved = {};
-    rookHasMoved = {};
+    leftRookHasMoved = {};
+    rightRookHasMoved = {};
 
     piecesSet[0] = {'R', 'N', 'B', 'Q', 'K', 'P'};
     piecesSet[1] = {'r', 'n', 'b', 'q', 'k', 'p'};
@@ -80,21 +81,24 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
 
     QString move = "";
 
+    bool hasCastled = false;
+
     enPassantCoord = qMakePair(-1, -1);
 
     if (sourcePiece == 'P' || sourcePiece == 'p')
     {
-        // moved twice
+        // moved forward twice
         if (abs(targetRow - sourceRow) == 2)
         {
             enPassantCoord = targetCoord;
         }
-        if (targetCol != sourceCol)
+        // captured piece
+        else if (targetCol != sourceCol && targetPiece != '-')
         {
             move += chess->coordinateNotationMap[sourceCoord][0];
         }
         // en passant
-        if (targetPiece == '-' && targetCol != sourceCol)
+        else if (targetCol != sourceCol && targetPiece == '-')
         {
             move += "x";
             chessBoard[targetRow + pawnDirections[1-turn]][targetCol] = '-';
@@ -107,26 +111,73 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
     }
     else if (sourcePiece == 'K' || sourcePiece == 'k')
     {
-        move += sourcePiece;
         kingCoords[turn] = targetCoord;
         kingHasMoved[turn] = true;
+
+        // castled left
+        if (sourceCol - targetCol == 2)
+        {
+            move = "O-O-O";
+            chessBoard[sourceRow][0] = '-';
+            chessBoard[sourceRow][3] = rookPieces[turn];
+            leftRookHasMoved[turn] = true;
+            hasCastled = true;
+            if (changeUI)
+            {
+                chess->coordinateButtonMap[qMakePair(sourceRow, 0)]->setIcon(QIcon());
+                chess->setButtonIcon(chess->coordinateButtonMap[qMakePair(sourceRow, 3)], chess->pieceImagePath + chess->pieceImageMap[rookPieces[turn]] + ".png");
+            }
+        }
+        // castled right
+        else if (targetCol - sourceCol == 2)
+        {
+            move = "O-O";
+            chessBoard[sourceRow][7] = '-';
+            chessBoard[sourceRow][5] = rookPieces[turn];
+            rightRookHasMoved[turn] = true;
+            hasCastled = true;
+            if (changeUI)
+            {
+                chess->coordinateButtonMap[qMakePair(sourceRow, 7)]->setIcon(QIcon());
+                chess->setButtonIcon(chess->coordinateButtonMap[qMakePair(sourceRow, 5)], chess->pieceImagePath + chess->pieceImageMap[rookPieces[turn]] + ".png");
+            }
+        }
+        // regular king movement
+        else
+        {
+            move += sourcePiece;
+        }
     }
     else if (sourcePiece == 'R' || sourcePiece == 'r')
     {
         move += sourcePiece;
-        rookHasMoved[turn] = true;
+        // left rook
+        if (!leftRookHasMoved[turn] && sourceCol == 0)
+        {
+            leftRookHasMoved[turn] = true;
+        }
+        // right rook
+        if (!rightRookHasMoved[turn] && sourceCol == 7)
+        {
+            rightRookHasMoved[turn] = true;
+        }
     }
     else
     {
         move += sourcePiece;
     }
 
+    // is a capture
     if (targetPiece != '-')
     {
         move += "x";
     }
 
-    move += chess->coordinateNotationMap[targetCoord];
+    // castled
+    if (!hasCastled)
+    {
+        move += chess->coordinateNotationMap[targetCoord];
+    }
 
     chessBoard[targetRow][targetCol] = chessBoard[sourceRow][sourceCol];
     chessBoard[sourceRow][sourceCol] = '-';
@@ -176,7 +227,6 @@ void ChessLogic::addLegalMoveIfNotPinned(QPair<int, int> targetCoord, int target
     board[sourceRow][sourceCol] = '-';
     if (!kingIsChecked())
     {
-        qDebug() << "LOL";
         legalMoves.insert(targetCoord);
     }
     board[targetRow][targetCol] = targetPiece;
@@ -200,8 +250,6 @@ void ChessLogic::getLegalPawnMovement()
     // Home square can move one extra
     if (sourceRow == pawnHomeRows[turn] && board[forwardTwice.first][forwardTwice.second] == '-')
     {
-        qDebug() << sourceCoord;
-        qDebug() << forwardTwice;
         addLegalMoveIfNotPinned(forwardTwice, forwardTwice.first, forwardTwice.second, board[forwardTwice.first][forwardTwice.second]);
     }
     // Capture diagonally left
@@ -338,6 +386,8 @@ void ChessLogic::getLegalKingMovement()
     std::vector<QPair<int, int>> pool = {qMakePair(-1, -1), qMakePair(-1, 0), qMakePair(-1, 1),
                                          qMakePair( 0, -1),                   qMakePair( 0, 1),
                                          qMakePair( 1, -1), qMakePair( 1, 0), qMakePair( 1, 1)};
+    bool canMoveLeftOnce = false;
+    bool canMoveRightOnce = false;
 
     for (QPair<int, int> coord : pool)
     {
@@ -366,21 +416,49 @@ void ChessLogic::getLegalKingMovement()
         kingCoord = qMakePair(targetRow, targetCol);
         kingRow = targetRow;
         kingCol = targetCol;
-        addLegalMoveIfNotPinned(targetCoord, targetRow, targetCol, targetPiece);
+        board[targetRow][targetCol] = sourcePiece;
+        board[sourceRow][sourceCol] = '-';
+        if (!kingIsChecked())
+        {
+            if (coord == qMakePair(0, -1))
+            {
+                canMoveLeftOnce = true;
+            }
+            else if (coord == qMakePair(0, 1))
+            {
+                canMoveRightOnce = true;
+            }
+            legalMoves.insert(targetCoord);
+        }
+        board[targetRow][targetCol] = targetPiece;
+        board[sourceRow][sourceCol] = sourcePiece;
         kingCoord = qMakePair(sourceRow, sourceCol);
         kingRow = sourceRow;
         kingCol = sourceCol;
     }
 
-    if (kingHasMoved[turn] || rookHasMoved[turn])
+    if (kingHasMoved[turn])
     {
         return;
     }
 
-    QPair<int, int> leftCastle = qMakePair(0, -2);
-    QPair<int, int> rightCastle = qMakePair(0, 2);
+    // left castle
+    QPair<int, int> leftCastleCoord = qMakePair(kingRow, kingCol-2);
+    int leftCastleRow = leftCastleCoord.first;
+    int leftCastleCol = leftCastleCoord.second;
+    if (!leftRookHasMoved[turn] && canMoveLeftOnce && board[leftCastleRow][leftCastleCol] == '-' && board[leftCastleRow][leftCastleCol-1] == '-')
+    {
+        addLegalMoveIfNotPinned(leftCastleCoord, leftCastleRow, leftCastleCol, board[leftCastleRow][leftCastleCol]);
+    }
 
-
+    // right castle
+    QPair<int, int> rightCastleCoord = qMakePair(kingRow, kingCol+2);
+    int rightCastleRow = rightCastleCoord.first;
+    int rightCastleCol = rightCastleCoord.second;
+    if (!rightRookHasMoved[turn] && canMoveRightOnce && board[rightCastleRow][rightCastleCol] == '-')
+    {
+        addLegalMoveIfNotPinned(rightCastleCoord, rightCastleRow, rightCastleCol, board[rightCastleRow][rightCastleCol]);
+    }
 }
 
 std::vector<QPair<int, int>> ChessLogic::findEnemyPawn()
@@ -405,8 +483,6 @@ bool ChessLogic::findEnemyRookHelper(std::vector<QPair<int, int>> &enemyRookPool
 {
     QPair<int, int> targetCoord = qMakePair(targetRow, targetCol);
     char targetPiece = board[targetCoord.first][targetCoord.second];
-    qDebug() << "HERE IT IS" << targetCoord;
-    qDebug() << targetPiece;
     if (targetPiece == rookPieces[1-turn] || targetPiece == queenPieces[1-turn])
     {
         enemyRookPool.push_back(targetCoord);
@@ -554,8 +630,6 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyQueen()
     {
         enemyQueenPool.push_back(enemyBishop);
     }
-
-    qDebug() << enemyQueenPool;
 
     return enemyQueenPool;
 }

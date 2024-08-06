@@ -26,9 +26,12 @@ public:
 
     ChessLogic *logic;
 
+    QString pieceImagePath;
+
     QMap<QPair<int, int>, QPushButton*> coordinateButtonMap; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
     QMap<QString, QPair<int, int>> notationCoordinateMap; // example: "a8": (0,0), "b8": (0,1)
     QMap<QPair<int, int>, QString> coordinateNotationMap; // example: (0,0): "a8", (0,1): "b8"
+    QMap<char, QString> pieceImageMap; // example: 'r': "RookBlack"
 
     std::array<std::array<char, 8>, 8> board;
 
@@ -39,6 +42,8 @@ public:
     QSet<QPair<int, int>> legalMoves;
 
     std::chrono::duration<double> timeTakenToMove;
+
+    void setButtonIcon(QPushButton *button, const QString &imagePath);
 
     void showLegalMoves(ChessButton *sourceButton);
 
@@ -58,8 +63,6 @@ private slots:
     void setCoordinatePieceMap();
 
     void setPieceImageMap();
-
-    void setButtonIcon(QPushButton *button, const QString &imagePath);
 
     void setButtonStyleSheet(QPushButton *button, const QString &imagePath);
 
@@ -128,9 +131,7 @@ private:
     ChessAI *ai;
 
     QMap<QPair<int, int>, char> coordinatePieceMap; // example: (0,0): 'r', (0,1): 'n'
-    QMap<char, QString> pieceImageMap; // example: 'r': "RookBlack"
 
-    QString pieceImagePath;
     QString boardImagePath;
     QString chessSoundPath;
     QString backgroundPath;

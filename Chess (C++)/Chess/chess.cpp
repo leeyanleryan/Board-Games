@@ -597,7 +597,8 @@ void Chess::newGame()
 
     logic->setKingCoords(board);
     logic->kingHasMoved = {false, false};
-    logic->rookHasMoved = {false, false};
+    logic->leftRookHasMoved = {false, false};
+    logic->rightRookHasMoved = {false, false};
 
     setDefaultBoard();
     setChessBoard();

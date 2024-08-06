@@ -15,7 +15,8 @@ public:
 
     std::array<bool, 2> kingHasMoved;
 
-    std::array<bool, 2> rookHasMoved;
+    std::array<bool, 2> leftRookHasMoved;
+    std::array<bool, 2> rightRookHasMoved;
 
     QSet<QPair<int, int>> getLegalMoves(const std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> sCoord, int currTurn);
 
