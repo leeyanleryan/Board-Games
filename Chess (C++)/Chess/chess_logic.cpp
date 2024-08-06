@@ -108,7 +108,7 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
             }
         }
         // promote to piece
-        else if (sourceRow == pawnHomeRows[1-turn] && targetRow == std::array<int, 2> {7, 0}[1-turn])
+        else if (sourceRow == pawnHomeRows[1-turn] && (targetRow == 7 || targetRow == 0))
         {
 
         }
