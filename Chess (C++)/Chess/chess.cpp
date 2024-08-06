@@ -16,10 +16,26 @@ Chess::Chess(QWidget *parent)
     , ui(new Ui::Chess)
     , ai(new ChessAI(this))
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     ui->setupUi(this);
     variableSetup();
     launchSetup();
     setAcceptDrops(true);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    timeTakenToLoad = end-start;
+
+    for (const std::array<char, 8> &row : board)
+    {
+        QDebug dbg = qDebug();
+        for (char piece : row)
+        {
+            dbg.noquote() << piece;
+        }
+    }
+    qDebug();
+    qDebug() << "Time taken: " << timeTakenToLoad;
 }
 
 Chess::~Chess()
@@ -92,15 +108,16 @@ void Chess::launchSetup()
 
 void Chess::setDefaultBoard()
 {
-    // board.push_back({'r','n','b','q','k','b','n','r'});
-    // board.push_back({'p','p','p','p','p','p','p','p'});
-    // board.push_back({'-','-','-','-','-','-','-','-'});
-    // board.push_back({'-','-','-','-','-','-','-','-'});
-    // board.push_back({'-','-','-','-','-','-','-','-'});
-    // board.push_back({'-','-','-','-','-','-','-','-'});
-    // board.push_back({'P','P','P','P','P','P','P','P'});
-    // board.push_back({'R','N','B','Q','K','B','N','R'});
+    board[0] = {'r','n','b','q','k','b','n','r'};
+    board[1] = {'p','p','p','p','p','p','p','p'};
+    board[2] = {'-','-','-','-','-','-','-','-'};
+    board[3] = {'-','-','-','-','-','-','-','-'};
+    board[4] = {'-','-','-','-','-','-','-','-'};
+    board[5] = {'-','-','-','-','-','-','-','-'};
+    board[6] = {'P','P','P','P','P','P','P','P'};
+    board[7] = {'R','N','B','Q','K','B','N','R'};
 
+    /*
     board[0] = {'r','n','b','q','-','b','n','r'};
     board[1] = {'-','-','-','-','-','-','-','-'};
     board[2] = {'B','-','-','-','-','-','k','-'};
@@ -109,6 +126,7 @@ void Chess::setDefaultBoard()
     board[5] = {'-','-','-','-','-','-','K','-'};
     board[6] = {'-','-','-','-','-','-','-','-'};
     board[7] = {'R','N','B','Q','-','-','N','R'};
+    */
 }
 
 void Chess::setButtonPositionMap()
@@ -782,5 +800,15 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     targetButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
     targetButton->setIconSize(QSize(90, 90));
 
-    qDebug() << "Time taken: " << timeTaken;
+    qDebug();
+    for (const std::array<char, 8> &row : board)
+    {
+        QDebug dbg = qDebug();
+        for (char piece : row)
+        {
+            dbg.noquote() << piece;
+        }
+    }
+    qDebug();
+    qDebug() << "Time taken: " << timeTakenToMove;
 }
