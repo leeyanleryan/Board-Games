@@ -16,19 +16,19 @@ public:
     std::vector<QPair<int, int>> kingCoords;
     std::vector<bool> kingHasMoved;
 
-    QSet<QPair<int, int>> getLegalMoves(std::array<std::array<QString, 8>, 8> chessBoard, QPair<int, int> sCoord, int currTurn);
+    QSet<QPair<int, int>> getLegalMoves(std::array<std::array<char, 8>, 8> chessBoard, QPair<int, int> sCoord, int currTurn);
 
 private:
     Chess *chess;
 
     QSet<QPair<int, int>> legalMoves;
 
-    std::array<std::array<QString, 8>, 8> board;
+    std::array<std::array<char, 8>, 8> board;
 
     QPair<int, int> sourceCoord;
     int sourceRow;
     int sourceCol;
-    QString sourcePiece;
+    char sourcePiece;
 
     QPair<int, int> kingCoord;
     int kingRow;
@@ -36,20 +36,20 @@ private:
 
     int turn;
 
-    std::array<QSet<QString>, 2> piecesSet;
+    std::array<QSet<char>, 2> piecesSet;
 
-    std::array<QString, 2> pawnPieces;
-    std::array<QString, 2> rookPieces;
-    std::array<QString, 2> knightPieces;
-    std::array<QString, 2> bishopPieces;
-    std::array<QString, 2> queenPieces;
-    std::array<QString, 2> kingPieces;
+    std::array<char, 2> pawnPieces;
+    std::array<char, 2> rookPieces;
+    std::array<char, 2> knightPieces;
+    std::array<char, 2> bishopPieces;
+    std::array<char, 2> queenPieces;
+    std::array<char, 2> kingPieces;
 
     std::array<int, 2> pawnDirections;
 
     bool getLegalMovesHelper(int targetRow, int targetCol);
 
-    void addLegalMoveIfNotPinned(QPair<int, int> targetCoord, int targetRow, int targetCol, QString targetPiece);
+    void addLegalMoveIfNotPinned(QPair<int, int> targetCoord, int targetRow, int targetCol, char targetPiece);
 
     void getLegalPawnMovement();
 

@@ -119,9 +119,9 @@ private:
     ChessAI *ai;
 
     QMap<QPair<int, int>, QPushButton*> buttonPositionMap;
-    QMap<QPair<int, int>, QString> piecePositionMap;
-    QMap<QString, QString> pieceImageMap;
-    std::array<std::array<QString, 8>, 8> board;
+    QMap<QPair<int, int>, char> piecePositionMap;
+    QMap<char, QString> pieceImageMap;
+    std::array<std::array<char, 8>, 8> board;
     QString pieceImagePath;
     QString boardImagePath;
     QString chessSoundPath;

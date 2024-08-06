@@ -33,8 +33,8 @@ void Chess::variableSetup()
     logic = new ChessLogic(this);
     buttonPositionMap = {}; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
     coordinatePositionMap = {}; // example: "a8": (0,0), "b8": (0,1)
-    piecePositionMap = {}; // example: (0,0): "r", (0,1): "n"
-    pieceImageMap = {}; // example: "r": "RookBlack"
+    piecePositionMap = {}; // example: (0,0): 'r', (0,1): 'n'
+    pieceImageMap = {}; // example: 'r': "RookBlack"
     floatingIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
     floatingIconLabel->setVisible(false);
     floatingIconLabel->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
@@ -92,28 +92,28 @@ void Chess::launchSetup()
 
 void Chess::setDefaultBoard()
 {
-    // board.push_back({"r","n","b","q","k","b","n","r"});
-    // board.push_back({"p","p","p","p","p","p","p","p"});
-    // board.push_back({"-","-","-","-","-","-","-","-"});
-    // board.push_back({"-","-","-","-","-","-","-","-"});
-    // board.push_back({"-","-","-","-","-","-","-","-"});
-    // board.push_back({"-","-","-","-","-","-","-","-"});
-    // board.push_back({"P","P","P","P","P","P","P","P"});
-    // board.push_back({"R","N","B","Q","K","B","N","R"});
+    // board.push_back({'r','n','b','q','k','b','n','r'});
+    // board.push_back({'p','p','p','p','p','p','p','p'});
+    // board.push_back({'-','-','-','-','-','-','-','-'});
+    // board.push_back({'-','-','-','-','-','-','-','-'});
+    // board.push_back({'-','-','-','-','-','-','-','-'});
+    // board.push_back({'-','-','-','-','-','-','-','-'});
+    // board.push_back({'P','P','P','P','P','P','P','P'});
+    // board.push_back({'R','N','B','Q','K','B','N','R'});
 
-    board[0] = {"r","n","b","q","-","b","n","r"};
-    board[1] = {"-","-","-","-","-","-","-","-"};
-    board[2] = {"B","-","-","-","-","-","k","-"};
-    board[3] = {"-","-","-","-","-","-","-","-"};
-    board[4] = {"-","-","-","-","-","-","-","-"};
-    board[5] = {"-","-","-","-","-","-","K","-"};
-    board[6] = {"-","-","-","-","-","-","-","-"};
-    board[7] = {"R","N","B","Q","-","-","N","R"};
+    board[0] = {'r','n','b','q','-','b','n','r'};
+    board[1] = {'-','-','-','-','-','-','-','-'};
+    board[2] = {'B','-','-','-','-','-','k','-'};
+    board[3] = {'-','-','-','-','-','-','-','-'};
+    board[4] = {'-','-','-','-','-','-','-','-'};
+    board[5] = {'-','-','-','-','-','-','K','-'};
+    board[6] = {'-','-','-','-','-','-','-','-'};
+    board[7] = {'R','N','B','Q','-','-','N','R'};
 }
 
 void Chess::setButtonPositionMap()
 {
-    std::vector<QString> positionAlphabet = {"a","b","c","d","e","f","g","h"};
+    std::vector<char> positionAlphabet = {'a','b','c','d','e','f','g','h'};
     for (int row = 0; row < 8; row++)
     {
         for (int col = 0; col < 8; col++)
@@ -132,7 +132,7 @@ void Chess::setPiecePositionMap()
     {
         for (int col = 0; col < 8; col++)
         {
-            if (board[row][col] != "-")
+            if (board[row][col] != '-')
             {
                 piecePositionMap[qMakePair(row, col)] = board[row][col];
             }
@@ -143,19 +143,19 @@ void Chess::setPiecePositionMap()
 void Chess::setPieceImageMap()
 {
     // black
-    pieceImageMap["r"] = "RookBlack";
-    pieceImageMap["n"] = "KnightBlack";
-    pieceImageMap["b"] = "BishopBlack";
-    pieceImageMap["q"] = "QueenBlack";
-    pieceImageMap["k"] = "KingBlack";
-    pieceImageMap["p"] = "PawnBlack";
+    pieceImageMap['r'] = "RookBlack";
+    pieceImageMap['n'] = "KnightBlack";
+    pieceImageMap['b'] = "BishopBlack";
+    pieceImageMap['q'] = "QueenBlack";
+    pieceImageMap['k'] = "KingBlack";
+    pieceImageMap['p'] = "PawnBlack";
     // white
-    pieceImageMap["R"] = "RookWhite";
-    pieceImageMap["N"] = "KnightWhite";
-    pieceImageMap["B"] = "BishopWhite";
-    pieceImageMap["Q"] = "QueenWhite";
-    pieceImageMap["K"] = "KingWhite";
-    pieceImageMap["P"] = "PawnWhite";
+    pieceImageMap['R'] = "RookWhite";
+    pieceImageMap['N'] = "KnightWhite";
+    pieceImageMap['B'] = "BishopWhite";
+    pieceImageMap['Q'] = "QueenWhite";
+    pieceImageMap['K'] = "KingWhite";
+    pieceImageMap['P'] = "PawnWhite";
 }
 
 void Chess::setButtonIcon(QPushButton *button, const QString &imagePath)
@@ -602,10 +602,10 @@ void Chess::showLegalMoveImages()
     for (auto it = legalMoves.begin(); it != legalMoves.end(); ++it)
     {
         QPair<int, int> coord = *it;
-        QString piece = board[coord.first][coord.second];
+        char piece = board[coord.first][coord.second];
         QPushButton *button = buttonPositionMap[coord];
 
-        if (piece == "-")
+        if (piece == '-')
         {
             setButtonIcon(button, pieceImagePath + "LegalMove.png");
         }
@@ -621,10 +621,10 @@ void Chess::hideLegalMoveImages()
     for (auto it = legalMoves.begin(); it != legalMoves.end(); ++it)
     {
         QPair<int, int> coord = *it;
-        QString piece = board[coord.first][coord.second];
+        char piece = board[coord.first][coord.second];
         QPushButton *button = buttonPositionMap[coord];
 
-        if (piece == "-")
+        if (piece == '-')
         {
             buttonPositionMap[coord]->setIcon(QIcon());
         }
@@ -749,20 +749,20 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
         return;
     }
 
-    QString sourcePiece = board[sourceCoord.first][sourceCoord.second];
+    char sourcePiece = board[sourceCoord.first][sourceCoord.second];
 
-    if (sourcePiece == "K" || sourcePiece == "k")
+    if (sourcePiece == 'K' || sourcePiece == 'k')
     {
         logic->kingCoords[turn] = targetCoord;
         logic->kingHasMoved[turn] = true;
     }
-    else if ((sourcePiece == "P" || sourcePiece == "p") && abs(targetCoord.first - sourceCoord.first) == 2)
+    else if ((sourcePiece == 'P' || sourcePiece == 'p') && abs(targetCoord.first - sourceCoord.first) == 2)
     {
 
     }
 
     board[targetCoord.first][targetCoord.second] = board[sourceCoord.first][sourceCoord.second];
-    board[sourceCoord.first][sourceCoord.second] = "-";
+    board[sourceCoord.first][sourceCoord.second] = '-';
     turn = 1 - turn;
 
     hideLegalMoveImages();
