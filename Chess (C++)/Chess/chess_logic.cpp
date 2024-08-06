@@ -77,35 +77,54 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
     int targetCol = targetCoord.second;
     char targetPiece = chessBoard[targetRow][targetCol];
 
+    QString move = "";
+
     enPassantCoord = qMakePair(-1, -1);
 
     if (sourcePiece == 'P' || sourcePiece == 'p')
     {
+        // moved twice
         if (abs(targetRow - sourceRow) == 2)
         {
             enPassantCoord = targetCoord;
         }
+        if (targetCol != sourceCol)
+        {
+            move += chess->coordinateNotationMap[sourceCoord][0];
+        }
+        // en passant
         if (targetPiece == '-' && targetCol != sourceCol)
         {
+            move += "x";
             chessBoard[targetRow + pawnDirections[1-turn]][targetCol] = '-';
             if (changeUI)
             {
                 chess->coordinateButtonMap[qMakePair(targetRow + pawnDirections[1-turn], targetCol)]->setIcon(QIcon());
             }
         }
+        // promote to piece
     }
     else if (sourcePiece == 'K' || sourcePiece == 'k')
     {
+        move += sourcePiece;
         kingCoords[turn] = targetCoord;
         kingHasMoved[turn] = true;
     }
+    else
+    {
+        move += sourcePiece;
+    }
+
+    if (targetPiece != '-')
+    {
+        move += "x";
+    }
+
+    move += chess->coordinateNotationMap[targetCoord];
 
     chessBoard[targetRow][targetCol] = chessBoard[sourceRow][sourceCol];
     chessBoard[sourceRow][sourceCol] = '-';
     currTurn = 1 - currTurn;
-
-    QString move(sourcePiece);
-    move += chess->coordinateNotationMap[targetCoord];
 
     return move;
 }
