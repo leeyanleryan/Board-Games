@@ -5,7 +5,7 @@
 ChessLogic::ChessLogic(Chess *chessInstance)
     : chess(chessInstance)
 {
-    kingCoords = {qMakePair(5, 6), qMakePair(2, 6)};
+    kingCoords = {qMakePair(7, 4), qMakePair(0, 4)};
     kingHasMoved = {false, false};
 
     piecesSet[0] = {'R', 'N', 'B', 'Q', 'K', 'P'};
@@ -21,7 +21,7 @@ ChessLogic::ChessLogic(Chess *chessInstance)
     pawnDirections = {-1, 1};
 }
 
-QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::array<std::array<char, 8>, 8> chessBoard, QPair<int, int> sCoord, int currTurn)
+QSet<QPair<int, int>> ChessLogic::getLegalMoves(const std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> sCoord, int currTurn)
 {
     board = chessBoard;
     sourceCoord = sCoord;
@@ -66,6 +66,23 @@ QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::array<std::array<char, 8>, 
     }
 
     return legalMoves;
+}
+
+void ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn)
+{
+    if ((sourcePiece == 'P' || sourcePiece == 'p') && abs(targetCoord.first - sourceCoord.first) == 2)
+    {
+
+    }
+    else if (sourcePiece == 'K' || sourcePiece == 'k')
+    {
+        kingCoords[turn] = targetCoord;
+        kingHasMoved[turn] = true;
+    }
+
+    chessBoard[targetCoord.first][targetCoord.second] = chessBoard[sourceCoord.first][sourceCoord.second];
+    chessBoard[sourceCoord.first][sourceCoord.second] = '-';
+    currTurn = 1 - currTurn;
 }
 
 void ChessLogic::getLegalPawnMovement()

@@ -767,21 +767,7 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
         return;
     }
 
-    char sourcePiece = board[sourceCoord.first][sourceCoord.second];
-
-    if (sourcePiece == 'K' || sourcePiece == 'k')
-    {
-        logic->kingCoords[turn] = targetCoord;
-        logic->kingHasMoved[turn] = true;
-    }
-    else if ((sourcePiece == 'P' || sourcePiece == 'p') && abs(targetCoord.first - sourceCoord.first) == 2)
-    {
-
-    }
-
-    board[targetCoord.first][targetCoord.second] = board[sourceCoord.first][sourceCoord.second];
-    board[sourceCoord.first][sourceCoord.second] = '-';
-    turn = 1 - turn;
+    logic->makeLegalMove(board, targetCoord, turn);
 
     hideLegalMoveImages();
     legalMoves = {};

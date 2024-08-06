@@ -16,7 +16,9 @@ public:
     std::vector<QPair<int, int>> kingCoords;
     std::vector<bool> kingHasMoved;
 
-    QSet<QPair<int, int>> getLegalMoves(std::array<std::array<char, 8>, 8> chessBoard, QPair<int, int> sCoord, int currTurn);
+    QSet<QPair<int, int>> getLegalMoves(const std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> sCoord, int currTurn);
+
+    void makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn);
 
 private:
     Chess *chess;
