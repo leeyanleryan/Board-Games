@@ -160,8 +160,6 @@ private:
     ChessButton *prevClickedSourceButton;
     int prevSourceButtonClicks;
     bool moveIsIllegal;
-
-    std::chrono::duration<double> timeTakenToLoad;
 };
 
 #endif // CHESS_H

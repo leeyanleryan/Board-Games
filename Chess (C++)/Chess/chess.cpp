@@ -24,17 +24,7 @@ Chess::Chess(QWidget *parent)
     setAcceptDrops(true);
 
     auto end = std::chrono::high_resolution_clock::now();
-    timeTakenToLoad = end-start;
-
-    for (const std::array<char, 8> &row : board)
-    {
-        QDebug dbg = qDebug();
-        for (char piece : row)
-        {
-            dbg.noquote() << piece;
-        }
-    }
-    qDebug();
+    std::chrono::duration<double> timeTakenToLoad = end-start;
     qDebug() << "Time taken: " << timeTakenToLoad;
 }
 
@@ -209,6 +199,10 @@ void Chess::setChessBoard()
             if (coordinatePieceMap.contains(qMakePair(row, col)))
             {
                 setButtonIcon(button, pieceImagePath + pieceImageMap[coordinatePieceMap[qMakePair(row, col)]] + ".png");
+            }
+            else
+            {
+                button->setIcon(QIcon());
             }
         }
     }
@@ -540,15 +534,19 @@ void Chess::on_buttonExit_clicked()
 
 void Chess::on_buttonChessQuit_clicked()
 {
+    setDefaultBoard();
     playerNames = {};
     gameStarted = false;
     gameNumber = 0;
     moveLabels = {};
+    setChessBoard();
     ui->uiMenu->setCurrentIndex(4);
 }
 
 void Chess::on_buttonPlay_clicked()
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     if (randomTurn)
     {
         turn = QRandomGenerator::global()->bounded(2);
@@ -568,6 +566,21 @@ void Chess::on_buttonPlay_clicked()
     }
     newGame();
     ui->uiMenu->setCurrentIndex(5);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> timeTakenToLoad = end-start;
+
+    qDebug();
+    for (const std::array<char, 8> &row : board)
+    {
+        QDebug dbg = qDebug();
+        for (char piece : row)
+        {
+            dbg.noquote() << piece;
+        }
+    }
+    qDebug();
+    qDebug() << "Time taken: " << timeTakenToLoad;
 }
 
 void Chess::newGame()
@@ -578,6 +591,10 @@ void Chess::newGame()
     turn = 0;
     moveNumber = 1;
     moveLabels = {};
+    prevMovedSourceButton = nullptr;
+    prevMovedTargetButton = nullptr;
+    prevClickedSourceButton = nullptr;
+    setChessBoard();
     QWidget *scrollWidget = new QWidget();
     QVBoxLayout *scrollLayoutUI = new QVBoxLayout(scrollWidget);
     scrollWidget->setLayout(scrollLayoutUI);
