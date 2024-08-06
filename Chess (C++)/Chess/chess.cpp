@@ -721,6 +721,7 @@ void Chess::showLegalMoves(ChessButton *sourceButton)
     // not clicked before
     else if (!prevClickedSourceButton)
     {
+        sourceButtonDrops = 0;
         clickedSameButton = false;
 
         legalMoves = logic->getLegalMoves(board, notationCoordinateMap[sourceButton->objectName()], turn);
@@ -783,7 +784,11 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
             clickedSameButton = false;
             prevClickedSourceButton = nullptr;
 
-            resetButtonStyleSheet(sourceButton);
+            if (sourceButton != prevMovedTargetButton && sourceButton != prevMovedSourceButton)
+            {
+                resetButtonStyleSheet(sourceButton);
+            }
+
             hideLegalMoveImages();
             legalMoves = {};
 
