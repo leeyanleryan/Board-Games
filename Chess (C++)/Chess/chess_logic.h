@@ -16,14 +16,14 @@ public:
     std::vector<QPair<int, int>> kingCoords;
     std::vector<bool> kingHasMoved;
 
-    QSet<QPair<int, int>> getLegalMoves(std::vector<std::vector<QString>> chessBoard, QPair<int, int> sourceCoord, int currTurn);
+    QSet<QPair<int, int>> getLegalMoves(std::array<std::array<QString, 8>, 8> chessBoard, QPair<int, int> sCoord, int currTurn);
 
 private:
     Chess *chess;
 
     QSet<QPair<int, int>> legalMoves;
 
-    std::vector<std::vector<QString>> board;
+    std::array<std::array<QString, 8>, 8> board;
 
     QPair<int, int> sourceCoord;
     int sourceRow;

@@ -21,10 +21,10 @@ ChessLogic::ChessLogic(Chess *chessInstance)
     pawnDirections = {-1, 1};
 }
 
-QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::vector<std::vector<QString>> chessBoard, QPair<int, int> sourceCoord, int currTurn)
+QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::array<std::array<QString, 8>, 8> chessBoard, QPair<int, int> sCoord, int currTurn)
 {
     board = chessBoard;
-    this->sourceCoord = sourceCoord;
+    sourceCoord = sCoord;
     sourceRow = sourceCoord.first;
     sourceCol = sourceCoord.second;
     sourcePiece = board[sourceRow][sourceCol];

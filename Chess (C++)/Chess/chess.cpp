@@ -61,7 +61,7 @@ void Chess::variableSetup()
                                "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
     buttonStyleSheetShadow = "background-image: url(" + backgroundPath + "buttonShadow.png)";
     buttonStyleSheetDifficultyShadow = "background-image: url(" + backgroundPath + "buttonDifficultyShadow.png)";
-    playerNames = {"", ""};
+    playerNames = {};
     chosenFirst = false;
     randomTurn = false;
     alternateTurns = false;
@@ -101,14 +101,14 @@ void Chess::setDefaultBoard()
     // board.push_back({"P","P","P","P","P","P","P","P"});
     // board.push_back({"R","N","B","Q","K","B","N","R"});
 
-    board = {{"r","n","b","q","-","b","n","r"},
-             {"-","-","-","-","-","-","-","-"},
-             {"B","-","-","-","-","-","k","-"},
-             {"-","-","-","-","-","-","-","-"},
-             {"-","-","-","-","-","-","-","-"},
-             {"-","-","-","-","-","-","K","-"},
-             {"-","-","-","-","-","-","-","-"},
-             {"R","N","B","Q","-","-","N","R"}};
+    board[0] = {"r","n","b","q","-","b","n","r"};
+    board[1] = {"-","-","-","-","-","-","-","-"};
+    board[2] = {"B","-","-","-","-","-","k","-"};
+    board[3] = {"-","-","-","-","-","-","-","-"};
+    board[4] = {"-","-","-","-","-","-","-","-"};
+    board[5] = {"-","-","-","-","-","-","K","-"};
+    board[6] = {"-","-","-","-","-","-","-","-"};
+    board[7] = {"R","N","B","Q","-","-","N","R"};
 }
 
 void Chess::setButtonPositionMap()
@@ -520,7 +520,7 @@ void Chess::on_buttonExit_clicked()
 
 void Chess::on_buttonChessQuit_clicked()
 {
-    playerNames = {"", ""};
+    playerNames = {};
     gameStarted = false;
     gameNumber = 0;
     moveLabels = {};
