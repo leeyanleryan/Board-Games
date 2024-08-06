@@ -16,7 +16,7 @@ public:
     std::vector<QPair<int, int>> kingCoords;
     std::vector<bool> kingHasMoved;
 
-    QSet<QPair<int, int>> getLegalMoves(std::vector<std::vector<QString>> chessBoard, QPair<int, int> sourceCoord, int turn);
+    QSet<QPair<int, int>> getLegalMoves(std::vector<std::vector<QString>> chessBoard, QPair<int, int> sourceCoord, int currTurn);
 
 private:
     Chess *chess;
@@ -30,13 +30,18 @@ private:
     int sourceCol;
     QString sourcePiece;
 
+    QPair<int, int> kingCoord;
+    int kingRow;
+    int kingCol;
+
     int turn;
 
-    std::vector<QString> pawnPieces;
-    std::vector<QString> rookPieces;
-    std::vector<QString> knightPieces;
-    std::vector<QString> bishopPieces;
-    std::vector<QString> queenPieces;
+    std::array<QString, 2> pawnPieces;
+    std::array<QString, 2> rookPieces;
+    std::array<QString, 2> knightPieces;
+    std::array<QString, 2> bishopPieces;
+    std::array<QString, 2> queenPieces;
+    std::array<QString, 2> kingPieces;
 
     std::vector<int> pawnDirections;
 
@@ -58,9 +63,13 @@ private:
 
     std::vector<QPair<int, int>> findEnemyPawn();
 
+    bool findEnemyRookHelper(std::vector<QPair<int, int>> &enemyRookPool, int targetRow, int targetCol);
+
     std::vector<QPair<int, int>> findEnemyRook();
 
     std::vector<QPair<int, int>> findEnemyKnight();
+
+    bool findEnemyBishopHelper(std::vector<QPair<int, int>> &enemyRookPool, int targetRow, int targetCol);
 
     std::vector<QPair<int, int>> findEnemyBishop();
 

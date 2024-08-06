@@ -13,18 +13,22 @@ ChessLogic::ChessLogic(Chess *chessInstance)
     knightPieces = {"N", "n"};
     bishopPieces = {"B", "b"};
     queenPieces = {"Q", "q"};
+    kingPieces = {"K", "k"};
 
     pawnDirections = {-1, 1};
 }
 
-QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::vector<std::vector<QString>> chessBoard, QPair<int, int> sourceCoord, int turn)
+QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::vector<std::vector<QString>> chessBoard, QPair<int, int> sourceCoord, int currTurn)
 {
     board = chessBoard;
     this->sourceCoord = sourceCoord;
     sourceRow = sourceCoord.first;
     sourceCol = sourceCoord.second;
     sourcePiece = board[sourceRow][sourceCol];
-    this->turn = turn;
+    kingCoord = kingCoords[currTurn];
+    kingRow = kingCoord.first;
+    kingCol = kingCoord.second;
+    turn = currTurn;
 
     if (!chess->piecesSet[turn].contains(sourcePiece))
     {
@@ -247,25 +251,33 @@ void ChessLogic::getLegalKingMovement()
         {
             continue;
         }
+        QPair<int, int> enemyKingCoord = kingCoords[1-turn];
+        int kingRowDiff = enemyKingCoord.first - targetRow;
+        int kingColDiff = enemyKingCoord.second - targetCol;
+        if (kingRowDiff >= -1 && kingRowDiff <= 1 && kingColDiff >= -1 && kingColDiff <= 1)
+        {
+            continue;
+        }
         board[targetRow][targetCol] = sourcePiece;
         board[sourceRow][sourceCol] = "-";
-        kingCoords[turn] = qMakePair(targetRow, targetCol);
+        kingCoord = qMakePair(targetRow, targetCol);
+        kingRow = targetRow;
+        kingCol = targetCol;
         if (!kingIsChecked())
         {
             legalMoves.insert(targetCoord);
         }
         board[targetRow][targetCol] = targetPiece;
         board[sourceRow][sourceCol] = sourcePiece;
-        kingCoords[turn] = qMakePair(sourceRow, sourceCol);
+        kingCoord = qMakePair(sourceRow, sourceCol);
+        kingRow = sourceRow;
+        kingCol = sourceCol;
     }
 }
 
 std::vector<QPair<int, int>> ChessLogic::findEnemyPawn()
 {
     std::vector<QPair<int, int>> enemyPawnPool = {};
-    QPair<int, int> kingCoord = kingCoords[turn];
-    int kingRow = kingCoord.first;
-    int kingCol = kingCoord.second;
 
     // diagonal left
     if (kingCol-1 >= 0 && board[kingRow + pawnDirections[turn]][kingCol-1] == pawnPieces[1-turn])
@@ -281,24 +293,30 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyPawn()
     return enemyPawnPool;
 }
 
+bool ChessLogic::findEnemyRookHelper(std::vector<QPair<int, int>> &enemyRookPool, int targetRow, int targetCol)
+{
+    QPair<int, int> targetCoord = qMakePair(targetRow, targetCol);
+    QString targetPiece = board[targetCoord.first][targetCoord.second];
+    if (targetPiece == rookPieces[1-turn] || targetPiece == queenPieces[1-turn])
+    {
+        enemyRookPool.push_back(targetCoord);
+        return true;
+    }
+    else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+    {
+        return true;
+    }
+    return false;
+}
+
 std::vector<QPair<int, int>> ChessLogic::findEnemyRook()
 {
     std::vector<QPair<int, int>> enemyRookPool = {};
-    QPair<int, int> kingCoord = kingCoords[turn];
-    int kingRow = kingCoord.first;
-    int kingCol = kingCoord.second;
 
     // up
     for (int i = 0; i < kingRow; i++)
     {
-        QPair<int, int> targetCoord = qMakePair(kingRow-i-1, kingCol);
-        QString targetPiece = board[targetCoord.first][targetCoord.second];
-        if (targetPiece == rookPieces[1-turn] || targetPiece == queenPieces[1-turn])
-        {
-            enemyRookPool.push_back(targetCoord);
-            break;
-        }
-        else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+        if (findEnemyRookHelper(enemyRookPool, kingRow-i-1, kingCol))
         {
             break;
         }
@@ -306,14 +324,7 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyRook()
     // down
     for (int i = 0; i < 7-kingRow; i++)
     {
-        QPair<int, int> targetCoord = qMakePair(kingRow+i+1, kingCol);
-        QString targetPiece = board[targetCoord.first][targetCoord.second];
-        if (targetPiece == rookPieces[1-turn] || targetPiece == queenPieces[1-turn])
-        {
-            enemyRookPool.push_back(targetCoord);
-            break;
-        }
-        else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+        if (findEnemyRookHelper(enemyRookPool, kingRow+i+1, kingCol))
         {
             break;
         }
@@ -321,14 +332,7 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyRook()
     // left
     for (int i = 0; i < kingCol; i++)
     {
-        QPair<int, int> targetCoord = qMakePair(kingRow, kingCol-i-1);
-        QString targetPiece = board[targetCoord.first][targetCoord.second];
-        if (targetPiece == rookPieces[1-turn] || targetPiece == queenPieces[1-turn])
-        {
-            enemyRookPool.push_back(targetCoord);
-            break;
-        }
-        else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+        if (findEnemyRookHelper(enemyRookPool, kingRow, kingCol-i-1))
         {
             break;
         }
@@ -336,14 +340,7 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyRook()
     // right
     for (int i = 0; i < 7-kingCol; i++)
     {
-        QPair<int, int> targetCoord = qMakePair(kingRow, kingCol+i+1);
-        QString targetPiece = board[targetCoord.first][targetCoord.second];
-        if (targetPiece == rookPieces[1-turn] || targetPiece == queenPieces[1-turn])
-        {
-            enemyRookPool.push_back(targetCoord);
-            break;
-        }
-        else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+        if (findEnemyRookHelper(enemyRookPool, kingRow, kingCol+i+1))
         {
             break;
         }
@@ -355,10 +352,6 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyRook()
 std::vector<QPair<int, int>> ChessLogic::findEnemyKnight()
 {
     std::vector<QPair<int, int>> enemyKnightPool = {};
-    QPair<int, int> kingCoord = kingCoords[turn];
-    int kingRow = kingCoord.first;
-    int kingCol = kingCoord.second;
-
     std::vector<QPair<int, int>> pool = {qMakePair(-2, -1), qMakePair(-2, 1),
                                          qMakePair(-1, -2), qMakePair(-1, 2),
                                          qMakePair( 1, -2), qMakePair( 1, 2),
@@ -383,24 +376,30 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyKnight()
     return enemyKnightPool;
 }
 
+bool ChessLogic::findEnemyBishopHelper(std::vector<QPair<int, int>> &enemyBishopPool, int targetRow, int targetCol)
+{
+    QPair<int, int> targetCoord = qMakePair(targetRow, targetCol);
+    QString targetPiece = board[targetCoord.first][targetCoord.second];
+    if (targetPiece == bishopPieces[1-turn] || targetPiece == queenPieces[1-turn])
+    {
+        enemyBishopPool.push_back(targetCoord);
+        return true;
+    }
+    else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+    {
+        return true;
+    }
+    return false;
+}
+
 std::vector<QPair<int, int>> ChessLogic::findEnemyBishop()
 {
     std::vector<QPair<int, int>> enemyBishopPool = {};
-    QPair<int, int> kingCoord = kingCoords[turn];
-    int kingRow = kingCoord.first;
-    int kingCol = kingCoord.second;
 
     // top-left
     for (int i = 0; i < std::min(kingRow, kingCol); i++)
     {
-        QPair<int, int> targetCoord = qMakePair(kingRow-i-1, kingCol-i-1);
-        QString targetPiece = board[targetCoord.first][targetCoord.second];
-        if (targetPiece == bishopPieces[1-turn] || targetPiece == queenPieces[1-turn])
-        {
-            enemyBishopPool.push_back(targetCoord);
-            break;
-        }
-        else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+        if (findEnemyBishopHelper(enemyBishopPool, kingRow-i-1, kingCol-i-1))
         {
             break;
         }
@@ -408,14 +407,7 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyBishop()
     // top-right
     for (int i = 0; i < std::min(kingRow, 7-kingCol); i++)
     {
-        QPair<int, int> targetCoord = qMakePair(kingRow-i-1, kingCol+i+1);
-        QString targetPiece = board[targetCoord.first][targetCoord.second];
-        if (targetPiece == bishopPieces[1-turn] || targetPiece == queenPieces[1-turn])
-        {
-            enemyBishopPool.push_back(targetCoord);
-            break;
-        }
-        else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+        if (findEnemyBishopHelper(enemyBishopPool, kingRow-i-1, kingCol+i+1))
         {
             break;
         }
@@ -423,14 +415,7 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyBishop()
     // bottom-left
     for (int i = 0; i < std::min(7-kingRow, kingCol); i++)
     {
-        QPair<int, int> targetCoord = qMakePair(kingRow+i+1, kingCol-i-1);
-        QString targetPiece = board[targetCoord.first][targetCoord.second];
-        if (targetPiece == bishopPieces[1-turn] || targetPiece == queenPieces[1-turn])
-        {
-            enemyBishopPool.push_back(targetCoord);
-            break;
-        }
-        else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+        if (findEnemyBishopHelper(enemyBishopPool, kingRow+i+1, kingCol-i-1))
         {
             break;
         }
@@ -438,14 +423,7 @@ std::vector<QPair<int, int>> ChessLogic::findEnemyBishop()
     // bottom-right
     for (int i = 0; i < std::min(7-kingRow, 7-kingCol); i++)
     {
-        QPair<int, int> targetCoord = qMakePair(kingRow+i+1, kingCol+i+1);
-        QString targetPiece = board[targetCoord.first][targetCoord.second];
-        if (targetPiece == bishopPieces[1-turn] || targetPiece == queenPieces[1-turn])
-        {
-            enemyBishopPool.push_back(targetCoord);
-            break;
-        }
-        else if (chess->piecesSet[turn].contains(targetPiece) || chess->piecesSet[1-turn].contains(targetPiece))
+        if (findEnemyBishopHelper(enemyBishopPool, kingRow+i+1, kingCol+i+1))
         {
             break;
         }
