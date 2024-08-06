@@ -781,4 +781,6 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     setButtonStyleSheet(targetButton, boardImagePath + "SelectedPiece.png");
     targetButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
     targetButton->setIconSize(QSize(90, 90));
+
+    qDebug() << "Time taken: " << timeTaken;
 }

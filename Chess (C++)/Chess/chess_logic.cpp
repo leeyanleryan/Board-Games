@@ -1,7 +1,6 @@
 #include "chess_logic.h"
 #include "chess.h"
 #include <algorithm>
-#include <chrono>
 
 ChessLogic::ChessLogic(Chess *chessInstance)
     : chess(chessInstance)
@@ -24,8 +23,6 @@ ChessLogic::ChessLogic(Chess *chessInstance)
 
 QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::array<std::array<char, 8>, 8> chessBoard, QPair<int, int> sCoord, int currTurn)
 {
-    auto start = std::chrono::high_resolution_clock::now();
-
     board = chessBoard;
     sourceCoord = sCoord;
     sourceRow = sourceCoord.first;
@@ -67,10 +64,6 @@ QSet<QPair<int, int>> ChessLogic::getLegalMoves(std::array<std::array<char, 8>, 
     {
         getLegalKingMovement();
     }
-
-    auto end = std::chrono::high_resolution_clock::now();
-
-    qDebug() << "Time taken to get legal move:" << end-start;
 
     return legalMoves;
 }

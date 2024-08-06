@@ -1,6 +1,7 @@
 #include "chess_button.h"
 #include "chess.h"
 #include "chess_logic.h"
+#include <chrono>
 
 Chess *chess;
 
@@ -28,6 +29,8 @@ void ChessButton::leaveEvent(QEvent *event)
 
 void ChessButton::mousePressEvent(QMouseEvent *event)
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     if (event->button() != Qt::LeftButton || icon().isNull())
     {
         return;
@@ -73,6 +76,9 @@ void ChessButton::mousePressEvent(QMouseEvent *event)
 
     chess->showLegalMoves(this);
     QApplication::setOverrideCursor(Qt::ClosedHandCursor);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    chess->timeTaken = (end-start);
 }
 
 void ChessButton::mouseMoveEvent(QMouseEvent *event)
@@ -94,6 +100,8 @@ void ChessButton::mouseMoveEvent(QMouseEvent *event)
 
 void ChessButton::mouseReleaseEvent(QMouseEvent *event)
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     if (event->button() != Qt::LeftButton || !isDragging)
     {
         return;
@@ -118,4 +126,7 @@ void ChessButton::mouseReleaseEvent(QMouseEvent *event)
 
     chess->makeMove(this, targetButton);
     QApplication::restoreOverrideCursor();
+
+    auto end = std::chrono::high_resolution_clock::now();
+    chess->timeTaken += (end-start);
 }

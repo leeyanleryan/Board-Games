@@ -31,6 +31,8 @@ public:
     bool gameStarted;
     QSet<QPair<int, int>> legalMoves;
 
+    std::chrono::duration<double> timeTaken;
+
     void showLegalMoves(ChessButton *sourceButton);
 
     void makeMove(ChessButton *targetButton);
