@@ -83,21 +83,24 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
 
     bool hasCastled = false;
 
+    bool hasPromoted = false;
+    char promotedPiece = '-';
+
     enPassantCoord = qMakePair(-1, -1);
 
     if (sourcePiece == 'P' || sourcePiece == 'p')
     {
-        // moved forward twice
+        // pawn moved forward twice
         if (abs(targetRow - sourceRow) == 2)
         {
             enPassantCoord = targetCoord;
         }
-        // captured piece
+        // add to move: alphabet notation of source piece's square
         else if (targetCol != sourceCol && targetPiece != '-')
         {
             move += chess->coordinateNotationMap[sourceCoord][0];
         }
-        // en passant
+        // add to move: capture
         else if (targetCol != sourceCol && targetPiece == '-')
         {
             move += "x";
@@ -107,10 +110,18 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
                 chess->coordinateButtonMap[qMakePair(targetRow + pawnDirections[1-turn], targetCol)]->setIcon(QIcon());
             }
         }
-        // promote to piece
+        // pawn promoted to piece
         else if (sourceRow == pawnHomeRows[1-turn] && (targetRow == 7 || targetRow == 0))
         {
-
+            hasPromoted = true;
+            if (changeUI)
+            {
+                promotedPiece = chess->promotePawn();
+            }
+            else
+            {
+                promotedPiece = chess->ai->promotePawn();
+            }
         }
     }
     else if (sourcePiece == 'K' || sourcePiece == 'k')
@@ -118,7 +129,7 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
         kingCoords[turn] = targetCoord;
         kingHasMoved[turn] = true;
 
-        // castled left
+        // set move: castled left
         if (sourceCol - targetCol == 2)
         {
             move = "O-O-O";
@@ -132,7 +143,7 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
                 chess->setButtonIcon(chess->coordinateButtonMap[qMakePair(sourceRow, 3)], chess->pieceImagePath + chess->pieceImageMap[rookPieces[turn]] + ".png");
             }
         }
-        // castled right
+        // set move: castled right
         else if (targetCol - sourceCol == 2)
         {
             move = "O-O";
@@ -146,7 +157,7 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
                 chess->setButtonIcon(chess->coordinateButtonMap[qMakePair(sourceRow, 5)], chess->pieceImagePath + chess->pieceImageMap[rookPieces[turn]] + ".png");
             }
         }
-        // regular king movement
+        // add to move: alphabet notation of king piece
         else
         {
             move += sourcePiece;
@@ -171,16 +182,22 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
         move += sourcePiece;
     }
 
-    // is a capture
+    // add to move: capture
     if (targetPiece != '-')
     {
         move += "x";
     }
 
-    // castled
+    // add to move: full notation of target square
     if (!hasCastled)
     {
         move += chess->coordinateNotationMap[targetCoord];
+    }
+    // add to move: pawn promotion and promoted piece
+    if (hasPromoted)
+    {
+        chessBoard[sourceRow][sourceCol] = promotedPiece;
+        move += "=" + QString(promotedPiece);
     }
 
     chessBoard[targetRow][targetCol] = chessBoard[sourceRow][sourceCol];
@@ -252,7 +269,7 @@ void ChessLogic::getLegalPawnMovement()
         addLegalMoveIfNotPinned(forwardOnce, forwardOnce.first, forwardOnce.second, board[forwardOnce.first][forwardOnce.second]);
     }
     // Home square can move one extra
-    if (sourceRow == pawnHomeRows[turn] && board[forwardTwice.first][forwardTwice.second] == '-')
+    if (sourceRow == pawnHomeRows[turn] && board[forwardOnce.first][forwardOnce.second] == '-' && board[forwardTwice.first][forwardTwice.second] == '-')
     {
         addLegalMoveIfNotPinned(forwardTwice, forwardTwice.first, forwardTwice.second, board[forwardTwice.first][forwardTwice.second]);
     }

@@ -25,6 +25,7 @@ public:
     ~Chess();
 
     ChessLogic *logic;
+    ChessAI *ai;
 
     QString pieceImagePath;
 
@@ -51,6 +52,8 @@ public:
     void makeMove(ChessButton *targetButton);
 
     void makeMove(ChessButton *sourceButton, ChessButton *targetButton);
+
+    char promotePawn();
 
 private slots:
     void variableSetup();
@@ -129,7 +132,6 @@ private slots:
 
 private:
     Ui::Chess *ui;
-    ChessAI *ai;
 
     QMap<QPair<int, int>, char> coordinatePieceMap; // example: (0,0): 'r', (0,1): 'n'
 
@@ -150,7 +152,7 @@ private:
     bool alternateTurns;
     int computerDifficulty;
     int gameNumber;
-    int aiTurn;
+    int computerTurn;
     int turn;
 
     int moveNumber;

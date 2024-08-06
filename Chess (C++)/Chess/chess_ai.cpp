@@ -7,12 +7,12 @@ ChessAI::ChessAI(Chess *chessInstance)
 
 }
 
-void ChessAI::setDifficulty(int computerDifficulty)
-{
-    difficulty = computerDifficulty;
-}
-
 void ChessAI::makeMove()
 {
 
+}
+
+char ChessAI::promotePawn()
+{
+    return chess->logic->queenPieces[turn];
 }

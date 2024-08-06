@@ -13,6 +13,13 @@ class ChessLogic : public QObject
 public:
     ChessLogic(Chess *chessInstance);
 
+    std::array<char, 2> pawnPieces;
+    std::array<char, 2> rookPieces;
+    std::array<char, 2> knightPieces;
+    std::array<char, 2> bishopPieces;
+    std::array<char, 2> queenPieces;
+    std::array<char, 2> kingPieces;
+
     std::array<bool, 2> kingHasMoved;
 
     std::array<bool, 2> leftRookHasMoved;
@@ -45,13 +52,6 @@ private:
     int turn;
 
     std::array<QSet<char>, 2> piecesSet;
-
-    std::array<char, 2> pawnPieces;
-    std::array<char, 2> rookPieces;
-    std::array<char, 2> knightPieces;
-    std::array<char, 2> bishopPieces;
-    std::array<char, 2> queenPieces;
-    std::array<char, 2> kingPieces;
 
     std::array<int, 2> pawnDirections;
     std::array<int, 2> pawnHomeRows;

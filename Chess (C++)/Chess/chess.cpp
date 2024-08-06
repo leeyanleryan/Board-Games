@@ -14,7 +14,6 @@ Chess::Chess(QWidget *parent)
     : QMainWindow(parent)
     , floatingIconLabel(new QLabel(this))
     , ui(new Ui::Chess)
-    , ai(new ChessAI(this))
 {
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -37,6 +36,7 @@ Chess::~Chess()
 void Chess::variableSetup()
 {
     logic = new ChessLogic(this);
+    ai = new ChessAI(this);
     coordinateButtonMap = {}; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
     notationCoordinateMap = {}; // example: "a8": (0,0), "b8": (0,1)
     coordinatePieceMap = {}; // example: (0,0): 'r', (0,1): 'n'
@@ -74,7 +74,7 @@ void Chess::variableSetup()
     computerDifficulty = 0;
     gameStarted = false;
     gameNumber = 0;
-    aiTurn = 0;
+    computerTurn = 0;
     turn = 0;
     moveNumber = 1;
     moveLabels = {};
@@ -550,6 +550,7 @@ void Chess::on_buttonPlay_clicked()
     {
         turn = QRandomGenerator::global()->bounded(2);
     }
+
     if (turn == 0)
     {
         playerNames = {ui->buttonP1First->text(), ui->buttonP2First->text()};
@@ -558,11 +559,13 @@ void Chess::on_buttonPlay_clicked()
     {
         playerNames = {ui->buttonP2First->text(), ui->buttonP1First->text()};
     }
+
     if (computerDifficulty != 0)
     {
-        aiTurn = 1 - turn;
+        computerTurn = 1 - turn;
         ai->setDifficulty(computerDifficulty);
     }
+
     newGame();
     ui->uiMenu->setCurrentIndex(5);
 
@@ -590,6 +593,19 @@ void Chess::newGame()
     turn = 0;
     moveNumber = 1;
     moveLabels = {};
+
+    if (alternateTurns && gameNumber != 1)
+    {
+        QString tempP2Name = playerNames[1];
+        playerNames[1] = playerNames[0];
+        playerNames[0] = tempP2Name;
+
+        if (computerDifficulty != 0)
+        {
+            computerTurn = 1 - computerTurn;
+            ai->setTurn(computerTurn);
+        }
+    }
 
     prevMovedSourceButton = nullptr;
     prevMovedTargetButton = nullptr;
@@ -839,4 +855,9 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     }
     qDebug();
     qDebug() << "Time taken: " << timeTakenToMove;
+}
+
+char Chess::promotePawn()
+{
+    return logic->queenPieces[turn];
 }
