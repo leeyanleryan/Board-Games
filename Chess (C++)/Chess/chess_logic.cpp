@@ -73,7 +73,7 @@ QSet<QPair<int, int>> ChessLogic::getLegalMoves(const std::array<std::array<char
     return legalMoves;
 }
 
-QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn, bool changeUI)
+QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QMap<QPair<int, int>, char> &coordinatePieceMap, QPair<int, int> targetCoord, int &currTurn, bool changeUI)
 {
     int targetRow = targetCoord.first;
     int targetCol = targetCoord.second;
@@ -105,6 +105,10 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
         {
             move += "x";
             chessBoard[targetRow + pawnDirections[1-turn]][targetCol] = '-';
+            if (coordinatePieceMap.contains(qMakePair(targetRow + pawnDirections[1-turn], targetCol)))
+            {
+                coordinatePieceMap.remove(qMakePair(targetRow + pawnDirections[1-turn], targetCol));
+            }
             if (changeUI)
             {
                 chess->coordinateButtonMap[qMakePair(targetRow + pawnDirections[1-turn], targetCol)]->setIcon(QIcon());
@@ -136,6 +140,11 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
             move = "O-O-O";
             chessBoard[sourceRow][0] = '-';
             chessBoard[sourceRow][3] = rookPieces[turn];
+            if (coordinatePieceMap.contains(qMakePair(sourceRow, 0)))
+            {
+                coordinatePieceMap.remove(qMakePair(sourceRow, 0));
+            }
+            coordinatePieceMap[qMakePair(sourceRow, 3)] = rookPieces[turn];
             leftRookHasMoved[turn] = true;
             hasCastled = true;
             if (changeUI)
@@ -150,6 +159,11 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
             move = "O-O";
             chessBoard[sourceRow][7] = '-';
             chessBoard[sourceRow][5] = rookPieces[turn];
+            if (coordinatePieceMap.contains(qMakePair(sourceRow, 7)))
+            {
+                coordinatePieceMap.remove(qMakePair(sourceRow, 7));
+            }
+            coordinatePieceMap[qMakePair(sourceRow, 5)] = rookPieces[turn];
             rightRookHasMoved[turn] = true;
             hasCastled = true;
             if (changeUI)
@@ -200,19 +214,32 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
         move += "=" + QString(promotionPiece);
 
         chessBoard[targetRow][targetCol] = promotionPiece;
+        coordinatePieceMap[qMakePair(targetRow, targetCol)] = promotionPiece;
     }
     else
     {
         chessBoard[targetRow][targetCol] = chessBoard[sourceRow][sourceCol];
+        coordinatePieceMap[qMakePair(targetRow, targetCol)] = chessBoard[sourceRow][sourceCol];
     }
 
     chessBoard[sourceRow][sourceCol] = '-';
+    if (coordinatePieceMap.contains(sourceCoord))
+    {
+        coordinatePieceMap.remove(sourceCoord);
+    }
     currTurn = 1 - currTurn;
+
+    char kingState = getKingState(coordinatePieceMap);
+
+    if (kingState != '-')
+    {
+        move += QString(kingState);
+    }
 
     return move;
 }
 
-QString ChessLogic::makeLegalPromotionMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn, char promotionPiece, QString &move)
+QString ChessLogic::makeLegalPromotionMove(std::array<std::array<char, 8>, 8> &chessBoard, QMap<QPair<int, int>, char> &coordinatePieceMap, QPair<int, int> targetCoord, int &currTurn, char promotionPiece, QString &move)
 {
     int targetRow = targetCoord.first;
     int targetCol = targetCoord.second;
@@ -229,7 +256,19 @@ QString ChessLogic::makeLegalPromotionMove(std::array<std::array<char, 8>, 8> &c
 
     chessBoard[targetRow][targetCol] = promotionPiece;
     chessBoard[sourceRow][sourceCol] = '-';
+    coordinatePieceMap[targetCoord] = promotionPiece;
+    if (coordinatePieceMap.contains(sourceCoord))
+    {
+        coordinatePieceMap.remove(sourceCoord);
+    }
     currTurn = 1 - currTurn;
+
+    char kingState = getKingState(coordinatePieceMap);
+
+    if (kingState != '-')
+    {
+        move += QString(kingState);
+    }
 
     return move;
 }
@@ -689,7 +728,19 @@ bool ChessLogic::kingIsChecked()
             findEnemyQueen().size()  > 0);
 }
 
-bool ChessLogic::kingIsMated()
+char ChessLogic::getKingState(const QMap<QPair<int, int>, char> &coordinatePieceMap)
 {
-    return false;
+    turn = 1 - turn;
+    kingCoord = kingCoords[turn];
+    kingRow = kingCoord.first;
+    kingCol = kingCoord.second;
+
+    if (!kingIsChecked())
+    {
+        return '-';
+    }
+
+    qDebug() << coordinatePieceMap;
+
+    return '#';
 }

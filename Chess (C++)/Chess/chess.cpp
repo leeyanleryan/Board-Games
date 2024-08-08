@@ -40,6 +40,7 @@ void Chess::variableSetup()
 
     coordinateButtonMap = {}; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
     notationCoordinateMap = {}; // example: "a8": (0,0), "b8": (0,1)
+    coordinateNotationMap = {}; // example: (0,0): "a8"
     coordinatePieceMap = {}; // example: (0,0): 'r', (0,1): 'n'
     pieceImageMap = {}; // example: 'r': "RookBlack"
 
@@ -660,6 +661,7 @@ void Chess::newGame()
     logic->rightRookHasMoved = {false, false};
 
     setDefaultBoard();
+    setCoordinatePieceMap();
     setChessBoard();
 
     QWidget *scrollWidget = new QWidget();
@@ -866,7 +868,7 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
         return;
     }
 
-    QString move = logic->makeLegalMove(board, targetCoord, turn, true);
+    QString move = logic->makeLegalMove(board, coordinatePieceMap, targetCoord, turn, true);
     // choosing promotion
     if (move == "")
     {
@@ -947,7 +949,7 @@ void Chess::chosenPromotionPiece(char chessPiece)
 {
     if (chessPiece != '-')
     {
-        makePromotionMove(logic->makeLegalPromotionMove(board, promotionTargetCoord, turn, chessPiece, promotionMove));
+        makePromotionMove(logic->makeLegalPromotionMove(board, coordinatePieceMap, promotionTargetCoord, turn, chessPiece, promotionMove));
         choosingPromotedPiece = false;
         ui->uiPromotion->lower();
     }

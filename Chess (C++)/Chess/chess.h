@@ -32,6 +32,7 @@ public:
     QMap<QPair<int, int>, ChessButton*> coordinateButtonMap; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
     QMap<QString, QPair<int, int>> notationCoordinateMap; // example: "a8": (0,0), "b8": (0,1)
     QMap<QPair<int, int>, QString> coordinateNotationMap; // example: (0,0): "a8", (0,1): "b8"
+    QMap<QPair<int, int>, char> coordinatePieceMap; // example: (0,0): 'r', (0,1): 'n'
     QMap<char, QString> pieceImageMap; // example: 'r': "RookBlack"
 
     std::array<std::array<char, 8>, 8> board;
@@ -142,8 +143,6 @@ private slots:
 
 private:
     Ui::Chess *ui;
-
-    QMap<QPair<int, int>, char> coordinatePieceMap; // example: (0,0): 'r', (0,1): 'n'
 
     QString boardImagePath;
     QString chessSoundPath;

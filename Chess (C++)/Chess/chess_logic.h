@@ -27,11 +27,13 @@ public:
 
     QSet<QPair<int, int>> getLegalMoves(const std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> sCoord, int currTurn);
 
-    QString makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn, bool changeUI);
+    QString makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QMap<QPair<int, int>, char> &coordinatePieceMap, QPair<int, int> targetCoord, int &currTurn, bool changeUI);
 
-    QString makeLegalPromotionMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn, char promotionPiece, QString &move);
+    QString makeLegalPromotionMove(std::array<std::array<char, 8>, 8> &chessBoard, QMap<QPair<int, int>, char> &coordinatePieceMap, QPair<int, int> targetCoord, int &currTurn, char promotionPiece, QString &move);
 
     void setKingCoords(const std::array<std::array<char, 8>, 8> &chessBoard);
+
+    char getKingState(const QMap<QPair<int, int>, char> &coordinatePieceMap);
 
 private:
     Chess *chess;
@@ -91,8 +93,6 @@ private:
     std::vector<QPair<int, int>> findEnemyQueen();
 
     bool kingIsChecked();
-
-    bool kingIsMated();
 };
 
 #endif // CHESS_LOGIC_H
