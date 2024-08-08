@@ -1951,6 +1951,84 @@
        <string/>
       </property>
      </widget>
+     <widget class="QStackedWidget" name="uiPromotion">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>10</y>
+        <width>100</width>
+        <height>415</height>
+       </rect>
+      </property>
+      <widget class="QWidget" name="turn0">
+       <widget class="QPushButton" name="queen0">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>0</y>
+          <width>90</width>
+          <height>90</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="knight0">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>90</y>
+          <width>90</width>
+          <height>90</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="rook0">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>180</y>
+          <width>90</width>
+          <height>90</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="bishop0">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>270</y>
+          <width>90</width>
+          <height>90</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="close0">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>360</y>
+          <width>90</width>
+          <height>45</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="turn1"/>
+     </widget>
      <zorder>h1</zorder>
      <zorder>e4</zorder>
      <zorder>a4</zorder>
@@ -2015,6 +2093,7 @@
      <zorder>h5</zorder>
      <zorder>a5</zorder>
      <zorder>c5</zorder>
+     <zorder>uiPromotion</zorder>
     </widget>
     <widget class="QWidget" name="blackView"/>
    </widget>

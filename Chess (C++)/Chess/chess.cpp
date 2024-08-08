@@ -868,5 +868,6 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
 
 char Chess::promotePawn(QPair<int, int> sourceCoord, QPair<int, int> targetCoord)
 {
+    ui->uiPromotion->raise();
     return logic->queenPieces[turn];
 }
