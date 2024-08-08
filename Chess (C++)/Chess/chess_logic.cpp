@@ -84,7 +84,7 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
     bool hasCastled = false;
 
     bool hasPromoted = false;
-    char promotedPiece = '-';
+    char promotionPiece = '-';
 
     enPassantCoord = qMakePair(-1, -1);
 
@@ -111,23 +111,16 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
             }
         }
         // pawn promoted to piece
-        else if (sourceRow == pawnHomeRows[1-turn] && (targetRow == 7 || targetRow == 0))
+        if (sourceRow == pawnHomeRows[1-turn] && (targetRow == 7 || targetRow == 0))
         {
             if (changeUI)
             {
-                promotedPiece = chess->promotePawn(sourceCoord, targetCoord);
-            }
-            else
-            {
-                promotedPiece = chess->ai->promotePawn(sourceCoord, targetCoord);
-            }
-
-            if (promotedPiece == '-')
-            {
+                chess->showPromotionUI(sourceCoord, targetCoord, move);
                 return "";
             }
             else
             {
+                promotionPiece = chess->ai->promotePawn(sourceCoord, targetCoord);
                 hasPromoted = true;
             }
         }
@@ -204,11 +197,37 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
     // add to move: pawn promotion and promoted piece
     if (hasPromoted)
     {
-        chessBoard[sourceRow][sourceCol] = promotedPiece;
-        move += "=" + QString(promotedPiece);
+        move += "=" + QString(promotionPiece);
+
+        chessBoard[targetRow][targetCol] = promotionPiece;
+    }
+    else
+    {
+        chessBoard[targetRow][targetCol] = chessBoard[sourceRow][sourceCol];
     }
 
-    chessBoard[targetRow][targetCol] = chessBoard[sourceRow][sourceCol];
+    chessBoard[sourceRow][sourceCol] = '-';
+    currTurn = 1 - currTurn;
+
+    return move;
+}
+
+QString ChessLogic::makeLegalPromotionMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn, char promotionPiece, QString &move)
+{
+    int targetRow = targetCoord.first;
+    int targetCol = targetCoord.second;
+    char targetPiece = chessBoard[targetRow][targetCol];
+
+    // add to move: capture
+    if (targetPiece != '-')
+    {
+        move += "x";
+    }
+
+    move += chess->coordinateNotationMap[targetCoord];
+    move += "=" + QString(promotionPiece);
+
+    chessBoard[targetRow][targetCol] = promotionPiece;
     chessBoard[sourceRow][sourceCol] = '-';
     currTurn = 1 - currTurn;
 

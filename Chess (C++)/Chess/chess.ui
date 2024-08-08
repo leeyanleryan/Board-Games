@@ -1955,17 +1955,17 @@
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>10</y>
+        <y>320</y>
         <width>100</width>
         <height>415</height>
        </rect>
       </property>
       <widget class="QWidget" name="turn0">
-       <widget class="QPushButton" name="queen0">
+       <widget class="ChessPromotionButton" name="queen0">
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>0</y>
+          <y>5</y>
           <width>90</width>
           <height>90</height>
          </rect>
@@ -1974,11 +1974,11 @@
          <string/>
         </property>
        </widget>
-       <widget class="QPushButton" name="knight0">
+       <widget class="ChessPromotionButton" name="knight0">
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>90</y>
+          <y>95</y>
           <width>90</width>
           <height>90</height>
          </rect>
@@ -1987,11 +1987,11 @@
          <string/>
         </property>
        </widget>
-       <widget class="QPushButton" name="rook0">
+       <widget class="ChessPromotionButton" name="rook0">
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>180</y>
+          <y>185</y>
           <width>90</width>
           <height>90</height>
          </rect>
@@ -2000,11 +2000,11 @@
          <string/>
         </property>
        </widget>
-       <widget class="QPushButton" name="bishop0">
+       <widget class="ChessPromotionButton" name="bishop0">
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>270</y>
+          <y>275</y>
           <width>90</width>
           <height>90</height>
          </rect>
@@ -2013,11 +2013,11 @@
          <string/>
         </property>
        </widget>
-       <widget class="QPushButton" name="close0">
+       <widget class="ChessPromotionButton" name="close0">
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>360</y>
+          <y>365</y>
           <width>90</width>
           <height>45</height>
          </rect>
@@ -2027,7 +2027,73 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="turn1"/>
+      <widget class="QWidget" name="turn1">
+       <widget class="ChessPromotionButton" name="close1">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>5</y>
+          <width>90</width>
+          <height>45</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="ChessPromotionButton" name="rook1">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>140</y>
+          <width>90</width>
+          <height>90</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="ChessPromotionButton" name="knight1">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>230</y>
+          <width>90</width>
+          <height>90</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="ChessPromotionButton" name="bishop1">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>50</y>
+          <width>90</width>
+          <height>90</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="ChessPromotionButton" name="queen1">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>320</y>
+          <width>90</width>
+          <height>90</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </widget>
      </widget>
      <zorder>h1</zorder>
      <zorder>e4</zorder>
@@ -2104,6 +2170,11 @@
    <class>ChessButton</class>
    <extends>QPushButton</extends>
    <header>chess_button.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ChessPromotionButton</class>
+   <extends>QPushButton</extends>
+   <header>chess_promotion_button.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -43,5 +43,6 @@
         <file>Background/Default/lineEdit.png</file>
         <file>Background/Default/movesPlayed.png</file>
         <file>Background/Default/promoteBackground.png</file>
+        <file>Background/Default/promoteBackgroundReversed.png</file>
     </qresource>
 </RCC>

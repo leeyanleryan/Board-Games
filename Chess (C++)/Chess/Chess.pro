@@ -12,6 +12,7 @@ SOURCES += \
     chess_ai.cpp \
     chess_button.cpp \
     chess_logic.cpp \
+    chess_promotion_button.cpp \
     main.cpp \
     chess.cpp
 
@@ -19,7 +20,8 @@ HEADERS += \
     chess.h \
     chess_ai.h \
     chess_button.h \
-    chess_logic.h
+    chess_logic.h \
+    chess_promotion_button.h
 
 FORMS += \
     chess.ui

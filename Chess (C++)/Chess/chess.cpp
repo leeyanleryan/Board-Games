@@ -37,10 +37,12 @@ void Chess::variableSetup()
 {
     logic = new ChessLogic(this);
     ai = new ChessAI(this);
+
     coordinateButtonMap = {}; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
     notationCoordinateMap = {}; // example: "a8": (0,0), "b8": (0,1)
     coordinatePieceMap = {}; // example: (0,0): 'r', (0,1): 'n'
     pieceImageMap = {}; // example: 'r': "RookBlack"
+
     floatingIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
     floatingIconLabel->setVisible(false);
     //floatingIconLabel->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
@@ -48,7 +50,9 @@ void Chess::variableSetup()
     //floatingIconLabel->setAttribute(Qt::WA_TranslucentBackground, true);
     //floatingIconLabel->setAttribute(Qt::WA_ShowWithoutActivating, true);
     floatingIconLabel->raise();
+
     board = {};
+
     pieceImagePath = ":/Pieces/Neo/";
     boardImagePath = ":/Board/Brown/";
     chessSoundPath = ":/Sound/Default/";
@@ -67,6 +71,7 @@ void Chess::variableSetup()
                                "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
     buttonStyleSheetShadow = "background-image: url(" + backgroundPath + "buttonShadow.png)";
     buttonStyleSheetDifficultyShadow = "background-image: url(" + backgroundPath + "buttonDifficultyShadow.png)";
+
     playerNames = {};
     chosenFirst = false;
     randomTurn = false;
@@ -76,13 +81,19 @@ void Chess::variableSetup()
     gameNumber = 0;
     computerTurn = 0;
     turn = 0;
+
     moveNumber = 1;
     moveLabels = {};
     legalMoves = {};
+
     prevMovedSourceButton = nullptr;
     prevMovedTargetButton = nullptr;
     prevClickedSourceButton = nullptr;
     sourceButtonDrops = 0;
+
+    promotionSourceCoord = {};
+    promotionTargetCoord = {};
+    promotionMove = "";
 }
 
 void Chess::launchSetup()
@@ -92,6 +103,7 @@ void Chess::launchSetup()
     setCoordinatePieceMap();
     setPieceImageMap();
     setChessBoard();
+    setPromotionUI();
     setMenu();
 }
 
@@ -186,7 +198,7 @@ void Chess::setChessBoard()
     {
         for (int col = 0; col < 8; col++)
         {
-            QPushButton *button = coordinateButtonMap[{row, col}];
+            ChessButton *button = coordinateButtonMap[{row, col}];
             if ((row+col)%2 == 0)
             {
                 setButtonStyleSheet(button, boardImagePath + "BoardWhite.png");
@@ -205,6 +217,35 @@ void Chess::setChessBoard()
             }
         }
     }
+}
+
+void Chess::setPromotionUI()
+{
+    std::array<ChessPromotionButton*, 8> buttonArray = {ui->queen0, ui->queen1, ui->knight0, ui->knight1, ui->rook0, ui->rook1, ui->bishop0, ui->bishop1};
+    std::array<char, 8> pieceArray = {'Q', 'q', 'N', 'n', 'R', 'r', 'B', 'b'};
+
+    choosingPromotedPiece = false;
+
+    for (size_t i = 0; i < buttonArray.size(); i++)
+    {
+        buttonArray[i]->chessPiece = pieceArray[i];
+        buttonArray[i]->setStyleSheet("background: transparent;");
+        setButtonIcon(buttonArray[i], pieceImagePath + pieceImageMap[pieceArray[i]] + ".png");
+    }
+
+    std::array<ChessPromotionButton*, 2> closeArray = {ui->close0, ui->close1};
+
+    for (size_t i = 0; i < closeArray.size(); i++)
+    {
+        closeArray[i]->chessPiece = '-';
+        closeArray[i]->setStyleSheet("background: transparent;");
+    }
+
+    ui->uiPromotion->setStyleSheet("background: transparent;");
+    ui->turn0->setStyleSheet("background-image: url(" + backgroundPath + "promoteBackground.png); border: 0");
+    ui->turn1->setStyleSheet("background-image: url(" + backgroundPath + "promoteBackgroundReversed.png); border: 0");
+
+    ui->uiPromotion->lower();
 }
 
 void Chess::setMenu()
@@ -667,7 +708,7 @@ void Chess::showLegalMoveImages()
     {
         QPair<int, int> coord = *it;
         char piece = board[coord.first][coord.second];
-        QPushButton *button = coordinateButtonMap[coord];
+        ChessButton *button = coordinateButtonMap[coord];
 
         if (piece == '-')
         {
@@ -686,7 +727,7 @@ void Chess::hideLegalMoveImages()
     {
         QPair<int, int> coord = *it;
         char piece = board[coord.first][coord.second];
-        QPushButton *button = coordinateButtonMap[coord];
+        ChessButton *button = coordinateButtonMap[coord];
 
         if (piece == '-')
         {
@@ -826,7 +867,7 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     }
 
     QString move = logic->makeLegalMove(board, targetCoord, turn, true);
-    // cancelled promotion
+    // choosing promotion
     if (move == "")
     {
         return;
@@ -866,8 +907,101 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     qDebug() << "Time taken: " << timeTakenToMove;
 }
 
-char Chess::promotePawn(QPair<int, int> sourceCoord, QPair<int, int> targetCoord)
+void Chess::makePromotionMove(QString move)
 {
+    ChessButton *sourceButton = coordinateButtonMap[promotionSourceCoord];
+    ChessButton *targetButton = coordinateButtonMap[promotionTargetCoord];
+
+    addMove(move);
+
+    hideLegalMoveImages();
+    legalMoves = {};
+
+    if (prevMovedSourceButton && prevMovedTargetButton)
+    {
+        resetButtonStyleSheet(prevMovedSourceButton);
+        resetButtonStyleSheet(prevMovedTargetButton);
+    }
+
+    prevMovedSourceButton = sourceButton;
+    prevMovedTargetButton = targetButton;
+    prevClickedSourceButton = nullptr;
+
+    setButtonStyleSheet(targetButton, boardImagePath + "SelectedPiece.png");
+    setButtonIcon(targetButton, pieceImagePath + pieceImageMap[board[promotionTargetCoord.first][promotionTargetCoord.second]]);
+
+    qDebug();
+    for (const std::array<char, 8> &row : board)
+    {
+        QDebug dbg = qDebug();
+        for (char piece : row)
+        {
+            dbg.noquote() << piece;
+        }
+    }
+    qDebug();
+    qDebug() << "Time taken: " << timeTakenToMove;
+}
+
+void Chess::chosenPromotionPiece(char chessPiece)
+{
+    if (chessPiece != '-')
+    {
+        makePromotionMove(logic->makeLegalPromotionMove(board, promotionTargetCoord, turn, chessPiece, promotionMove));
+        choosingPromotedPiece = false;
+        ui->uiPromotion->lower();
+    }
+    else
+    {
+        deselectButton(prevClickedSourceButton);
+    }
+}
+
+void Chess::showPromotionUI(QPair<int, int> sourceCoord, QPair<int, int> targetCoord, QString move)
+{
+    choosingPromotedPiece = true;
+
+    promotionSourceCoord = sourceCoord;
+    promotionTargetCoord = targetCoord;
+    promotionMove = move;
+
+    int targetCol = targetCoord.second;
+    QRect currentGeometry = ui->uiPromotion->geometry();
+
+    if (turn == 0)
+    {
+        ui->uiPromotion->setCurrentIndex(0);
+        ui->uiPromotion->setGeometry(5 + targetCol*90, 5, currentGeometry.width(), currentGeometry.height());
+    }
+    else if (turn == 1)
+    {
+        ui->uiPromotion->setCurrentIndex(1);
+        ui->uiPromotion->setGeometry(5 + targetCol*90, 320, currentGeometry.width(), currentGeometry.height());
+    }
+
     ui->uiPromotion->raise();
-    return logic->queenPieces[turn];
+}
+
+void Chess::deselectButton(ChessButton *button)
+{
+    QPair<int, int> sourceCoord = notationCoordinateMap[button->objectName()];
+
+    choosingPromotedPiece = false;
+
+    hideLegalMoveImages();
+    legalMoves = {};
+
+    if (prevClickedSourceButton)
+    {
+        QPair<int, int> prevClickedSourceCoord = notationCoordinateMap[prevClickedSourceButton->objectName()];
+
+        resetButtonStyleSheet(prevClickedSourceButton);
+        setButtonIcon(prevClickedSourceButton, pieceImagePath + pieceImageMap[board[prevClickedSourceCoord.first][prevClickedSourceCoord.second]]);
+        prevClickedSourceButton = nullptr;
+    }
+
+    resetButtonStyleSheet(button);
+    setButtonIcon(button, pieceImagePath + pieceImageMap[board[sourceCoord.first][sourceCoord.second]]);
+
+    ui->uiPromotion->lower();
 }

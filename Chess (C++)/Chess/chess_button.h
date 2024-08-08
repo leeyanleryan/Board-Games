@@ -5,8 +5,6 @@
 #include <QPushButton>
 #include <QMouseEvent>
 #include <QCursor>
-#include <QDrag>
-#include <QMimeData>
 #include <QApplication>
 
 class ChessButton : public QPushButton

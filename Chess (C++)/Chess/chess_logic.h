@@ -29,6 +29,8 @@ public:
 
     QString makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn, bool changeUI);
 
+    QString makeLegalPromotionMove(std::array<std::array<char, 8>, 8> &chessBoard, QPair<int, int> targetCoord, int &currTurn, char promotionPiece, QString &move);
+
     void setKingCoords(const std::array<std::array<char, 8>, 8> &chessBoard);
 
 private:

@@ -29,7 +29,7 @@ public:
 
     QString pieceImagePath;
 
-    QMap<QPair<int, int>, QPushButton*> coordinateButtonMap; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
+    QMap<QPair<int, int>, ChessButton*> coordinateButtonMap; // example: (0,0): ChessButton named "a8", (0,1): ChessButton named "b8"
     QMap<QString, QPair<int, int>> notationCoordinateMap; // example: "a8": (0,0), "b8": (0,1)
     QMap<QPair<int, int>, QString> coordinateNotationMap; // example: (0,0): "a8", (0,1): "b8"
     QMap<char, QString> pieceImageMap; // example: 'r': "RookBlack"
@@ -45,6 +45,8 @@ public:
     std::chrono::duration<double, std::milli> timeTakenToLoad;
     std::chrono::duration<double, std::milli> timeTakenToMove;
 
+    bool choosingPromotedPiece;
+
     void setButtonIcon(QPushButton *button, const QString &imagePath);
 
     void showLegalMoves(ChessButton *sourceButton);
@@ -53,7 +55,11 @@ public:
 
     void makeMove(ChessButton *sourceButton, ChessButton *targetButton);
 
-    char promotePawn(QPair<int, int> sourceCoord, QPair<int, int> targetCoord);
+    void chosenPromotionPiece(char chessPiece);
+
+    void showPromotionUI(QPair<int, int> sourceCoord, QPair<int, int> targetCoord, QString move);
+
+    void deselectButton(ChessButton *button);
 
 private slots:
     void variableSetup();
@@ -71,6 +77,8 @@ private slots:
     void setButtonStyleSheet(QPushButton *button, const QString &imagePath);
 
     void setChessBoard();
+
+    void setPromotionUI();
 
     void setMenu();
 
@@ -124,6 +132,8 @@ private slots:
 
     void addMove(const QString &move);
 
+    void makePromotionMove(QString move);
+
     void showLegalMoveImages();
 
     void hideLegalMoveImages();
@@ -164,6 +174,10 @@ private:
     ChessButton *prevClickedSourceButton;
     int sourceButtonDrops;
     bool clickedSameButton;
+
+    QPair<int, int> promotionSourceCoord;
+    QPair<int, int> promotionTargetCoord;
+    QString promotionMove;
 };
 
 #endif // CHESS_H
