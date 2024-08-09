@@ -749,9 +749,12 @@ char ChessLogic::getKingState(const QMap<QPair<int, int>, char> &coordinatePiece
 
     for (auto it = coordinatePieceMap.constBegin(); it != coordinatePieceMap.constEnd(); ++it)
     {
-        char piece = it.value();
+        sourceCoord = it.key();
+        sourceRow = sourceCoord.first;
+        sourceCol = sourceCoord.second;
+        sourcePiece = it.value();
 
-        if (piecesSet[turn].contains(piece))
+        if (piecesSet[1-turn].contains(sourcePiece))
         {
             continue;
         }
@@ -781,8 +784,6 @@ char ChessLogic::getKingState(const QMap<QPair<int, int>, char> &coordinatePiece
             getLegalKingMovement();
         }
     }
-
-    qDebug() << legalMoves;
 
     if (legalMoves.empty())
     {
