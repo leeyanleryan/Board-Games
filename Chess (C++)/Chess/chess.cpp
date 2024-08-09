@@ -890,19 +890,24 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     targetButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
     targetButton->setIconSize(QSize(90, 90));
 
+    QString gameState;
+
     if (move.contains(" "))
     {
         QStringList moveSplit = move.split(" ");
         move = moveSplit[0];
+        gameState = moveSplit[1];
     }
 
-    if (move[move.size()-1] == '#')
+    addMove(move);
+
+    if (gameState == "Draw")
     {
-        addMove(move);
+
     }
-    else
+    else if (gameState == "White" || gameState == "Black")
     {
-        addMove(move);
+
     }
 
     qDebug();
@@ -939,7 +944,20 @@ void Chess::makePromotionMove(QString move)
     setButtonStyleSheet(targetButton, boardImagePath + "SelectedPiece.png");
     setButtonIcon(targetButton, pieceImagePath + pieceImageMap[board[promotionTargetCoord.first][promotionTargetCoord.second]]);
 
-    addMove(move);
+    if (move.contains(" "))
+    {
+        QStringList moveSplit = move.split(" ");
+        move = moveSplit[0];
+    }
+
+    if (move[move.size()-1] == '#')
+    {
+        addMove(move);
+    }
+    else
+    {
+        addMove(move);
+    }
 
     qDebug();
     for (const std::array<char, 8> &row : board)
