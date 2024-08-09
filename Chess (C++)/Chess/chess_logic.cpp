@@ -229,6 +229,9 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
     }
     currTurn = 1 - currTurn;
 
+    turn = 1 - turn;
+    board = chessBoard;
+
     char kingState = getKingState(coordinatePieceMap);
 
     if (kingState != '-')
@@ -262,6 +265,9 @@ QString ChessLogic::makeLegalPromotionMove(std::array<std::array<char, 8>, 8> &c
         coordinatePieceMap.remove(sourceCoord);
     }
     currTurn = 1 - currTurn;
+
+    turn = 1 - turn;
+    board = chessBoard;
 
     char kingState = getKingState(coordinatePieceMap);
 
@@ -730,7 +736,8 @@ bool ChessLogic::kingIsChecked()
 
 char ChessLogic::getKingState(const QMap<QPair<int, int>, char> &coordinatePieceMap)
 {
-    turn = 1 - turn;
+    legalMoves = {};
+
     kingCoord = kingCoords[turn];
     kingRow = kingCoord.first;
     kingCol = kingCoord.second;
@@ -740,7 +747,49 @@ char ChessLogic::getKingState(const QMap<QPair<int, int>, char> &coordinatePiece
         return '-';
     }
 
-    qDebug() << coordinatePieceMap;
+    for (auto it = coordinatePieceMap.constBegin(); it != coordinatePieceMap.constEnd(); ++it)
+    {
+        char piece = it.value();
 
-    return '#';
+        if (piecesSet[turn].contains(piece))
+        {
+            continue;
+        }
+
+        if (sourcePiece == 'P' || sourcePiece == 'p')
+        {
+            getLegalPawnMovement();
+        }
+        else if (sourcePiece == 'R' || sourcePiece == 'r')
+        {
+            getLegalRookMovement();
+        }
+        else if (sourcePiece == 'N' || sourcePiece == 'n')
+        {
+            getLegalKnightMovement();
+        }
+        else if (sourcePiece == 'B' || sourcePiece == 'b')
+        {
+            getLegalBishopMovement();
+        }
+        else if (sourcePiece == 'Q' || sourcePiece == 'q')
+        {
+            getLegalQueenMovement();
+        }
+        else if (sourcePiece == 'K' || sourcePiece == 'k')
+        {
+            getLegalKingMovement();
+        }
+    }
+
+    qDebug() << legalMoves;
+
+    if (legalMoves.empty())
+    {
+        return '#';
+    }
+    else
+    {
+        return '+';
+    }
 }

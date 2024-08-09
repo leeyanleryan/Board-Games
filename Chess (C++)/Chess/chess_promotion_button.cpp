@@ -23,21 +23,24 @@ void ChessPromotionButton::leaveEvent(QEvent *event)
 
 void ChessPromotionButton::mousePressEvent(QMouseEvent *event)
 {
-    Chess *chess = nullptr;
-    QWidget *pw = parentWidget();
-    while (pw)
+    if (event->button() == Qt::LeftButton)
     {
-        chess = qobject_cast<Chess*>(pw);
-        if (chess)
+        Chess *chess = nullptr;
+        QWidget *pw = parentWidget();
+        while (pw)
         {
-            break;
+            chess = qobject_cast<Chess*>(pw);
+            if (chess)
+            {
+                break;
+            }
+            pw = pw->parentWidget();
         }
-        pw = pw->parentWidget();
-    }
-    if (!chess || !chess->gameStarted || !chess->choosingPromotedPiece)
-    {
-        return;
-    }
+        if (!chess || !chess->gameStarted || !chess->choosingPromotedPiece)
+        {
+            return;
+        }
 
-    chess->chosenPromotionPiece(chessPiece);
+        chess->chosenPromotionPiece(chessPiece);
+    }
 }
