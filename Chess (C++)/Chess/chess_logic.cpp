@@ -203,6 +203,15 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
         move += "x";
     }
 
+    if (sourcePiece == 'P' || targetPiece != '-')
+    {
+        movesSinceLastCaptureOrPawnMove = 0;
+    }
+    else
+    {
+        movesSinceLastCaptureOrPawnMove++;
+    }
+
     // add to move: full notation of target square
     if (!hasCastled)
     {
@@ -231,12 +240,33 @@ QString ChessLogic::makeLegalMove(std::array<std::array<char, 8>, 8> &chessBoard
 
     turn = 1 - turn;
     board = chessBoard;
+    prevBoards.push_back(board);
+    if (seenBoards.find(board) != seenBoards.end())
+    {
+        seenBoards[board] += 1;
+    }
+    else
+    {
+        seenBoards[board] = 1;
+    }
 
     char kingState = getKingState(coordinatePieceMap);
 
-    if (kingState != '-')
+    if (kingState == '#')
     {
-        move += QString(kingState);
+        move += "#";
+        return move + " " + std::array<QString, 2> {"White", "Black"}[1-turn];
+    }
+    else if (kingState == '+')
+    {
+        move += "+";
+    }
+
+    QString gameState = getGameState();
+
+    if (gameState != "")
+    {
+        move += " " + gameState;
     }
 
     return move;
@@ -254,12 +284,14 @@ QString ChessLogic::makeLegalPromotionMove(std::array<std::array<char, 8>, 8> &c
         move += "x";
     }
 
+    movesSinceLastCaptureOrPawnMove = 0;
+
     move += chess->coordinateNotationMap[targetCoord];
     move += "=" + QString(promotionPiece);
 
     chessBoard[targetRow][targetCol] = promotionPiece;
-    chessBoard[sourceRow][sourceCol] = '-';
     coordinatePieceMap[targetCoord] = promotionPiece;
+    chessBoard[sourceRow][sourceCol] = '-';
     if (coordinatePieceMap.contains(sourceCoord))
     {
         coordinatePieceMap.remove(sourceCoord);
@@ -268,18 +300,39 @@ QString ChessLogic::makeLegalPromotionMove(std::array<std::array<char, 8>, 8> &c
 
     turn = 1 - turn;
     board = chessBoard;
+    prevBoards.push_back(board);
+    if (seenBoards.find(board) != seenBoards.end())
+    {
+        seenBoards[board] += 1;
+    }
+    else
+    {
+        seenBoards[board] = 1;
+    }
 
     char kingState = getKingState(coordinatePieceMap);
 
-    if (kingState != '-')
+    if (kingState == '#')
     {
-        move += QString(kingState);
+        move += "#";
+        return move + " " + std::array<QString, 2> {"White", "Black"}[1-turn];
+    }
+    else if (kingState == '+')
+    {
+        move += "+";
+    }
+
+    QString gameState = getGameState();
+
+    if (gameState != "")
+    {
+        move += " " + gameState;
     }
 
     return move;
 }
 
-void ChessLogic::setKingCoords(const std::array<std::array<char, 8>, 8> &chessBoard)
+void ChessLogic::resetGame(const std::array<std::array<char, 8>, 8> &chessBoard)
 {
     for (int i = 0; i < 8; i++)
     {
@@ -295,6 +348,14 @@ void ChessLogic::setKingCoords(const std::array<std::array<char, 8>, 8> &chessBo
             }
         }
     }
+
+    board = chessBoard;
+    prevBoards = {board};
+    seenBoards.clear();
+    seenBoards[board] = 1;
+    kingHasMoved = {false, false};
+    leftRookHasMoved = {false, false};
+    rightRookHasMoved = {false, false};
 }
 
 bool ChessLogic::getLegalMovesHelper(int targetRow, int targetCol)
@@ -792,5 +853,41 @@ char ChessLogic::getKingState(const QMap<QPair<int, int>, char> &coordinatePiece
     else
     {
         return '+';
+    }
+}
+
+QString ChessLogic::getGameState()
+{
+    if (reachedThreefoldRepetition() || reachedFiftyMoveRule())
+    {
+        return "Draw";
+    }
+    else
+    {
+        return "";
+    }
+}
+
+bool ChessLogic::reachedThreefoldRepetition()
+{
+    for (auto it = seenBoards.begin(); it != seenBoards.end(); ++it)
+    {
+        if (it->second >= 3)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool ChessLogic::reachedFiftyMoveRule()
+{
+    if (movesSinceLastCaptureOrPawnMove >= 50)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }

@@ -656,14 +656,11 @@ void Chess::newGame()
     sourceButtonDrops = 0;
     clickedSameButton = false;
 
-    logic->setKingCoords(board);
-    logic->kingHasMoved = {false, false};
-    logic->leftRookHasMoved = {false, false};
-    logic->rightRookHasMoved = {false, false};
-
     setDefaultBoard();
     setCoordinatePieceMap();
     setChessBoard();
+
+    logic->resetGame(board);
 
     QWidget *scrollWidget = new QWidget();
     QVBoxLayout *scrollLayoutUI = new QVBoxLayout(scrollWidget);
@@ -875,10 +872,6 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     {
         return;
     }
-    else
-    {
-        addMove(move);
-    }
 
     hideLegalMoveImages();
     legalMoves = {};
@@ -896,6 +889,21 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
     setButtonStyleSheet(targetButton, boardImagePath + "SelectedPiece.png");
     targetButton->setIcon(floatingIconLabel->pixmap(Qt::ReturnByValue));
     targetButton->setIconSize(QSize(90, 90));
+
+    if (move.contains(" "))
+    {
+        QStringList moveSplit = move.split(" ");
+        move = moveSplit[0];
+    }
+
+    if (move[move.size()-1] == '#')
+    {
+        addMove(move);
+    }
+    else
+    {
+        addMove(move);
+    }
 
     qDebug();
     for (const std::array<char, 8> &row : board)
@@ -915,8 +923,6 @@ void Chess::makePromotionMove(QString move)
     ChessButton *sourceButton = coordinateButtonMap[promotionSourceCoord];
     ChessButton *targetButton = coordinateButtonMap[promotionTargetCoord];
 
-    addMove(move);
-
     hideLegalMoveImages();
     legalMoves = {};
 
@@ -932,6 +938,8 @@ void Chess::makePromotionMove(QString move)
 
     setButtonStyleSheet(targetButton, boardImagePath + "SelectedPiece.png");
     setButtonIcon(targetButton, pieceImagePath + pieceImageMap[board[promotionTargetCoord.first][promotionTargetCoord.second]]);
+
+    addMove(move);
 
     qDebug();
     for (const std::array<char, 8> &row : board)

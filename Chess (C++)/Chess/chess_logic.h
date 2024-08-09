@@ -31,9 +31,7 @@ public:
 
     QString makeLegalPromotionMove(std::array<std::array<char, 8>, 8> &chessBoard, QMap<QPair<int, int>, char> &coordinatePieceMap, QPair<int, int> targetCoord, int &currTurn, char promotionPiece, QString &move);
 
-    void setKingCoords(const std::array<std::array<char, 8>, 8> &chessBoard);
-
-    char getKingState(const QMap<QPair<int, int>, char> &coordinatePieceMap);
+    void resetGame(const std::array<std::array<char, 8>, 8> &chessBoard);
 
 private:
     Chess *chess;
@@ -41,6 +39,10 @@ private:
     QSet<QPair<int, int>> legalMoves;
 
     std::array<std::array<char, 8>, 8> board;
+
+    std::vector<std::array<std::array<char, 8>, 8>> prevBoards;
+
+    std::map<std::array<std::array<char, 8>, 8>, int> seenBoards;
 
     QPair<int, int> sourceCoord;
     int sourceRow;
@@ -61,6 +63,8 @@ private:
     std::array<int, 2> pawnHomeRows;
 
     QPair<int, int> enPassantCoord;
+
+    int movesSinceLastCaptureOrPawnMove;
 
     bool getLegalMovesHelper(int targetRow, int targetCol);
 
@@ -93,6 +97,14 @@ private:
     std::vector<QPair<int, int>> findEnemyQueen();
 
     bool kingIsChecked();
+
+    char getKingState(const QMap<QPair<int, int>, char> &coordinatePieceMap);
+
+    QString getGameState();
+
+    bool reachedThreefoldRepetition();
+
+    bool reachedFiftyMoveRule();
 };
 
 #endif // CHESS_LOGIC_H
