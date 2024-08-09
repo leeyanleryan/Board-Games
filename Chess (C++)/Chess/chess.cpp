@@ -148,6 +148,8 @@ void Chess::setCoordinateButtonMap()
 
 void Chess::setCoordinatePieceMap()
 {
+    coordinatePieceMap = {};
+
     for (int row = 0; row < 8; row++)
     {
         for (int col = 0; col < 8; col++)
@@ -574,6 +576,7 @@ void Chess::on_buttonExit_clicked()
 void Chess::on_buttonChessQuit_clicked()
 {
     setDefaultBoard();
+    setCoordinatePieceMap();
     playerNames = {};
     gameStarted = false;
     gameNumber = 0;
