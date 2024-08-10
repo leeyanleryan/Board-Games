@@ -111,6 +111,8 @@ void Chess::variableSetup()
     promotionMove = "";
 
     uiBoardTopLeft = ui->uiBoard->geometry().topLeft();
+
+    currMenuIndex = -1;
 }
 
 void Chess::launchSetup()
@@ -405,6 +407,16 @@ void Chess::setMenu()
     QPixmap tP1ImagePix = tP1Image->pixmap(QSize(60, 60));
     ui->topProfile1Image->setText("");
     ui->topProfile1Image->setPixmap(tP1ImagePix);
+    ui->iconSettings->setStyleSheet("QPushButton {border: none; background-color: transparent; image: url(" + iconsImagePath + "Settings_1);}"
+                                    "QPushButton:hover {image: url(" + iconsImagePath + "Settings_1_Hover);}"
+                                    "QPushButton:pressed {image: url(" + iconsImagePath + "Settings_1);}");
+    ui->iconFlipBoard->setStyleSheet("QPushButton {border: none; background-color: transparent; image: url(" + iconsImagePath + "Rotate_0);}"
+                                     "QPushButton:hover {image: url(" + iconsImagePath + "Rotate_0_Hover);}"
+                                     "QPushButton:pressed {image: url(" + iconsImagePath + "Rotate_0);}");
+    // ui->iconSaveGame->setStyleSheet("background: transparent");
+    ui->iconSaveGame->setStyleSheet("QPushButton {border: none; background-color: transparent; image: url(" + iconsImagePath + "Save_0);}"
+                                    "QPushButton:hover {image: url(" + iconsImagePath + "Save_0_Hover);}"
+                                    "QPushButton:pressed {image: url(" + iconsImagePath + "Save_0);}");
 
     // clock
     QIcon *bP0Clock = new QIcon(backgroundPath + "clockWhite.png");
@@ -651,7 +663,15 @@ void Chess::on_buttonSettings_clicked()
 
 void Chess::on_buttonSettingsBack_clicked()
 {
-    ui->uiMenu->setCurrentIndex(0);
+    if (currMenuIndex == -1)
+    {
+        ui->uiMenu->setCurrentIndex(0);
+    }
+    else
+    {
+        ui->uiMenu->setCurrentIndex(currMenuIndex);
+        currMenuIndex = -1;
+    }
 }
 
 void Chess::on_buttonExit_clicked()
@@ -1353,3 +1373,10 @@ void Chess::on_buttonTimeUnlimited_pressed()
     ui->buttonTimeNext->setStyleSheet(buttonStyleSheet);
     ui->buttonTimeNext->setEnabled(true);
 }
+
+void Chess::on_iconSettings_clicked()
+{
+    currMenuIndex = ui->uiMenu->currentIndex();
+    ui->uiMenu->setCurrentIndex(3);
+}
+

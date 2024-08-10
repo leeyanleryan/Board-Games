@@ -185,6 +185,8 @@ private slots:
 
     void on_buttonTimeUnlimited_pressed();
 
+    void on_iconSettings_clicked();
+
 private:
     Ui::Chess *ui;
 
@@ -229,6 +231,8 @@ private:
     QPair<int, int> promotionSourceCoord;
     QPair<int, int> promotionTargetCoord;
     QString promotionMove;
+
+    int currMenuIndex;
 };
 
 #endif // CHESS_H

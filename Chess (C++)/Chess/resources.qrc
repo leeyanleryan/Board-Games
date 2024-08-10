@@ -55,5 +55,12 @@
         <file>Background/Default/buttonEndScreen.png</file>
         <file>Background/Default/buttonEndScreenHover.png</file>
         <file>Background/Default/buttonEndScreenShadow.png</file>
+        <file>Icons/Rotate_0.png</file>
+        <file>Icons/Save_0.png</file>
+        <file>Icons/Settings_0.png</file>
+        <file>Icons/Settings_1.png</file>
+        <file>Icons/Rotate_0_Hover.png</file>
+        <file>Icons/Settings_1_Hover.png</file>
+        <file>Icons/Save_0_Hover.png</file>
     </qresource>
 </RCC>
