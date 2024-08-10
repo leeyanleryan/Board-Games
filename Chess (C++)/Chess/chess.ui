@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1190</width>
-    <height>760</height>
+    <height>920</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>770</x>
       <y>20</y>
       <width>400</width>
-      <height>720</height>
+      <height>880</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -238,7 +238,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>610</y>
+        <y>770</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -257,7 +257,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>614</y>
+        <y>774</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -276,7 +276,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>540</y>
+        <y>700</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -295,7 +295,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>544</y>
+        <y>704</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -314,7 +314,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>150</y>
+        <y>130</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -333,7 +333,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>230</y>
+        <y>210</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -352,7 +352,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>310</y>
+        <y>290</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -371,7 +371,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>390</y>
+        <y>370</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -390,7 +390,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>154</y>
+        <y>134</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -409,7 +409,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>234</y>
+        <y>214</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -428,7 +428,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>314</y>
+        <y>294</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -447,7 +447,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>394</y>
+        <y>374</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -481,7 +481,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>610</y>
+        <y>770</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -500,7 +500,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>544</y>
+        <y>704</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -519,7 +519,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>540</y>
+        <y>700</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -538,7 +538,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>614</y>
+        <y>774</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -580,8 +580,8 @@
        <rect>
         <x>20</x>
         <y>200</y>
-        <width>361</width>
-        <height>61</height>
+        <width>360</width>
+        <height>60</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -607,8 +607,8 @@
        <rect>
         <x>20</x>
         <y>140</y>
-        <width>361</width>
-        <height>61</height>
+        <width>360</width>
+        <height>60</height>
        </rect>
       </property>
       <property name="font">
@@ -628,8 +628,8 @@
        <rect>
         <x>20</x>
         <y>370</y>
-        <width>361</width>
-        <height>61</height>
+        <width>360</width>
+        <height>60</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -655,8 +655,8 @@
        <rect>
         <x>20</x>
         <y>310</y>
-        <width>361</width>
-        <height>61</height>
+        <width>360</width>
+        <height>60</height>
        </rect>
       </property>
       <property name="font">
@@ -708,7 +708,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>614</y>
+        <y>774</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -727,7 +727,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>610</y>
+        <y>770</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -770,7 +770,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>610</y>
+        <y>770</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -789,7 +789,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>614</y>
+        <y>774</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -808,7 +808,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>540</y>
+        <y>700</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -827,7 +827,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>544</y>
+        <y>704</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -846,7 +846,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>150</y>
+        <y>130</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -865,7 +865,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>230</y>
+        <y>210</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -884,7 +884,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>310</y>
+        <y>290</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -903,7 +903,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>390</y>
+        <y>370</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -922,7 +922,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>154</y>
+        <y>134</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -941,7 +941,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>234</y>
+        <y>214</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -960,7 +960,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>314</y>
+        <y>294</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -979,7 +979,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>394</y>
+        <y>374</y>
         <width>380</width>
         <height>80</height>
        </rect>
@@ -1035,9 +1035,9 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>120</y>
+        <y>140</y>
         <width>360</width>
-        <height>450</height>
+        <height>500</height>
        </rect>
       </property>
       <property name="verticalScrollBarPolicy">
@@ -1052,16 +1052,187 @@
          <x>0</x>
          <y>0</y>
          <width>344</width>
-         <height>448</height>
+         <height>498</height>
         </rect>
        </property>
       </widget>
+     </widget>
+     <widget class="QPushButton" name="buttonChessNewShadow">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>704</y>
+        <width>85</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonChessNew">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>700</y>
+        <width>85</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>New</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonChessLeftShadow">
+      <property name="geometry">
+       <rect>
+        <x>112</x>
+        <y>704</y>
+        <width>85</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonChessLeft">
+      <property name="geometry">
+       <rect>
+        <x>112</x>
+        <y>700</y>
+        <width>85</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>&lt;</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonChessRightShadow">
+      <property name="geometry">
+       <rect>
+        <x>204</x>
+        <y>704</y>
+        <width>85</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonChessRight">
+      <property name="geometry">
+       <rect>
+        <x>204</x>
+        <y>700</y>
+        <width>85</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>&gt;</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonChessForfeitShadow">
+      <property name="geometry">
+       <rect>
+        <x>295</x>
+        <y>704</y>
+        <width>85</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonChessForfeit">
+      <property name="geometry">
+       <rect>
+        <x>295</x>
+        <y>700</y>
+        <width>85</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Forfeit</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonChessQuit">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>770</y>
+        <width>360</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Back</string>
+      </property>
      </widget>
      <widget class="QPushButton" name="buttonChessQuitShadow">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>614</y>
+        <y>774</y>
         <width>360</width>
         <height>60</height>
        </rect>
@@ -1076,32 +1247,25 @@
        <string/>
       </property>
      </widget>
-     <widget class="QPushButton" name="buttonChessQuit">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>610</y>
-        <width>360</width>
-        <height>60</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Roboto</family>
-        <pointsize>14</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Quit</string>
-      </property>
-     </widget>
+     <zorder>txtChess</zorder>
+     <zorder>scrollMovesPlayed</zorder>
+     <zorder>buttonChessNewShadow</zorder>
+     <zorder>buttonChessNew</zorder>
+     <zorder>buttonChessLeftShadow</zorder>
+     <zorder>buttonChessLeft</zorder>
+     <zorder>buttonChessRightShadow</zorder>
+     <zorder>buttonChessRight</zorder>
+     <zorder>buttonChessForfeitShadow</zorder>
+     <zorder>buttonChessForfeit</zorder>
+     <zorder>buttonChessQuitShadow</zorder>
+     <zorder>buttonChessQuit</zorder>
     </widget>
    </widget>
    <widget class="QStackedWidget" name="uiBoard">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>90</y>
       <width>740</width>
       <height>740</height>
      </rect>
@@ -1955,7 +2119,7 @@
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>320</y>
+        <y>5</y>
         <width>100</width>
         <height>415</height>
        </rect>
@@ -2162,6 +2326,130 @@
      <zorder>uiPromotion</zorder>
     </widget>
     <widget class="QWidget" name="blackView"/>
+   </widget>
+   <widget class="QStackedWidget" name="uiProfileTop">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>740</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="topProfile1">
+     <widget class="QLabel" name="topProfile1Image">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>60</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>BPawn</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="topProfile1Name">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>10</y>
+        <width>300</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Black Player Name</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="topProfile1Wins">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>40</y>
+        <width>300</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Wins: 0</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="topProfile0"/>
+   </widget>
+   <widget class="QStackedWidget" name="uiProfileBot">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>830</y>
+      <width>740</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="botProfile0">
+     <widget class="QLabel" name="botProfile0Image">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>60</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>WPawn</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="botProfile0Name">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>10</y>
+        <width>300</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>White Player Name</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="botProfile0Wins">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>40</y>
+        <width>300</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Wins: 0</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="botProfile1"/>
    </widget>
   </widget>
  </widget>

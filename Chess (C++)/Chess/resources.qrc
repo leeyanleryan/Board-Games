@@ -44,5 +44,10 @@
         <file>Background/Default/movesPlayed.png</file>
         <file>Background/Default/promoteBackground.png</file>
         <file>Background/Default/promoteBackgroundReversed.png</file>
+        <file>Background/Default/buttonGame.png</file>
+        <file>Background/Default/buttonGameHover.png</file>
+        <file>Background/Default/buttonGameShadow.png</file>
+        <file>Icons/BlackKnight_0.png</file>
+        <file>Icons/WhiteKnight_0.png</file>
     </qresource>
 </RCC>

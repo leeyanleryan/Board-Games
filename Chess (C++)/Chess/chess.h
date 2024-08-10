@@ -147,13 +147,18 @@ private:
     QString boardImagePath;
     QString chessSoundPath;
     QString backgroundPath;
+    QString iconsImagePath;
 
     QString buttonStyleSheet;
+    QString buttonStyleSheetShadow;
+    QString buttonStyleSheetDisabled;
+
     QString buttonStyleSheetDifficulty;
     QString buttonStyleSheetDifficultySelected;
-    QString buttonStyleSheetDisabled;
-    QString buttonStyleSheetShadow;
     QString buttonStyleSheetDifficultyShadow;
+
+    QString buttonStyleSheetGame;
+    QString buttonStyleSheetGameShadow;
 
     std::array<QString, 2> playerNames;
     bool chosenFirst;

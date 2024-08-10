@@ -58,20 +58,28 @@ void Chess::variableSetup()
     boardImagePath = ":/Board/Brown/";
     chessSoundPath = ":/Sound/Default/";
     backgroundPath = ":/Background/Default/";
+    iconsImagePath = ":/Icons/";
+
     buttonStyleSheet = "QPushButton {background-image: url(" + backgroundPath + "button.png); border: 0; color: white;}"
                        "QPushButton:hover {background-image: url(" + backgroundPath + "buttonHover.png);}"
                        "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
+    buttonStyleSheetShadow = "background-image: url(" + backgroundPath + "buttonShadow.png)";
+    buttonStyleSheetDisabled = "QPushButton {background-image: url(" + backgroundPath + "button.png); border: 0; color: grey;}"
+                               "QPushButton:hover {background-image: url(" + backgroundPath + "buttonHover.png);}"
+                               "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
+
     buttonStyleSheetDifficulty = "QPushButton {background-image: url(" + backgroundPath + "buttonDifficulty.png); border: 0; color: white;}"
                                  "QPushButton:hover {background-image: url(" + backgroundPath + "buttonDifficultyHover.png);}"
                                  "QPushButton:pressed {background-image: url(" + backgroundPath + "buttonDifficultySelected.png);}";
     buttonStyleSheetDifficultySelected = "QPushButton {background-image: url(" + backgroundPath + "buttonDifficultySelected.png); border: 0; color: white;}"
                                          "QPushButton:hover {background-image: url(" + backgroundPath + "buttonDifficultySelectedHover.png);}"
                                          "QPushButton:pressed {background-image: url(" + backgroundPath + "buttonDifficultySelected.png);}";
-    buttonStyleSheetDisabled = "QPushButton {background-image: url(" + backgroundPath + "button.png); border: 0; color: grey;}"
-                               "QPushButton:hover {background-image: url(" + backgroundPath + "buttonHover.png);}"
-                               "QPushButton:pressed {background-image: url(" + backgroundPath + "button.png);}";
-    buttonStyleSheetShadow = "background-image: url(" + backgroundPath + "buttonShadow.png)";
     buttonStyleSheetDifficultyShadow = "background-image: url(" + backgroundPath + "buttonDifficultyShadow.png)";
+
+    buttonStyleSheetGame = "QPushButton {background-image: url(" + backgroundPath + "buttonGame.png); border: 0; color: white;}"
+                           "QPushButton:hover {background-image: url(" + backgroundPath + "buttonGameHover.png);}"
+                           "QPushButton:pressed {background-image: url(" + backgroundPath + "buttonGame.png);}";
+    buttonStyleSheetGameShadow = "background-image: url(" + backgroundPath + "buttonGameShadow.png)";
 
     playerNames = {};
     chosenFirst = false;
@@ -266,6 +274,10 @@ void Chess::setMenu()
     ui->txtP2Name->setStyleSheet("color: white");
     ui->txtSettings->setStyleSheet("color: white");
     ui->txtChess->setStyleSheet("color: white");
+    ui->botProfile0Name->setStyleSheet("color: white");
+    ui->botProfile0Wins->setStyleSheet("color: white");
+    ui->topProfile1Name->setStyleSheet("color: white");
+    ui->topProfile1Wins->setStyleSheet("color: white");
 
     // buttons
     ui->buttonPlayComputer->setStyleSheet(buttonStyleSheet);
@@ -313,8 +325,16 @@ void Chess::setMenu()
     ui->buttonSettingsBack->setStyleSheet(buttonStyleSheet);
     ui->buttonSettingsBackShadow->setStyleSheet(buttonStyleSheetShadow);
 
-    ui->buttonChessQuit->setStyleSheet(buttonStyleSheet);
-    ui->buttonChessQuitShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonChessNew->setStyleSheet(buttonStyleSheetGame);
+    ui->buttonChessNewShadow->setStyleSheet(buttonStyleSheetGameShadow);
+    ui->buttonChessLeft->setStyleSheet(buttonStyleSheetGame);
+    ui->buttonChessLeftShadow->setStyleSheet(buttonStyleSheetGameShadow);
+    ui->buttonChessRight->setStyleSheet(buttonStyleSheetGame);
+    ui->buttonChessRightShadow->setStyleSheet(buttonStyleSheetGameShadow);
+    ui->buttonChessForfeit->setStyleSheet(buttonStyleSheetGame);
+    ui->buttonChessForfeitShadow->setStyleSheet(buttonStyleSheetGameShadow);
+    ui->buttonChessQuit->setStyleSheet(buttonStyleSheetGame);
+    ui->buttonChessQuitShadow->setStyleSheet(buttonStyleSheetGameShadow);
 
     // line edit
     ui->lineP1Name->setStyleSheet("background-image: url(" + backgroundPath + "lineEdit.png); border: 0; color: white");
@@ -322,6 +342,16 @@ void Chess::setMenu()
 
     // scroll
     ui->scrollMovesPlayed->setStyleSheet("background-image: url(" + backgroundPath + "movesPlayed.png); border: 0; color: white");
+
+    // icons
+    QIcon *bP0 = new QIcon(iconsImagePath + "WhiteKnight_0.png");
+    QPixmap bP0Pix = bP0->pixmap(QSize(60, 60));
+    ui->botProfile0Image->setText("");
+    ui->botProfile0Image->setPixmap(bP0Pix);
+    QIcon *tP1 = new QIcon(iconsImagePath + "BlackKnight_0.png");
+    QPixmap tP1Pix = tP1->pixmap(QSize(60, 60));
+    ui->topProfile1Image->setText("");
+    ui->topProfile1Image->setPixmap(tP1Pix);
 }
 
 void Chess::on_buttonPlayComputer_clicked()
@@ -582,6 +612,8 @@ void Chess::on_buttonChessQuit_clicked()
     gameNumber = 0;
     moveLabels = {};
     setChessBoard();
+    ui->botProfile0Name->setText("White Player Name");
+    ui->topProfile1Name->setText("Black Player Name");
     ui->uiMenu->setCurrentIndex(4);
 }
 
@@ -610,6 +642,10 @@ void Chess::on_buttonPlay_clicked()
     }
 
     newGame();
+
+    ui->botProfile0Name->setText(playerNames[0]);
+    ui->topProfile1Name->setText(playerNames[1]);
+
     ui->uiMenu->setCurrentIndex(5);
 
     qDebug();
