@@ -187,6 +187,8 @@ private slots:
 
     void on_iconSettings_clicked();
 
+    void on_iconFlipBoard_clicked();
+
 private:
     Ui::Chess *ui;
 

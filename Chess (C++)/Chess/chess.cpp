@@ -1376,7 +1376,30 @@ void Chess::on_buttonTimeUnlimited_pressed()
 
 void Chess::on_iconSettings_clicked()
 {
-    currMenuIndex = ui->uiMenu->currentIndex();
-    ui->uiMenu->setCurrentIndex(3);
+    if (currMenuIndex != -1)
+    {
+        ui->uiMenu->setCurrentIndex(currMenuIndex);
+        currMenuIndex = -1;
+    }
+    else if (ui->uiMenu->currentIndex() != 3)
+    {
+        currMenuIndex = ui->uiMenu->currentIndex();
+        ui->uiMenu->setCurrentIndex(3);
+    }
 }
 
+void Chess::on_iconFlipBoard_clicked()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            ChessButton *button1 = coordinateButtonMap[qMakePair(i, j)];
+            ChessButton *button2 = coordinateButtonMap[qMakePair(7-i, 7-j)];
+            QPoint topLeft1 = button1->geometry().topLeft();
+            QPoint topLeft2 = button2->geometry().topLeft();
+            button1->setGeometry(topLeft2.x(), topLeft2.y(), button1->geometry().width(), button1->geometry().height());
+            button2->setGeometry(topLeft1.x(), topLeft1.y(), button1->geometry().width(), button1->geometry().height());
+        }
+    }
+}
