@@ -49,5 +49,11 @@
         <file>Background/Default/buttonGameShadow.png</file>
         <file>Icons/BlackKnight_0.png</file>
         <file>Icons/WhiteKnight_0.png</file>
+        <file>Background/Default/clockBlack.png</file>
+        <file>Background/Default/clockWhite.png</file>
+        <file>Background/Default/endScreen.png</file>
+        <file>Background/Default/buttonEndScreen.png</file>
+        <file>Background/Default/buttonEndScreenHover.png</file>
+        <file>Background/Default/buttonEndScreenShadow.png</file>
     </qresource>
 </RCC>

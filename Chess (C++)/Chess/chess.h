@@ -160,6 +160,9 @@ private:
     QString buttonStyleSheetGame;
     QString buttonStyleSheetGameShadow;
 
+    QString buttonStyleSheetEndScreen;
+    QString buttonStyleSheetEndScreenShadow;
+
     std::array<QString, 2> playerNames;
     bool chosenFirst;
     bool randomTurn;

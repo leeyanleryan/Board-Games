@@ -2259,6 +2259,465 @@
        </widget>
       </widget>
      </widget>
+     <widget class="QStackedWidget" name="uiEndScreen">
+      <property name="geometry">
+       <rect>
+        <x>255</x>
+        <y>265</y>
+        <width>230</width>
+        <height>210</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="uiWinner">
+       <widget class="QPushButton" name="uiWinnerNewGame">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>155</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>New Game</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiWinnerQuitGame">
+        <property name="geometry">
+         <rect>
+          <x>125</x>
+          <y>155</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Quit Game</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="uiWinnerName">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>90</y>
+          <width>190</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Player Name</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="uiWinnerHeader">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>70</y>
+          <width>190</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Winner!</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiWinnerClose">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>0</y>
+          <width>30</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>X</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiWinnerNewGameShadow">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>159</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiWinnerQuitGameShadow">
+        <property name="geometry">
+         <rect>
+          <x>125</x>
+          <y>159</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <zorder>uiWinnerName</zorder>
+       <zorder>uiWinnerHeader</zorder>
+       <zorder>uiWinnerClose</zorder>
+       <zorder>uiWinnerNewGameShadow</zorder>
+       <zorder>uiWinnerQuitGameShadow</zorder>
+       <zorder>uiWinnerQuitGame</zorder>
+       <zorder>uiWinnerNewGame</zorder>
+      </widget>
+      <widget class="QWidget" name="uiNewGame">
+       <widget class="QPushButton" name="uiNewGameNo">
+        <property name="geometry">
+         <rect>
+          <x>125</x>
+          <y>155</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>No</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiNewGameYes">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>155</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Yes</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="uiNewGameHeader">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>70</y>
+          <width>190</width>
+          <height>60</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Are you sure you want to start a new game?</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiNewGameClose">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>0</y>
+          <width>30</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>X</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiNewGameNoShadow">
+        <property name="geometry">
+         <rect>
+          <x>125</x>
+          <y>159</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiNewGameYesShadow">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>159</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <zorder>uiNewGameHeader</zorder>
+       <zorder>uiNewGameClose</zorder>
+       <zorder>uiNewGameNoShadow</zorder>
+       <zorder>uiNewGameYesShadow</zorder>
+       <zorder>uiNewGameYes</zorder>
+       <zorder>uiNewGameNo</zorder>
+      </widget>
+      <widget class="QWidget" name="uiQuitGame">
+       <widget class="QPushButton" name="uiQuitGameNo">
+        <property name="geometry">
+         <rect>
+          <x>125</x>
+          <y>155</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>No</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="uiQuitGameHeader">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>70</y>
+          <width>190</width>
+          <height>60</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Are you sure you want to quit?</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiQuitGameYes">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>155</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Yes</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiQuitGameClose">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>0</y>
+          <width>30</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>X</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiQuitGameNoShadow">
+        <property name="geometry">
+         <rect>
+          <x>125</x>
+          <y>159</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiQuitGameYesShadow">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>159</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <zorder>uiQuitGameHeader</zorder>
+       <zorder>uiQuitGameClose</zorder>
+       <zorder>uiQuitGameNoShadow</zorder>
+       <zorder>uiQuitGameYesShadow</zorder>
+       <zorder>uiQuitGameNo</zorder>
+       <zorder>uiQuitGameYes</zorder>
+      </widget>
+      <widget class="QWidget" name="uiForfeitGame">
+       <widget class="QPushButton" name="uiForfeitGameNo">
+        <property name="geometry">
+         <rect>
+          <x>125</x>
+          <y>155</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>No</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="uiForfeitGameHeader">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>70</y>
+          <width>190</width>
+          <height>60</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Are you sure you want to forfeit?</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiForfeitGameYes">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>155</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Yes</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiForfeitGameClose">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>0</y>
+          <width>30</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>X</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiForfeitGameNoShadow">
+        <property name="geometry">
+         <rect>
+          <x>125</x>
+          <y>159</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="uiForfeitGameYesShadow">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>159</y>
+          <width>90</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <zorder>uiForfeitGameHeader</zorder>
+       <zorder>uiForfeitGameClose</zorder>
+       <zorder>uiForfeitGameNoShadow</zorder>
+       <zorder>uiForfeitGameYesShadow</zorder>
+       <zorder>uiForfeitGameNo</zorder>
+       <zorder>uiForfeitGameYes</zorder>
+      </widget>
+     </widget>
      <zorder>h1</zorder>
      <zorder>e4</zorder>
      <zorder>a4</zorder>
@@ -2324,6 +2783,7 @@
      <zorder>a5</zorder>
      <zorder>c5</zorder>
      <zorder>uiPromotion</zorder>
+     <zorder>uiEndScreen</zorder>
     </widget>
     <widget class="QWidget" name="blackView"/>
    </widget>
@@ -2361,7 +2821,7 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -2384,6 +2844,48 @@
       </property>
       <property name="text">
        <string>Wins: 0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="topProfile1TimeBackground">
+      <property name="geometry">
+       <rect>
+        <x>600</x>
+        <y>10</y>
+        <width>130</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="topProfile1Time">
+      <property name="geometry">
+       <rect>
+        <x>615</x>
+        <y>10</y>
+        <width>102</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>00:00:00</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
      </widget>
     </widget>
@@ -2423,7 +2925,7 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -2448,6 +2950,53 @@
        <string>Wins: 0</string>
       </property>
      </widget>
+     <widget class="QLabel" name="botProfile0Time">
+      <property name="geometry">
+       <rect>
+        <x>615</x>
+        <y>10</y>
+        <width>102</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>00:00:00</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="botProfile0TimeBackground">
+      <property name="geometry">
+       <rect>
+        <x>600</x>
+        <y>10</y>
+        <width>130</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+      </property>
+     </widget>
+     <zorder>botProfile0Image</zorder>
+     <zorder>botProfile0Name</zorder>
+     <zorder>botProfile0Wins</zorder>
+     <zorder>botProfile0TimeBackground</zorder>
+     <zorder>botProfile0Time</zorder>
     </widget>
     <widget class="QWidget" name="botProfile1"/>
    </widget>

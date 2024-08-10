@@ -81,6 +81,11 @@ void Chess::variableSetup()
                            "QPushButton:pressed {background-image: url(" + backgroundPath + "buttonGame.png);}";
     buttonStyleSheetGameShadow = "background-image: url(" + backgroundPath + "buttonGameShadow.png)";
 
+    buttonStyleSheetEndScreen = "QPushButton {background-image: url(" + backgroundPath + "buttonEndScreen.png); border: 0; color: white;}"
+                                "QPushButton:hover {background-image: url(" + backgroundPath + "buttonEndScreenHover.png);}"
+                                "QPushButton:pressed {background-image: url(" + backgroundPath + "buttonEndScreen.png);}";;
+    buttonStyleSheetEndScreenShadow = "background-image: url(" + backgroundPath + "buttonEndScreenShadow.png)";
+
     playerNames = {};
     chosenFirst = false;
     randomTurn = false;
@@ -264,6 +269,7 @@ void Chess::setMenu()
     // background
     ui->centralwidget->setStyleSheet("background-image: url(" + backgroundPath + "background.png); border: 0");
     ui->uiMenu->setStyleSheet("background-image: url(" + backgroundPath + "menu.png); border: 0");
+    ui->uiEndScreen->setStyleSheet("background-image: url(" + backgroundPath + "endScreen.png); border: 0");
 
     // text
     ui->txtWelcome->setStyleSheet("color: white");
@@ -278,6 +284,17 @@ void Chess::setMenu()
     ui->botProfile0Wins->setStyleSheet("color: white");
     ui->topProfile1Name->setStyleSheet("color: white");
     ui->topProfile1Wins->setStyleSheet("color: white");
+    ui->botProfile0Time->setStyleSheet("color: #262421; background: transparent");
+    ui->topProfile1Time->setStyleSheet("color: white; background: transparent");
+    ui->uiForfeitGameHeader->setStyleSheet("color: white; background: transparent");
+    ui->uiQuitGameHeader->setStyleSheet("color: white; background: transparent");
+    ui->uiNewGameHeader->setStyleSheet("color: white; background: transparent");
+    ui->uiWinnerHeader->setStyleSheet("color: white; background: transparent");
+    ui->uiForfeitGameClose->setStyleSheet("color: white; background: transparent");
+    ui->uiQuitGameClose->setStyleSheet("color: white; background: transparent");
+    ui->uiNewGameClose->setStyleSheet("color: white; background: transparent");
+    ui->uiWinnerClose->setStyleSheet("color: white; background: transparent");
+    ui->uiWinnerName->setStyleSheet("color: white; background: transparent");
 
     // buttons
     ui->buttonPlayComputer->setStyleSheet(buttonStyleSheet);
@@ -336,6 +353,24 @@ void Chess::setMenu()
     ui->buttonChessQuit->setStyleSheet(buttonStyleSheetGame);
     ui->buttonChessQuitShadow->setStyleSheet(buttonStyleSheetGameShadow);
 
+    ui->uiQuitGameYes->setStyleSheet(buttonStyleSheetEndScreen);
+    ui->uiQuitGameYesShadow->setStyleSheet(buttonStyleSheetEndScreenShadow);
+    ui->uiQuitGameNo->setStyleSheet(buttonStyleSheetEndScreen);
+    ui->uiQuitGameNoShadow->setStyleSheet(buttonStyleSheetEndScreenShadow);
+    ui->uiForfeitGameYes->setStyleSheet(buttonStyleSheetEndScreen);
+    ui->uiForfeitGameYesShadow->setStyleSheet(buttonStyleSheetEndScreenShadow);
+    ui->uiForfeitGameNo->setStyleSheet(buttonStyleSheetEndScreen);
+    ui->uiForfeitGameNoShadow->setStyleSheet(buttonStyleSheetEndScreenShadow);
+    ui->uiNewGameYes->setStyleSheet(buttonStyleSheetEndScreen);
+    ui->uiNewGameYesShadow->setStyleSheet(buttonStyleSheetEndScreenShadow);
+    ui->uiNewGameNo->setStyleSheet(buttonStyleSheetEndScreen);
+    ui->uiNewGameNoShadow->setStyleSheet(buttonStyleSheetEndScreenShadow);
+    ui->uiWinnerNewGame->setStyleSheet(buttonStyleSheetEndScreen);
+    ui->uiWinnerNewGameShadow->setStyleSheet(buttonStyleSheetEndScreenShadow);
+    ui->uiWinnerQuitGame->setStyleSheet(buttonStyleSheetEndScreen);
+    ui->uiWinnerQuitGameShadow->setStyleSheet(buttonStyleSheetEndScreenShadow);
+    ui->uiEndScreen->lower();
+
     // line edit
     ui->lineP1Name->setStyleSheet("background-image: url(" + backgroundPath + "lineEdit.png); border: 0; color: white");
     ui->lineP2Name->setStyleSheet("background-image: url(" + backgroundPath + "lineEdit.png); border: 0; color: white");
@@ -344,14 +379,24 @@ void Chess::setMenu()
     ui->scrollMovesPlayed->setStyleSheet("background-image: url(" + backgroundPath + "movesPlayed.png); border: 0; color: white");
 
     // icons
-    QIcon *bP0 = new QIcon(iconsImagePath + "WhiteKnight_0.png");
-    QPixmap bP0Pix = bP0->pixmap(QSize(60, 60));
+    QIcon *bP0Image = new QIcon(iconsImagePath + "WhiteKnight_0.png");
+    QPixmap bP0ImagePix = bP0Image->pixmap(QSize(60, 60));
     ui->botProfile0Image->setText("");
-    ui->botProfile0Image->setPixmap(bP0Pix);
-    QIcon *tP1 = new QIcon(iconsImagePath + "BlackKnight_0.png");
-    QPixmap tP1Pix = tP1->pixmap(QSize(60, 60));
+    ui->botProfile0Image->setPixmap(bP0ImagePix);
+    QIcon *tP1Image = new QIcon(iconsImagePath + "BlackKnight_0.png");
+    QPixmap tP1ImagePix = tP1Image->pixmap(QSize(60, 60));
     ui->topProfile1Image->setText("");
-    ui->topProfile1Image->setPixmap(tP1Pix);
+    ui->topProfile1Image->setPixmap(tP1ImagePix);
+
+    // clock
+    QIcon *bP0Clock = new QIcon(backgroundPath + "clockWhite.png");
+    QPixmap bP0ClockPix = bP0Clock->pixmap(QSize(130, 60));
+    ui->botProfile0TimeBackground->setText("");
+    ui->botProfile0TimeBackground->setPixmap(bP0ClockPix);
+    QIcon *tP1Clock = new QIcon(backgroundPath + "clockBlack.png");
+    QPixmap tP1ClockPix = tP1Clock->pixmap(QSize(130, 60));
+    ui->topProfile1TimeBackground->setText("");
+    ui->topProfile1TimeBackground->setPixmap(tP1ClockPix);
 }
 
 void Chess::on_buttonPlayComputer_clicked()
@@ -601,20 +646,6 @@ void Chess::on_buttonSettingsBack_clicked()
 void Chess::on_buttonExit_clicked()
 {
     qApp->exit();
-}
-
-void Chess::on_buttonChessQuit_clicked()
-{
-    setDefaultBoard();
-    setCoordinatePieceMap();
-    playerNames = {};
-    gameStarted = false;
-    gameNumber = 0;
-    moveLabels = {};
-    setChessBoard();
-    ui->botProfile0Name->setText("White Player Name");
-    ui->topProfile1Name->setText("Black Player Name");
-    ui->uiMenu->setCurrentIndex(4);
 }
 
 void Chess::on_buttonPlay_clicked()
@@ -1070,3 +1101,114 @@ void Chess::deselectButton(ChessButton *button)
 
     ui->uiPromotion->lower();
 }
+
+void Chess::on_buttonChessNew_clicked()
+{
+    ui->uiEndScreen->setCurrentIndex(1);
+    ui->uiEndScreen->raise();
+}
+
+void Chess::on_buttonChessQuit_clicked()
+{
+    ui->uiEndScreen->setCurrentIndex(2);
+    ui->uiEndScreen->raise();
+}
+
+
+void Chess::on_buttonChessForfeit_clicked()
+{
+    ui->uiEndScreen->setCurrentIndex(3);
+    ui->uiEndScreen->raise();
+}
+
+
+void Chess::on_uiWinnerNewGame_clicked()
+{
+    newGame();
+    ui->uiEndScreen->lower();
+}
+
+
+void Chess::on_uiWinnerQuitGame_clicked()
+{
+    setDefaultBoard();
+    setCoordinatePieceMap();
+    playerNames = {};
+    gameStarted = false;
+    gameNumber = 0;
+    moveLabels = {};
+    setChessBoard();
+    ui->botProfile0Name->setText("White Player Name");
+    ui->topProfile1Name->setText("Black Player Name");
+    ui->uiEndScreen->lower();
+    ui->uiMenu->setCurrentIndex(4);
+}
+
+void Chess::on_uiWinnerClose_clicked()
+{
+    ui->uiEndScreen->lower();
+}
+
+void Chess::on_uiNewGameYes_clicked()
+{
+    newGame();
+    ui->uiEndScreen->lower();
+}
+
+void Chess::on_uiNewGameNo_clicked()
+{
+    ui->uiEndScreen->lower();
+}
+
+
+void Chess::on_uiNewGameClose_clicked()
+{
+    ui->uiEndScreen->lower();
+}
+
+
+void Chess::on_uiQuitGameYes_clicked()
+{
+    setDefaultBoard();
+    setCoordinatePieceMap();
+    playerNames = {};
+    gameStarted = false;
+    gameNumber = 0;
+    moveLabels = {};
+    setChessBoard();
+    ui->botProfile0Name->setText("White Player Name");
+    ui->topProfile1Name->setText("Black Player Name");
+    ui->uiEndScreen->lower();
+    ui->uiMenu->setCurrentIndex(4);
+}
+
+
+void Chess::on_uiQuitGameNo_clicked()
+{
+    ui->uiEndScreen->lower();
+}
+
+
+void Chess::on_uiQuitGameClose_clicked()
+{
+    ui->uiEndScreen->lower();
+}
+
+
+void Chess::on_uiForfeitGameYes_clicked()
+{
+    ui->uiEndScreen->setCurrentIndex(0);
+}
+
+
+void Chess::on_uiForfeitGameNo_clicked()
+{
+    ui->uiEndScreen->lower();
+}
+
+
+void Chess::on_uiForfeitGameClose_clicked()
+{
+    ui->uiEndScreen->lower();
+}
+
