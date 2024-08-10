@@ -189,6 +189,8 @@ private slots:
 
     void on_iconFlipBoard_clicked();
 
+    void on_iconSaveGame_clicked();
+
 private:
     Ui::Chess *ui;
 

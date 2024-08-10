@@ -1403,3 +1403,9 @@ void Chess::on_iconFlipBoard_clicked()
         }
     }
 }
+
+void Chess::on_iconSaveGame_clicked()
+{
+
+}
+
