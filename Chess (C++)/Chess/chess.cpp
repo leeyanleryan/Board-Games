@@ -298,6 +298,7 @@ void Chess::setMenu()
     ui->uiNewGameClose->setStyleSheet("color: white; background: transparent");
     ui->uiWinnerClose->setStyleSheet("color: white; background: transparent");
     ui->uiWinnerName->setStyleSheet("color: white; background: transparent");
+    ui->txtTime->setStyleSheet("color: white");
 
     // buttons
     ui->buttonPlayComputer->setStyleSheet(buttonStyleSheet);
@@ -333,9 +334,9 @@ void Chess::setMenu()
     ui->buttonAlternateFirstShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
     ui->buttonPlay->setStyleSheet(buttonStyleSheetDisabled);
     ui->buttonPlayShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonPlay->setEnabled(false);
     ui->buttonGoesFirstBack->setStyleSheet(buttonStyleSheet);
     ui->buttonGoesFirstBackShadow->setStyleSheet(buttonStyleSheetShadow);
-    ui->buttonPlay->setEnabled(false);
 
     ui->buttonFriendNext->setStyleSheet(buttonStyleSheet);
     ui->buttonFriendNextShadow->setStyleSheet(buttonStyleSheetShadow);
@@ -353,8 +354,8 @@ void Chess::setMenu()
     ui->buttonChessRightShadow->setStyleSheet(buttonStyleSheetGameShadow);
     ui->buttonChessForfeit->setStyleSheet(buttonStyleSheetGame);
     ui->buttonChessForfeitShadow->setStyleSheet(buttonStyleSheetGameShadow);
-    ui->buttonChessQuit->setStyleSheet(buttonStyleSheetGame);
-    ui->buttonChessQuitShadow->setStyleSheet(buttonStyleSheetGameShadow);
+    ui->buttonChessQuit->setStyleSheet(buttonStyleSheet);
+    ui->buttonChessQuitShadow->setStyleSheet(buttonStyleSheetShadow);
 
     ui->uiQuitGameYes->setStyleSheet(buttonStyleSheetEndScreen);
     ui->uiQuitGameYesShadow->setStyleSheet(buttonStyleSheetEndScreenShadow);
@@ -373,6 +374,20 @@ void Chess::setMenu()
     ui->uiWinnerQuitGame->setStyleSheet(buttonStyleSheetEndScreen);
     ui->uiWinnerQuitGameShadow->setStyleSheet(buttonStyleSheetEndScreenShadow);
     ui->uiEndScreen->lower();
+
+    ui->buttonTime1Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTime1MinuteShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonTime3Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTime3MinuteShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonTime10Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTime10MinuteShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonTimeUnlimited->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTimeUnlimitedShadow->setStyleSheet(buttonStyleSheetDifficultyShadow);
+    ui->buttonTimeNext->setStyleSheet(buttonStyleSheetDisabled);
+    ui->buttonTimeNextShadow->setStyleSheet(buttonStyleSheetShadow);
+    ui->buttonTimeNext->setEnabled(false);
+    ui->buttonTimeBack->setStyleSheet(buttonStyleSheet);
+    ui->buttonTimeBackShadow->setStyleSheet(buttonStyleSheetShadow);
 
     // line edit
     ui->lineP1Name->setStyleSheet("background-image: url(" + backgroundPath + "lineEdit.png); border: 0; color: white");
@@ -489,7 +504,7 @@ void Chess::on_buttonComputerNext_clicked()
     }
     ui->buttonP1First->setText(p1Name);
     ui->buttonP2First->setText(p2Name);
-    ui->uiMenu->setCurrentIndex(4);
+    ui->uiMenu->setCurrentIndex(6);
 }
 
 void Chess::on_buttonComputerBack_clicked()
@@ -578,14 +593,7 @@ void Chess::on_buttonGoesFirstBack_clicked()
     ui->buttonAlternateFirst->setStyleSheet(buttonStyleSheetDifficulty);
     ui->buttonPlay->setStyleSheet(buttonStyleSheetDisabled);
     ui->buttonPlay->setEnabled(false);
-    if (computerDifficulty != 0)
-    {
-        ui->uiMenu->setCurrentIndex(1);
-    }
-    else
-    {
-        ui->uiMenu->setCurrentIndex(2);
-    }
+    ui->uiMenu->setCurrentIndex(6);
 }
 
 void Chess::on_buttonPlayFriend_clicked()
@@ -628,7 +636,7 @@ void Chess::on_buttonFriendNext_clicked()
     QString p2Name = ui->lineP2Name->text();
     ui->buttonP1First->setText(p1Name);
     ui->buttonP2First->setText(p2Name);
-    ui->uiMenu->setCurrentIndex(4);
+    ui->uiMenu->setCurrentIndex(6);
 }
 
 void Chess::on_buttonFriendBack_clicked()
@@ -1168,7 +1176,6 @@ void Chess::on_buttonChessQuit_clicked()
     ui->uiEndScreen->raise();
 }
 
-
 void Chess::on_buttonChessForfeit_clicked()
 {
     if (gameStarted)
@@ -1178,13 +1185,11 @@ void Chess::on_buttonChessForfeit_clicked()
     }
 }
 
-
 void Chess::on_uiWinnerNewGame_clicked()
 {
     newGame();
     ui->uiEndScreen->lower();
 }
-
 
 void Chess::on_uiWinnerQuitGame_clicked()
 {
@@ -1226,7 +1231,6 @@ void Chess::on_uiNewGameClose_clicked()
     ui->uiEndScreen->lower();
 }
 
-
 void Chess::on_uiQuitGameYes_clicked()
 {
     setDefaultBoard();
@@ -1244,18 +1248,15 @@ void Chess::on_uiQuitGameYes_clicked()
     ui->uiMenu->setCurrentIndex(4);
 }
 
-
 void Chess::on_uiQuitGameNo_clicked()
 {
     ui->uiEndScreen->lower();
 }
 
-
 void Chess::on_uiQuitGameClose_clicked()
 {
     ui->uiEndScreen->lower();
 }
-
 
 void Chess::on_uiForfeitGameYes_clicked()
 {
@@ -1280,15 +1281,75 @@ void Chess::on_uiForfeitGameYes_clicked()
     ui->uiEndScreen->raise();
 }
 
-
 void Chess::on_uiForfeitGameNo_clicked()
 {
     ui->uiEndScreen->lower();
 }
-
 
 void Chess::on_uiForfeitGameClose_clicked()
 {
     ui->uiEndScreen->lower();
 }
 
+void Chess::on_buttonTimeNext_clicked()
+{
+    ui->uiMenu->setCurrentIndex(4);
+}
+
+void Chess::on_buttonTimeBack_clicked()
+{
+    ui->buttonTime1Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTime3Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTime10Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTimeUnlimited->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTimeNext->setStyleSheet(buttonStyleSheetDisabled);
+    ui->buttonTimeNext->setEnabled(false);
+    if (computerDifficulty == 0)
+    {
+        ui->uiMenu->setCurrentIndex(2);
+    }
+    else
+    {
+        ui->uiMenu->setCurrentIndex(1);
+    }
+}
+
+void Chess::on_buttonTime1Minute_pressed()
+{
+    ui->buttonTime1Minute->setStyleSheet(buttonStyleSheetDifficultySelected);
+    ui->buttonTime3Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTime10Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTimeUnlimited->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTimeNext->setStyleSheet(buttonStyleSheet);
+    ui->buttonTimeNext->setEnabled(true);
+}
+
+void Chess::on_buttonTime3Minute_pressed()
+{
+    ui->buttonTime1Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTime3Minute->setStyleSheet(buttonStyleSheetDifficultySelected);
+    ui->buttonTime10Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTimeUnlimited->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTimeNext->setStyleSheet(buttonStyleSheet);
+    ui->buttonTimeNext->setEnabled(true);
+}
+
+void Chess::on_buttonTime10Minute_pressed()
+{
+    ui->buttonTime1Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTime3Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTime10Minute->setStyleSheet(buttonStyleSheetDifficultySelected);
+    ui->buttonTimeUnlimited->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTimeNext->setStyleSheet(buttonStyleSheet);
+    ui->buttonTimeNext->setEnabled(true);
+}
+
+void Chess::on_buttonTimeUnlimited_pressed()
+{
+    ui->buttonTime1Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTime3Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTime10Minute->setStyleSheet(buttonStyleSheetDifficulty);
+    ui->buttonTimeUnlimited->setStyleSheet(buttonStyleSheetDifficultySelected);
+    ui->buttonTimeNext->setStyleSheet(buttonStyleSheet);
+    ui->buttonTimeNext->setEnabled(true);
+}

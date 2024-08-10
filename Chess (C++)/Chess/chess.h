@@ -173,6 +173,18 @@ private slots:
 
     void on_buttonChessForfeit_clicked();
 
+    void on_buttonTimeNext_clicked();
+
+    void on_buttonTimeBack_clicked();
+
+    void on_buttonTime1Minute_pressed();
+
+    void on_buttonTime3Minute_pressed();
+
+    void on_buttonTime10Minute_pressed();
+
+    void on_buttonTimeUnlimited_pressed();
+
 private:
     Ui::Chess *ui;
 
