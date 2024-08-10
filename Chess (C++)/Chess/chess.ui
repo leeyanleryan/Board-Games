@@ -2309,7 +2309,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>14</pointsize>
+          <pointsize>15</pointsize>
          </font>
         </property>
         <property name="text">
@@ -2330,7 +2330,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>12</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -2843,7 +2843,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Wins: 0</string>
+       <string>Score: 0</string>
       </property>
      </widget>
      <widget class="QLabel" name="topProfile1TimeBackground">
@@ -2947,7 +2947,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Wins: 0</string>
+       <string>Score: 0</string>
       </property>
      </widget>
      <widget class="QLabel" name="botProfile0Time">

@@ -87,6 +87,7 @@ void Chess::variableSetup()
     buttonStyleSheetEndScreenShadow = "background-image: url(" + backgroundPath + "buttonEndScreenShadow.png)";
 
     playerNames = {};
+    playerScores = {0, 0};
     chosenFirst = false;
     randomTurn = false;
     alternateTurns = false;
@@ -672,6 +673,8 @@ void Chess::on_buttonPlay_clicked()
         ai->setDifficulty(computerDifficulty);
     }
 
+    playerScores = {0, 0};
+
     newGame();
 
     ui->botProfile0Name->setText(playerNames[0]);
@@ -970,11 +973,35 @@ void Chess::makeMove(ChessButton *sourceButton, ChessButton *targetButton)
 
     if (gameState == "Draw")
     {
-
+        gameStarted = false;
+        playerScores[0] += 0.5;
+        playerScores[1] += 0.5;
+        ui->botProfile0Wins->setText("Scores: " + QString::number(playerScores[0]));
+        ui->topProfile1Wins->setText("Scores: " + QString::number(playerScores[1]));
+        ui->uiWinnerHeader->setText("It's a");
+        ui->uiWinnerName->setText("Draw!");
+        ui->uiEndScreen->setCurrentIndex(0);
+        ui->uiEndScreen->raise();
     }
-    else if (gameState == "White" || gameState == "Black")
+    else if (gameState == "White")
     {
-
+        gameStarted = false;
+        playerScores[0]++;
+        ui->botProfile0Wins->setText("Scores: " + QString::number(playerScores[0]));
+        ui->uiWinnerHeader->setText("Winner");
+        ui->uiWinnerName->setText(playerNames[0]);
+        ui->uiEndScreen->setCurrentIndex(0);
+        ui->uiEndScreen->raise();
+    }
+    else if (gameState == "Black")
+    {
+        gameStarted = false;
+        playerScores[1]++;
+        ui->topProfile1Wins->setText("Scores: " + QString::number(playerScores[1]));
+        ui->uiWinnerHeader->setText("Winner");
+        ui->uiWinnerName->setText(playerNames[1]);
+        ui->uiEndScreen->setCurrentIndex(0);
+        ui->uiEndScreen->raise();
     }
 
     qDebug();
@@ -1011,19 +1038,44 @@ void Chess::makePromotionMove(QString move)
     setButtonStyleSheet(targetButton, boardImagePath + "SelectedPiece.png");
     setButtonIcon(targetButton, pieceImagePath + pieceImageMap[board[promotionTargetCoord.first][promotionTargetCoord.second]]);
 
+    QString gameState;
+
     if (move.contains(" "))
     {
         QStringList moveSplit = move.split(" ");
         move = moveSplit[0];
+        gameState = moveSplit[1];
     }
 
-    if (move[move.size()-1] == '#')
+    addMove(move);
+
+    if (gameState == "Draw")
     {
-        addMove(move);
+        gameStarted = false;
+        playerScores[0] += 0.5;
+        playerScores[1] += 0.5;
+        ui->uiWinnerHeader->setText("It's a");
+        ui->uiWinnerName->setText("Draw!");
+        ui->uiEndScreen->setCurrentIndex(0);
+        ui->uiEndScreen->raise();
     }
-    else
+    else if (gameState == "White")
     {
-        addMove(move);
+        gameStarted = false;
+        playerScores[0]++;
+        ui->uiWinnerHeader->setText("Winner");
+        ui->uiWinnerName->setText(playerNames[0]);
+        ui->uiEndScreen->setCurrentIndex(0);
+        ui->uiEndScreen->raise();
+    }
+    else if (gameState == "Black")
+    {
+        gameStarted = false;
+        playerScores[1]++;
+        ui->uiWinnerHeader->setText("Winner");
+        ui->uiWinnerName->setText(playerNames[1]);
+        ui->uiEndScreen->setCurrentIndex(0);
+        ui->uiEndScreen->raise();
     }
 
     qDebug();
@@ -1134,12 +1186,15 @@ void Chess::on_uiWinnerQuitGame_clicked()
     setDefaultBoard();
     setCoordinatePieceMap();
     playerNames = {};
+    playerScores = {0, 0};
     gameStarted = false;
     gameNumber = 0;
     moveLabels = {};
     setChessBoard();
     ui->botProfile0Name->setText("White Player Name");
     ui->topProfile1Name->setText("Black Player Name");
+    ui->botProfile0Wins->setText("Scores: 0");
+    ui->topProfile1Wins->setText("Scores: 0");
     ui->uiEndScreen->lower();
     ui->uiMenu->setCurrentIndex(4);
 }
@@ -1178,6 +1233,8 @@ void Chess::on_uiQuitGameYes_clicked()
     setChessBoard();
     ui->botProfile0Name->setText("White Player Name");
     ui->topProfile1Name->setText("Black Player Name");
+    ui->botProfile0Wins->setText("Scores: 0");
+    ui->topProfile1Wins->setText("Scores: 0");
     ui->uiEndScreen->lower();
     ui->uiMenu->setCurrentIndex(4);
 }
@@ -1197,7 +1254,25 @@ void Chess::on_uiQuitGameClose_clicked()
 
 void Chess::on_uiForfeitGameYes_clicked()
 {
+    gameStarted = false;
+
+    if (turn == 0)
+    {
+        playerScores[1]++;
+        ui->topProfile1Wins->setText("Scores: " + QString::number(playerScores[1]));
+        ui->uiWinnerHeader->setText("Winner");
+        ui->uiWinnerName->setText(playerNames[1]);
+    }
+    else if (turn == 1)
+    {
+        playerScores[0]++;
+        ui->botProfile0Wins->setText("Scores: " + QString::number(playerScores[0]));
+        ui->uiWinnerHeader->setText("Winner");
+        ui->uiWinnerName->setText(playerNames[0]);
+    }
+
     ui->uiEndScreen->setCurrentIndex(0);
+    ui->uiEndScreen->raise();
 }
 
 

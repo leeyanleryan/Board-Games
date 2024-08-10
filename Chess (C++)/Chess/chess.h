@@ -37,6 +37,8 @@ public:
 
     std::array<std::array<char, 8>, 8> board;
 
+    std::array<double, 2> playerScores;
+
     QLabel *floatingIconLabel;
 
     bool gameStarted;
@@ -140,6 +142,34 @@ private slots:
     void hideLegalMoveImages();
 
     void resetButtonStyleSheet(ChessButton *button);
+
+    void on_uiWinnerNewGame_clicked();
+
+    void on_uiWinnerQuitGame_clicked();
+
+    void on_uiWinnerClose_clicked();
+
+    void on_uiNewGameYes_clicked();
+
+    void on_uiNewGameNo_clicked();
+
+    void on_uiNewGameClose_clicked();
+
+    void on_uiQuitGameYes_clicked();
+
+    void on_uiQuitGameNo_clicked();
+
+    void on_uiQuitGameClose_clicked();
+
+    void on_uiForfeitGameYes_clicked();
+
+    void on_uiForfeitGameNo_clicked();
+
+    void on_uiForfeitGameClose_clicked();
+
+    void on_buttonChessNew_clicked();
+
+    void on_buttonChessForfeit_clicked();
 
 private:
     Ui::Chess *ui;
