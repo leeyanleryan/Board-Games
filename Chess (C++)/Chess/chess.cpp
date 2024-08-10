@@ -109,6 +109,8 @@ void Chess::variableSetup()
     promotionSourceCoord = {};
     promotionTargetCoord = {};
     promotionMove = "";
+
+    uiBoardTopLeft = ui->uiBoard->geometry().topLeft();
 }
 
 void Chess::launchSetup()

@@ -71,8 +71,9 @@ void ChessButton::mousePressEvent(QMouseEvent *event)
 
         QPoint topLeft = this->geometry().topLeft();
         QPoint eventPos = event->position().toPoint();
-        int x = topLeft.x() + eventPos.x() - 35;
-        int y = topLeft.y() + eventPos.y() - 35;
+        QPoint uiBoardTopLeft = chess->uiBoardTopLeft;
+        int x = (uiBoardTopLeft.x()-10) + topLeft.x() + eventPos.x() - 35;
+        int y = (uiBoardTopLeft.y()-10) + topLeft.y() + eventPos.y() - 35;
         chess->floatingIconLabel->move(x, y);
         chess->floatingIconLabel->raise();
         chess->floatingIconLabel->setVisible(true);
@@ -96,8 +97,9 @@ void ChessButton::mouseMoveEvent(QMouseEvent *event)
     {
         QPoint topLeft = this->geometry().topLeft();
         QPoint eventPos = event->position().toPoint();
-        int x = topLeft.x() + eventPos.x() - 35;
-        int y = topLeft.y() + eventPos.y() - 35;
+        QPoint uiBoardTopLeft = chess->uiBoardTopLeft;
+        int x = (uiBoardTopLeft.x()-10) + topLeft.x() + eventPos.x() - 35;
+        int y = (uiBoardTopLeft.y()-10) + topLeft.y() + eventPos.y() - 35;
         chess->floatingIconLabel->move(x, y);
     }
 }
@@ -114,8 +116,9 @@ void ChessButton::mouseReleaseEvent(QMouseEvent *event)
 
             QPoint topLeft = this->geometry().topLeft();
             QPoint eventPos = event->position().toPoint();
-            int x = topLeft.x() + 90 * (eventPos.x() >= 0 ? eventPos.x() / 90 : -1 + eventPos.x() / 90) + 45;
-            int y = topLeft.y() + 90 * (eventPos.y() >= 0 ? eventPos.y() / 90 : -1 + eventPos.y() / 90) + 45;
+            QPoint uiBoardTopLeft = chess->uiBoardTopLeft;
+            int x = (uiBoardTopLeft.x()-10) + topLeft.x() + 90 * (eventPos.x() >= 0 ? eventPos.x() / 90 : -1 + eventPos.x() / 90) + 45;
+            int y = (uiBoardTopLeft.y()-10) + topLeft.y() + 90 * (eventPos.y() >= 0 ? eventPos.y() / 90 : -1 + eventPos.y() / 90) + 45;
             ChessButton *targetButton = qobject_cast<ChessButton*>(chess->childAt(QPoint(x, y)));
 
             chess->floatingIconLabel->setVisible(false);

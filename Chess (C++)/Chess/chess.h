@@ -50,6 +50,8 @@ public:
 
     bool choosingPromotedPiece;
 
+    QPoint uiBoardTopLeft;
+
     void setButtonIcon(QPushButton *button, const QString &imagePath);
 
     void showLegalMoves(ChessButton *sourceButton);
