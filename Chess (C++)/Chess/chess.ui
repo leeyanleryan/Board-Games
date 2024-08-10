@@ -2286,6 +2286,11 @@
           <height>40</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>New Game</string>
         </property>
@@ -2298,6 +2303,11 @@
           <width>90</width>
           <height>40</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Quit Game</string>
@@ -2407,6 +2417,11 @@
           <height>40</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>No</string>
         </property>
@@ -2419,6 +2434,11 @@
           <width>90</width>
           <height>40</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Yes</string>
@@ -2627,6 +2647,11 @@
           <height>40</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>No</string>
         </property>
@@ -2666,6 +2691,11 @@
           <width>90</width>
           <height>40</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Yes</string>

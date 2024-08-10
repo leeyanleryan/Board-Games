@@ -1066,7 +1066,7 @@ void Chess::makePromotionMove(QString move)
         gameStarted = false;
         playerScores[0]++;
         ui->uiWinnerHeader->setText("Winner");
-        ui->uiWinnerName->setText(playerNames[0]);
+        ui->uiWinnerName->setText(playerNames[0] + "!");
         ui->uiEndScreen->setCurrentIndex(0);
         ui->uiEndScreen->raise();
     }
@@ -1075,7 +1075,7 @@ void Chess::makePromotionMove(QString move)
         gameStarted = false;
         playerScores[1]++;
         ui->uiWinnerHeader->setText("Winner");
-        ui->uiWinnerName->setText(playerNames[1]);
+        ui->uiWinnerName->setText(playerNames[1] + "!");
         ui->uiEndScreen->setCurrentIndex(0);
         ui->uiEndScreen->raise();
     }
@@ -1171,8 +1171,11 @@ void Chess::on_buttonChessQuit_clicked()
 
 void Chess::on_buttonChessForfeit_clicked()
 {
-    ui->uiEndScreen->setCurrentIndex(3);
-    ui->uiEndScreen->raise();
+    if (gameStarted)
+    {
+        ui->uiEndScreen->setCurrentIndex(3);
+        ui->uiEndScreen->raise();
+    }
 }
 
 
@@ -1263,14 +1266,14 @@ void Chess::on_uiForfeitGameYes_clicked()
         playerScores[1]++;
         ui->topProfile1Wins->setText("Scores: " + QString::number(playerScores[1]));
         ui->uiWinnerHeader->setText("Winner");
-        ui->uiWinnerName->setText(playerNames[1]);
+        ui->uiWinnerName->setText(playerNames[1] + "!");
     }
     else if (turn == 1)
     {
         playerScores[0]++;
         ui->botProfile0Wins->setText("Scores: " + QString::number(playerScores[0]));
         ui->uiWinnerHeader->setText("Winner");
-        ui->uiWinnerName->setText(playerNames[0]);
+        ui->uiWinnerName->setText(playerNames[0] + "!");
     }
 
     ui->uiEndScreen->setCurrentIndex(0);
