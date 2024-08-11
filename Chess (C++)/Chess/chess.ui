@@ -3195,7 +3195,6 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="topProfile0"/>
    </widget>
    <widget class="QStackedWidget" name="uiProfileBot">
     <property name="geometry">
@@ -3304,7 +3303,6 @@
      <zorder>botProfile0TimeBackground</zorder>
      <zorder>botProfile0Time</zorder>
     </widget>
-    <widget class="QWidget" name="botProfile1"/>
    </widget>
    <widget class="QStackedWidget" name="uiSettings">
     <property name="geometry">

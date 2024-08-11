@@ -1402,6 +1402,11 @@ void Chess::on_iconFlipBoard_clicked()
             button2->setGeometry(topLeft1.x(), topLeft1.y(), button1->geometry().width(), button1->geometry().height());
         }
     }
+
+    QPoint topProfile = ui->uiProfileTop->geometry().topLeft();
+    QPoint botProfile = ui->uiProfileBot->geometry().topLeft();
+    ui->uiProfileTop->setGeometry(botProfile.x(), botProfile.y(), ui->topProfile1->geometry().width(), ui->topProfile1->geometry().height());
+    ui->uiProfileBot->setGeometry(topProfile.x(), topProfile.y(), ui->botProfile0->geometry().width(), ui->botProfile0->geometry().height());
 }
 
 void Chess::on_iconSaveGame_clicked()
